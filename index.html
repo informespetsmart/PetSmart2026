@@ -269,7 +269,14 @@ body.dark{background:#070d19!important}
 .inventory-main table{border-collapse:separate;border-spacing:0}
 .inventory-main th{white-space:nowrap}
 .inventory-main td,.inventory-main th{vertical-align:middle}
-.inventory-main .overflow-x-auto{scrollbar-width:thin}
+.inventory-main .overflow-x-auto{overflow-x:auto!important;overflow-y:visible!important;scrollbar-width:thin;scrollbar-color:#94a3b8 #e2e8f0;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.inventory-main .overflow-x-auto::-webkit-scrollbar{height:12px}
+.inventory-main .overflow-x-auto::-webkit-scrollbar-track{background:#e2e8f0;border-radius:999px}
+.inventory-main .overflow-x-auto::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:999px;border:3px solid #e2e8f0}
+.inventory-main table{min-width:1180px}
+.inventory-main table td,.inventory-main table th{font-size:12px}
+.inventory-main .inventory-action-cell{position:sticky;right:0;background:inherit;z-index:4;box-shadow:-8px 0 14px -12px rgba(15,23,42,.35)}
+@media(min-width:1280px){.inventory-layout{grid-template-columns:214px minmax(0,1fr);gap:14px}.inventory-nav{padding:10px!important}.inventory-nav button{padding:11px 12px!important}.inventory-main table{min-width:0;width:100%}.inventory-main table th,.inventory-main table td{padding-left:10px!important;padding-right:10px!important}.inventory-main table td:first-child{width:72px}.inventory-main table th:last-child,.inventory-main table td:last-child{width:150px}.inventory-main table td:nth-child(2){min-width:190px}.inventory-main table td:nth-child(7){min-width:125px}}
 .inventory-main input,.inventory-main select,.inventory-main textarea{transition:border-color .2s,box-shadow .2s,background .2s}
 .inventory-main input:focus,.inventory-main select:focus,.inventory-main textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(245,158,11,.14)}
 @media(max-width:1024px){
@@ -1097,6 +1104,20 @@ body.dark{background:#070d19!important}
 </div>
 
 <form @submit.prevent="confirmarVenta()" class="p-6 md:p-7 space-y-5">
+<!-- MODO DE VENTA -->
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60 p-3 md:p-4">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <div>
+      <div class="text-[10px] uppercase tracking-widest font-black text-slate-400">Tipo de operación</div>
+      <div class="text-sm font-black text-slate-800 dark:text-white mt-0.5" x-text="ventaForm.modoSeller ? 'Seller Falabella' : 'Venta estándar'"></div>
+    </div>
+    <div class="flex items-center gap-1 p-1 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 w-full sm:w-auto">
+      <button type="button" @click="activarModoVenta(false)" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black transition" :class="!ventaForm.modoSeller ? 'bg-indigo-600 text-white shadow' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700'">Venta normal</button>
+      <button type="button" @click="activarModoVenta(true)" class="flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black transition" :class="ventaForm.modoSeller ? 'bg-purple-600 text-white shadow' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700'"><i class="fa-solid fa-store mr-1"></i> Seller Falabella</button>
+    </div>
+  </div>
+  <div x-show="ventaForm.modoSeller" x-transition class="mt-3 text-[10px] text-purple-700 dark:text-purple-300 bg-purple-500/10 border border-purple-500/20 rounded-xl px-3 py-2">Seller no utiliza vale, celular, horario de entrega ni tipo de mascota. Los productos y UPC se mantienen igual, pero el cálculo usa el total real cobrado por Seller.</div>
+</div>
 <!-- PRODUCTOS / UPC -->
 <div class="rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/60 dark:bg-indigo-950/20 overflow-hidden">
 <div class="px-4 py-4 border-b border-indigo-200 dark:border-indigo-900/60 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -1118,10 +1139,14 @@ body.dark{background:#070d19!important}
 </div>
 <div class="text-[10px] mt-1" :class="linea.error ? 'text-rose-500 font-bold' : 'text-slate-400'" x-text="linea.error || (linea.producto ? 'UPC válido · Disponible' : 'Ingresa un UPC disponible')"></div>
 </div>
+<div class="min-w-0 flex items-center gap-3">
+<template x-if="linea.producto?.imagenUrl"><img :src="linea.producto.imagenUrl" :alt="linea.producto.nombre || 'Producto'" class="w-12 h-12 rounded-xl object-contain bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0"/></template>
+<template x-if="linea.producto && !linea.producto.imagenUrl"><div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700"><i class="fa-solid fa-paw"></i></div></template>
 <div class="min-w-0">
 <label class="block text-[10px] uppercase tracking-wider font-black text-slate-400 mb-1">Producto</label>
 <div class="font-black text-sm text-slate-800 dark:text-slate-100 truncate" x-text="linea.producto?.nombre || '—'"></div>
 <div class="text-[10px] text-slate-400 mt-1 truncate" x-text="linea.producto ? ('Talla: ' + (linea.producto.talla || 'Única')) : 'El producto aparecerá al reconocer el UPC'"></div>
+</div>
 </div>
 <div>
 <label class="block text-[10px] uppercase tracking-wider font-black text-slate-400 mb-1">Costo</label>
@@ -1145,10 +1170,10 @@ body.dark{background:#070d19!important}
 <div><div class="text-xs font-black text-blue-700 dark:text-blue-300 flex items-center gap-2"><i class="fa-solid fa-user"></i> Datos del cliente</div><div class="text-[10px] text-slate-400 mt-1">Estos datos se ingresan una sola vez y se aplicarán a todos los UPC seleccionados.</div></div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Cliente *</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium" placeholder="Nombre completo" required type="text" x-model="ventaForm.clienteNombre"/></div>
-<div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Teléfono</label><input @input="ventaForm.clienteTelefono = limpiarCelular(ventaForm.clienteTelefono)" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium" inputmode="numeric" maxlength="9" pattern="[0-9]{9}" placeholder="999999999" type="tel" x-model="ventaForm.clienteTelefono"/></div>
+<div x-show="!ventaForm.modoSeller" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Teléfono</label><input @input="ventaForm.clienteTelefono = limpiarCelular(ventaForm.clienteTelefono)" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium" inputmode="numeric" maxlength="9" pattern="[0-9]{9}" placeholder="999999999" type="tel" x-model="ventaForm.clienteTelefono"/></div>
 </div>
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> Distrito</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium" placeholder="Ej: Miraflores" type="text" x-model="ventaForm.distrito"/></div><div class="md:col-span-2"><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Dirección de entrega</label><textarea class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium resize-none" rows="2" placeholder="Av. ..., número, referencia" x-model="ventaForm.direccionEntrega"></textarea></div></div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-1">
+<div x-show="!ventaForm.modoSeller" x-transition class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-1">
 <div class="rounded-2xl border border-amber-300 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/20 p-4">
 <div class="flex items-start justify-between gap-4"><div><div class="text-xs font-black uppercase tracking-wider text-amber-700 dark:text-amber-300"><i class="fa-solid fa-ticket mr-1"></i> Emitir vale promocional</div><div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Si lo activas, al guardar esta venta se generará un código único para la próxima compra.</div></div>
 <label class="inline-flex items-center gap-2 cursor-pointer shrink-0"><input type="checkbox" x-model="ventaForm.generarVale" class="sr-only peer"><span class="relative w-12 h-7 rounded-full bg-slate-300 dark:bg-slate-700 peer-checked:bg-amber-500 transition-colors"><span class="absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5"></span></span></label></div>
@@ -1172,28 +1197,33 @@ body.dark{background:#070d19!important}
 
 <!-- VENTA -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Canal de Venta *</label><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" required x-model="ventaForm.canalVenta"><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Rappi">Rappi</option><option value="Falabella">Seller Falabella</option></select></div>
-<div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Tipo de mascota *</label><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" required x-model="ventaForm.tipoMascota"><option value="">Seleccionar tipo</option><option value="Perro">Perro</option><option value="Gato">Gato</option><option value="Conejo">Conejo</option><option value="Otro">Otro</option></select></div>
-<div x-show="ventaForm.canalVenta === 'Facebook'" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Perfil que realizó la venta *</label><select :required="ventaForm.canalVenta === 'Facebook'" class="w-full bg-blue-50 dark:bg-slate-900 border border-blue-300 dark:border-blue-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaForm.perfilFacebook"><option value="">Seleccionar perfil</option><option value="Rouss Huamani">Rouss Huamani</option><option value="Katy Avril">Katy Avril</option><option value="Simon Sebastian">Simon Sebastian</option><option value="Jennifer Medina">Jennifer Medina</option><option value="Rouss Mery">Rouss Mery</option></select></div>
-<div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Medio de pago</label><div class="w-full bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-800 rounded-xl px-4 py-3 text-sm font-black text-violet-700 dark:text-violet-300 flex items-center gap-2"><i class="fa-solid fa-mobile-screen-button"></i> Yape</div></div>
+<div>
+  <label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Canal de Venta *</label>
+  <template x-if="ventaForm.modoSeller"><div class="w-full bg-purple-500/10 dark:bg-purple-950/30 border border-purple-300 dark:border-purple-800 rounded-xl px-4 py-3 text-sm font-black text-purple-700 dark:text-purple-300 flex items-center gap-2"><i class="fa-solid fa-store"></i> Seller Falabella</div></template>
+  <template x-if="!ventaForm.modoSeller"><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" required x-model="ventaForm.canalVenta"><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Rappi">Rappi</option></select></template>
+</div>
+<div x-show="!ventaForm.modoSeller" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Tipo de mascota *</label><select :required="!ventaForm.modoSeller" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaForm.tipoMascota"><option value="">Seleccionar tipo</option><option value="Perro">Perro</option><option value="Gato">Gato</option><option value="Conejo">Conejo</option><option value="Otro">Otro</option></select></div>
+<div x-show="!ventaForm.modoSeller && ventaForm.canalVenta === 'Facebook'" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Perfil que realizó la venta *</label><select :required="!ventaForm.modoSeller && ventaForm.canalVenta === 'Facebook'" class="w-full bg-blue-50 dark:bg-slate-900 border border-blue-300 dark:border-blue-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaForm.perfilFacebook"><option value="">Seleccionar perfil</option><option value="Rouss Huamani">Rouss Huamani</option><option value="Katy Avril">Katy Avril</option><option value="Simon Sebastian">Simon Sebastian</option><option value="Jennifer Medina">Jennifer Medina</option><option value="Rouse Mery">Rouse Mery</option></select></div>
+<div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Medio de pago</label><div class="w-full bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-800 rounded-xl px-4 py-3 text-sm font-black text-violet-700 dark:text-violet-300 flex items-center gap-2"><i class="fa-solid fa-mobile-screen-button"></i><span x-text="ventaForm.modoSeller ? 'Pago Seller' : 'Yape'"></span></div></div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Fecha de venta *</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" required type="date" x-model="ventaForm.fechaVenta"/></div>
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-calendar-check text-emerald-500 mr-1"></i>Fecha de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="date" x-model="ventaForm.fechaEntrega"/></div>
-<div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-clock text-blue-500 mr-1"></i>Horario de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="text" placeholder="11:30 am - 1:30 pm" x-model="ventaForm.horarioEntrega"/></div>
+<div x-show="!ventaForm.modoSeller" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-clock text-blue-500 mr-1"></i>Horario de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="text" placeholder="11:30 am - 1:30 pm" x-model="ventaForm.horarioEntrega"/></div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-truck text-amber-500 mr-1"></i>Envío <span class="font-normal text-slate-400">(informativo)</span></label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" placeholder="Ej: S/ 10 · Motorizado" type="text" x-model="ventaForm.envio"/><div class="text-[10px] text-slate-400 mt-1">No suma, resta ni participa en ningún cálculo.</div></div>
-<template x-if="ventaForm.canalVenta === 'Falabella'"><div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/30 space-y-3"><div class="text-xs font-black text-purple-700 dark:text-purple-300">Costos Seller Falabella · para toda la venta</div><div class="grid grid-cols-2 gap-3"><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Comisión (S/)</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-2 text-xs font-bold" min="0" step="0.01" type="number" x-model.number="ventaForm.comision"/></div><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Conf. Logístico (S/)</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-2 text-xs font-bold" min="0" step="0.01" type="number" x-model.number="ventaForm.confLogistico"/></div></div><div class="text-[10px] text-purple-700/70 dark:text-purple-300/70">Se distribuirán proporcionalmente entre los productos según su precio.</div></div></template>
+<template x-if="ventaForm.modoSeller"><div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/30 space-y-3 md:col-span-2"><div class="text-xs font-black text-purple-700 dark:text-purple-300"><i class="fa-solid fa-store mr-1"></i> Cálculo de operación Seller</div><div class="grid grid-cols-1 md:grid-cols-3 gap-3"><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Total cobrado por Seller (S/)</label><input class="w-full bg-white dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-3 text-base font-black" min="0" step="0.01" type="number" x-model.number="ventaForm.sellerTotalVenta" placeholder="Ej: 35.90"/></div><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Comisión Seller (S/)</label><input class="w-full bg-white dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-3 text-sm font-bold" min="0" step="0.01" type="number" x-model.number="ventaForm.comision" placeholder="0.00"/></div><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Conf. Logístico (S/)</label><input class="w-full bg-white dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-3 text-sm font-bold" min="0" step="0.01" type="number" x-model.number="ventaForm.confLogistico" placeholder="0.00"/></div></div><div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-[11px]"><div class="rounded-xl bg-white/70 dark:bg-slate-900/50 border border-purple-200 dark:border-purple-800 p-3"><div class="text-slate-400">Neto que paga Seller</div><div class="text-base font-black text-purple-700 dark:text-purple-300 mt-1">S/ <span x-text="formatMonto(netoSellerCalculado)"></span></div></div><div class="rounded-xl bg-white/70 dark:bg-slate-900/50 border border-purple-200 dark:border-purple-800 p-3"><div class="text-slate-400">Costo productos</div><div class="text-base font-black text-amber-700 dark:text-amber-300 mt-1">S/ <span x-text="formatMonto(costoTotalVentaSeleccionada)"></span></div></div><div class="rounded-xl bg-white/70 dark:bg-slate-900/50 border border-purple-200 dark:border-purple-800 p-3"><div class="text-slate-400">Ganancia real</div><div class="text-base font-black text-emerald-700 dark:text-emerald-300 mt-1">S/ <span x-text="formatMonto(gananciaSellerCalculada)"></span></div></div></div></div></template>
+<template x-if="ventaForm.modoSeller"><label class="flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 cursor-pointer md:col-span-2"><input type="checkbox" x-model="ventaForm.sellerPagoStandby" class="w-4 h-4 accent-amber-500"><span><span class="block text-xs font-black text-amber-700 dark:text-amber-300">Dejar pago Seller en stand by</span><span class="block text-[10px] text-slate-500 mt-0.5">La venta queda realizada, pero Capital y Mancomunado no aumentan hasta activar el pago.</span></span></label></template>
 </div>
 
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">Detalle de la venta</label><textarea class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm resize-none" placeholder="Ej: Entrega coordinada, referencia del domicilio, horario acordado, confirmación de pago o cualquier información adicional." rows="3" x-model="ventaForm.observacion"></textarea></div>
 
 <!-- RESUMEN -->
-<div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="bg-slate-900 text-white px-4 py-3 flex items-center gap-2"><i class="fa-solid fa-receipt text-emerald-400"></i><span class="text-xs font-black uppercase tracking-widest">Resumen de la operación</span></div><div class="p-4 bg-slate-50 dark:bg-slate-900/50 grid grid-cols-2 md:grid-cols-4 gap-4"><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Productos</div><div class="text-sm font-black mt-1" x-text="ventaItemsValidos.length"></div></div><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Cliente</div><div class="text-sm font-black mt-1 truncate" x-text="ventaForm.clienteNombre || 'Pendiente'"></div></div><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Canal</div><div class="text-sm font-black mt-1" x-text="ventaForm.canalVenta"></div></div><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Total · Yape</div><div class="text-lg font-black text-emerald-600 mt-0.5">S/ <span x-text="formatMonto(totalVentaSeleccionada)"></span></div></div></div></div>
-<div class="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4 flex justify-between items-center"><div><div class="text-xs font-black">Ganancia real estimada</div><div class="text-[10px] text-slate-400 mt-1">Precio total − costo total − comisión − logística.</div></div><div class="text-xl font-black text-blue-600 dark:text-blue-400">S/ <span x-text="formatMonto(calcularGananciaVenta())"></span></div></div>
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="bg-slate-900 text-white px-4 py-3 flex items-center gap-2"><i class="fa-solid fa-receipt text-emerald-400"></i><span class="text-xs font-black uppercase tracking-widest">Resumen de la operación</span></div><div class="p-4 bg-slate-50 dark:bg-slate-900/50 grid grid-cols-2 md:grid-cols-4 gap-4"><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Productos</div><div class="text-sm font-black mt-1" x-text="ventaItemsValidos.length"></div></div><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Cliente</div><div class="text-sm font-black mt-1 truncate" x-text="ventaForm.clienteNombre || 'Pendiente'"></div></div><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Canal</div><div class="text-sm font-black mt-1" x-text="ventaForm.canalVenta"></div></div><div><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold" x-text="ventaForm.modoSeller ? 'Total Seller' : 'Total · Yape'"></div><div class="text-lg font-black text-emerald-600 mt-0.5">S/ <span x-text="formatMonto(ventaForm.modoSeller ? sellerTotalVentaCalculado : totalVentaSeleccionada)"></span></div></div></div></div>
+<div class="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4 flex justify-between items-center"><div><div class="text-xs font-black" x-text="ventaForm.modoSeller ? 'Ganancia real Seller' : 'Ganancia real estimada'"></div><div class="text-[10px] text-slate-400 mt-1" x-text="ventaForm.modoSeller ? 'Neto Seller − costo total de productos.' : 'Precio total − costo total − comisión − logística.'"></div></div><div class="text-xl font-black text-blue-600 dark:text-blue-400">S/ <span x-text="formatMonto(calcularGananciaVenta())"></span></div></div>
 
 <div class="flex justify-end gap-3 pt-2"><button @click="cerrarModalVenta()" class="px-5 py-3 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold" type="button">Cancelar</button><button class="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-black shadow-lg flex items-center gap-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Guardar/Registrar venta</button></div>
 </form>
@@ -1305,7 +1335,7 @@ body.dark{background:#070d19!important}
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black mb-1.5">Canal de venta *</label><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" required="" x-model="ventaEditando.canalVenta"><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Rappi">Rappi</option><option value="Falabella">Seller Falabella</option></select></div>
-<div x-show="ventaEditando.canalVenta === 'Facebook'"><label class="block text-xs font-black mb-1.5">Perfil de Facebook *</label><select :required="ventaEditando.canalVenta === 'Facebook'" class="w-full bg-blue-50 dark:bg-slate-900 border border-blue-300 dark:border-blue-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaEditando.perfilFacebook"><option value="">Seleccionar perfil</option><option value="Rouss Huamani">Rouss Huamani</option><option value="Katy Avril">Katy Avril</option><option value="Simon Sebastian">Simon Sebastian</option><option value="Jennifer Medina">Jennifer Medina</option><option value="Rouss Mery">Rouss Mery</option></select></div>
+<div x-show="ventaEditando.canalVenta === 'Facebook'"><label class="block text-xs font-black mb-1.5">Perfil de Facebook *</label><select :required="ventaEditando.canalVenta === 'Facebook'" class="w-full bg-blue-50 dark:bg-slate-900 border border-blue-300 dark:border-blue-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaEditando.perfilFacebook"><option value="">Seleccionar perfil</option><option value="Rouss Huamani">Rouss Huamani</option><option value="Katy Avril">Katy Avril</option><option value="Simon Sebastian">Simon Sebastian</option><option value="Jennifer Medina">Jennifer Medina</option><option value="Rouse Mery">Rouse Mery</option></select></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 <div><label class="block text-xs font-black mb-1.5">Medio de pago</label><div class="w-full bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-800 rounded-xl px-4 py-3 text-sm font-black text-violet-700 dark:text-violet-300"><i class="fa-solid fa-mobile-screen-button mr-2"></i>Yape</div></div>
@@ -1346,9 +1376,9 @@ body.dark{background:#070d19!important}
 <div class="min-w-0 w-full">
 <div class="text-[8px] uppercase tracking-widest font-black text-slate-400">PetSmart · Inventario</div>
 <div class="text-sm font-black text-slate-900 mt-1 leading-tight break-words" x-text="item.nombre"></div>
-<div class="font-mono text-[12px] font-black tracking-wide text-indigo-700 mt-2 break-all" x-text="normalizarSKUBusqueda(item.sku)"></div>
-<div class="fake-barcode mt-2" aria-label="Código de barras decorativo"><template x-for="(barra,i) in generarBarrasFalsas(item.sku)" :key="'barra-'+item.id+'-'+i"><span :style="`width:${barra.w}px`"></span></template></div>
-<div class="text-[8px] text-slate-400 mt-1">Código de barras ilustrativo · no corresponde a un producto registrado</div>
+<template x-if="item.detalle"><div class="text-[9px] font-semibold text-slate-600 mt-1 leading-tight break-words"><span>Detalle / Diseño: </span><span x-text="item.detalle"></span></div></template>
+<div class="fake-barcode mt-2" aria-label="Código de barras"><template x-for="(barra,i) in generarBarrasFalsas(item.sku)" :key="'barra-'+item.id+'-'+i"><span :style="`width:${barra.w}px`"></span></template></div>
+<div class="font-mono text-[12px] font-black tracking-wide text-indigo-700 mt-1 break-all" x-text="normalizarSKUBusqueda(item.sku)"></div>
 </div>
 </div>
 </template>
@@ -1748,6 +1778,8 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 // =================================================
                 busqueda:
                     '',
+                filtroAño:
+                    'todos',
                 filtroMes:
                     'todos',
                 filtroCategoria:
@@ -1926,6 +1958,30 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 cloudinaryCloudName:
                     'decztjlu9',
                 // =================================================
+                // AÑOS FINANCIEROS
+                // =================================================
+                get listaAniosFinancieros() {
+                    const años = new Set();
+                    (this.productos || []).forEach(item => {
+                        const fechas = [item.fechaVenta, item.fechaIngreso];
+                        fechas.forEach(f => {
+                            const y = String(f || '').slice(0, 4);
+                            if (/^\d{4}$/.test(y)) años.add(y);
+                        });
+                    });
+                    años.add(String(new Date().getFullYear()));
+                    return Array.from(años).sort((a,b) => Number(b) - Number(a));
+                },
+                periodoFinancieroCoincide(fecha) {
+                    const f = String(fecha || '');
+                    if (this.filtroAño !== 'todos' && !f.startsWith(String(this.filtroAño))) return false;
+                    if (this.filtroMes !== 'todos') {
+                        if (!/^\d{4}-\d{2}/.test(f)) return false;
+                        if (!f.startsWith(String(this.filtroAño === 'todos' ? f.slice(0,4) : this.filtroAño) + '-' + String(this.filtroMes).slice(-2))) return false;
+                    }
+                    return true;
+                },
+                // =================================================
                 // MESES
                 // =================================================
                 listaMeses: [
@@ -1994,7 +2050,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 ventaForm: {
                     clienteNombre: '', clienteTelefono: '', distrito: '', canalVenta: 'WhatsApp', perfilFacebook: '', tipoMascota: '',
                     medioPago: 'Yape', precioVenta: 0, fechaVenta: fechaPeruActual(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '',
-                    comision: 0, confLogistico: 0, observacion: '', direccionEntrega: '', latitud: '', longitud: '', valeCodigo: '', generarVale: false
+                    comision: 0, confLogistico: 0, observacion: '', direccionEntrega: '', latitud: '', longitud: '', valeCodigo: '', generarVale: false, sellerPagoStandby: true
                 },
                 productos: [],
                 // =================================================
@@ -3519,7 +3575,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 // GESTIÓN FINANCIERA · DOS POZOS AUTÓNOMOS
                 // =================================================
                 get ventasFinancieras() {
-                    return this.productos.filter(item => item.estado === 'vendido');
+                    return this.productos.filter(item => item.estado === 'vendido' && !(item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'));
                 },
                 get capitalAutomatico() {
                     // Cada venta devuelve al pozo Capital el costo real de la unidad vendida.
@@ -3561,6 +3617,68 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     return [...this.movimientosFinancieros].sort((a,b) => {
                         const fa = String(a.fecha || '').localeCompare(String(b.fecha || ''));
                         if (fa !== 0) return -fa;
+                        return String(b.creadoEn || '').localeCompare(String(a.creadoEn || ''));
+                    });
+                },
+                get ventasFinancierasHistorico() {
+                    return this.productos.filter(item => item.estado === 'vendido');
+                },
+                get movimientosManualesOrdenados() {
+                    return [...this.movimientosFinancieros].sort((a,b) => {
+                        const fa = String(a.fecha || '').localeCompare(String(b.fecha || ''));
+                        if (fa !== 0) return -fa;
+                        return String(b.creadoEn || '').localeCompare(String(a.creadoEn || ''));
+                    });
+                },
+                get historialVentasFinanciero() {
+                    return this.ventasFinancierasHistorico.map(item => {
+                        const pendienteSeller = item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente';
+                        const capital = Number(item.costoUnitario) || 0;
+                        const mancomunado = Number(this.calcularGananciaReal(item)) || 0;
+                        return {
+                            key: `venta-fin-${item.id}`,
+                            fecha: item.fechaVenta || item.fechaIngreso || this.fechaPeru(),
+                            productoId: item.id,
+                            ventaGrupoId: item.ventaGrupoId || '',
+                            comprobanteNumero: item.comprobanteNumero || '',
+                            nombre: item.nombre || 'Producto',
+                            talla: item.talla || 'Única',
+                            detalle: item.detalle || '',
+                            clienteNombre: item.clienteNombre || (item.canalVenta === 'Falabella' ? 'Seller Falabella' : '—'),
+                            canalVenta: item.canalVenta || '',
+                            capital,
+                            mancomunado,
+                            total: capital + mancomunado,
+                            aplicado: !pendienteSeller,
+                            sellerPendiente: pendienteSeller,
+                            automatico: true
+                        };
+                    });
+                },
+                get historialVentasFinancieroOrdenado() {
+                    return [...this.historialVentasFinanciero].sort((a,b) => {
+                        const fa = String(a.fecha || '').localeCompare(String(b.fecha || ''));
+                        if (fa !== 0) return -fa;
+                        return String(b.ventaGrupoId || '').localeCompare(String(a.ventaGrupoId || ''));
+                    });
+                },
+                get historialFinanciero() {
+                    const manuales = this.movimientosFinancieros.map(m => ({...m, origen:'Manual', automatico:false}));
+                    const automaticos = [];
+                    this.ventasFinancierasHistorico.forEach(item => {
+                        const pendienteSeller = item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente';
+                        const estado = pendienteSeller ? 'pendiente' : 'aplicado';
+                        const fecha = item.fechaVenta || item.fechaIngreso || this.fechaPeru();
+                        automaticos.push({ key:`auto-capital-${item.id}`, fecha, creadoEn:item.fechaVenta || '', pozo:'capital', tipo:'ingreso', concepto:`${item.nombre || 'Producto'}${item.talla ? ` talla ${item.talla}` : ''}`, monto:Number(item.costoUnitario)||0, estado, aplicado:!pendienteSeller, automatico:true, productoId:item.id, sellerPendiente:pendienteSeller });
+                        automaticos.push({ key:`auto-mancomunado-${item.id}`, fecha, creadoEn:item.fechaVenta || '', pozo:'mancomunado', tipo:'ingreso', concepto:`${item.nombre || 'Producto'}${item.talla ? ` talla ${item.talla}` : ''}`, monto:Number(this.calcularGananciaReal(item))||0, estado, aplicado:!pendienteSeller, automatico:true, productoId:item.id, sellerPendiente:pendienteSeller });
+                    });
+                    return [...manuales, ...automaticos];
+                },
+                get historialFinancieroOrdenado() {
+                    return [...this.historialFinanciero].sort((a,b) => {
+                        const fa = String(a.fecha || '').localeCompare(String(b.fecha || ''));
+                        if (fa !== 0) return -fa;
+                        if (a.automatico !== b.automatico) return a.automatico ? -1 : 1;
                         return String(b.creadoEn || '').localeCompare(String(a.creadoEn || ''));
                     });
                 },
@@ -4016,7 +4134,21 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                 coincideVenta
                             );
                         }
-                    );
+                    ).sort((a, b) => {
+                            const categoriaA = String(a.categoria || a.tipo || '').trim().toLocaleLowerCase('es');
+                            const categoriaB = String(b.categoria || b.tipo || '').trim().toLocaleLowerCase('es');
+                            const cmpCategoria = categoriaA.localeCompare(categoriaB, 'es', { sensitivity: 'base' });
+                            if (cmpCategoria !== 0) return cmpCategoria;
+                            const rangoTalla = { s:1, m:2, l:3, xl:4 };
+                            const ta = String(a.talla || 'Única').trim().toLowerCase();
+                            const tb = String(b.talla || 'Única').trim().toLowerCase();
+                            const ra = rangoTalla[ta] || 50;
+                            const rb = rangoTalla[tb] || 50;
+                            if (ra !== rb) return ra - rb;
+                            const tallaCmp = ta.localeCompare(tb, 'es', { sensitivity: 'base' });
+                            if (tallaCmp !== 0) return tallaCmp;
+                            return String(a.nombre || '').localeCompare(String(b.nombre || ''), 'es', { sensitivity: 'base' });
+                        })
                 },
                 // =================================================
                 // INVERSION
@@ -4030,16 +4162,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         )
                         .filter(
                             item =>
-                                this.filtroMes ===
-                                'todos'
-                                ||
-                                (
-                                    item.fechaIngreso
-                                    &&
-                                    item.fechaIngreso.startsWith(
-                                        this.filtroMes
-                                    )
-                                )
+this.periodoFinancieroCoincide(item.fechaIngreso)
                         )
                         .reduce(
                             (
@@ -4068,17 +4191,8 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         )
                         .filter(
                             item => {
-                                const coincideMes =
-                                    this.filtroMes ===
-                                    'todos'
-                                    ||
-                                    (
-                                        item.fechaVenta
-                                        &&
-                                        item.fechaVenta.startsWith(
-                                            this.filtroMes
-                                        )
-                                    );
+                                if (item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente') return false;
+const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                                 const coincideCanal =
                                     this.filtroCanalGanancia ===
                                     'todos'
@@ -4109,7 +4223,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 get ventasDelPeriodo() {
                     return this.productos.filter(item =>
                         item.estado === 'vendido' &&
-                        (this.filtroMes === 'todos' || (item.fechaVenta && item.fechaVenta.startsWith(this.filtroMes)))
+                        this.periodoFinancieroCoincide(item.fechaVenta)
                     );
                 },
                 get perfilFacebookMasVendido() {
@@ -4262,12 +4376,42 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     }
                 },
                 // =================================================
+                // MODO DE VENTA
+                // =================================================
+                activarModoVenta(esSeller = false) {
+                    this.ventaForm.modoSeller = !!esSeller;
+                    this.ventaForm.canalVenta = esSeller ? 'Falabella' : 'WhatsApp';
+                    if (esSeller) {
+                        this.ventaForm.clienteTelefono = '';
+                        this.ventaForm.horarioEntrega = '';
+                        this.ventaForm.tipoMascota = '';
+                        this.ventaForm.generarVale = false;
+                        this.ventaForm.usarVale = false;
+                        this.ventaForm.valeCodigo = '';
+                        this.valeValidado = null;
+                    } else {
+                        this.ventaForm.sellerTotalVenta = 0;
+                        this.ventaForm.comision = 0;
+                        this.ventaForm.confLogistico = 0;
+                    }
+                },
+                get sellerTotalVentaCalculado() {
+                    const manual = Number(this.ventaForm?.sellerTotalVenta) || 0;
+                    return manual > 0 ? manual : this.totalVentaSeleccionada;
+                },
+                get netoSellerCalculado() {
+                    return Math.max(0, this.sellerTotalVentaCalculado - (Number(this.ventaForm?.comision) || 0) - (Number(this.ventaForm?.confLogistico) || 0));
+                },
+                get gananciaSellerCalculada() {
+                    return this.netoSellerCalculado - this.costoTotalVentaSeleccionada;
+                },
+                // =================================================
                 // REGISTRAR VENTA MULTI-SKU
                 // =================================================
                 registrarVenta(item = null) {
                     this.productoVenta = item || null;
                     this.ventaItems = [{ sku: '', producto: null, error: '' }];
-                    this.ventaForm = { clienteNombre: '', clienteTelefono: '', distrito: '', direccionEntrega: '', latitud: '', longitud: '', canalVenta: 'WhatsApp', perfilFacebook: '', medioPago: 'Yape', fechaVenta: this.fechaPeru(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '', comision: 0, confLogistico: 0, observacion: '' , valeCodigo: '', generarVale: false, usarVale: false };
+                    this.ventaForm = { clienteNombre: '', clienteTelefono: '', distrito: '', direccionEntrega: '', latitud: '', longitud: '', canalVenta: 'WhatsApp', modoSeller: false, perfilFacebook: '' , tipoMascota: '', medioPago: 'Yape', fechaVenta: this.fechaPeru(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '', comision: 0, confLogistico: 0, sellerTotalVenta: 0, observacion: '' , valeCodigo: '', generarVale: false, usarVale: false, sellerPagoStandby: true }
                     this.valeValidado = null;
                     this.valeReservado = false;
                     this.valeGeneradoUltimaVenta = null;
@@ -4384,11 +4528,10 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 // GANANCIA VENTA MULTI-SKU
                 // =================================================
                 calcularGananciaVenta() {
+                    if (this.ventaForm?.modoSeller || this.ventaForm?.canalVenta === 'Falabella') return this.gananciaSellerCalculada;
                     const subtotal = this.totalVentaSeleccionada;
                     const costo = this.costoTotalVentaSeleccionada;
-                    const comision = this.ventaForm.canalVenta === 'Falabella' ? Number(this.ventaForm.comision) || 0 : 0;
-                    const logistica = this.ventaForm.canalVenta === 'Falabella' ? Number(this.ventaForm.confLogistico) || 0 : 0;
-                    return subtotal - costo - comision - logistica;
+                    return subtotal - costo;
                 },
                 // =================================================
                 // CONFIRMAR VENTA MULTI-SKU
@@ -4397,12 +4540,12 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     this.ventaForm.clienteTelefono = this.limpiarCelular(this.ventaForm.clienteTelefono);
                     if (!this.validarTodasLasLineasVenta()) return;
                     if (!this.ventaForm.clienteNombre.trim()) { Swal.fire('Atención', 'Debes registrar el nombre del cliente.', 'warning'); return; }
-                    if (this.ventaForm.clienteTelefono && this.ventaForm.clienteTelefono.length !== 9) { Swal.fire('Atención', 'El celular debe tener exactamente 9 dígitos.', 'warning'); return; }
-                    if (this.ventaForm.canalVenta === 'Facebook' && !this.ventaForm.perfilFacebook) { Swal.fire('Atención', 'Selecciona el perfil de Facebook que realizó la venta.', 'warning'); return; }
-                    if (!this.ventaForm.tipoMascota) { Swal.fire('Atención', 'Selecciona el tipo de mascota.', 'warning'); return; }
-                    if (this.ventaForm.generarVale && !this.ventaForm.clienteTelefono) { Swal.fire('Vale promocional', 'Para emitir un vale debes registrar el celular del cliente.', 'warning'); return; }
-                    if (this.ventaForm.generarVale && !this.distritoElegibleParaVale(this.ventaForm.distrito)) { Swal.fire('Vale promocional', `El distrito ${this.ventaForm.distrito || 'seleccionado'} no está configurado como distrito promocional. Puedes cambiarlo en Admin → Vales promocionales.`, 'warning'); return; }
-                    if (this.ventaForm.usarVale && !this.valeValidado) { Swal.fire('Vale promocional', 'Activa el uso de vale y valida el código antes de registrar la venta.', 'warning'); return; }
+                    if (!this.ventaForm.modoSeller && this.ventaForm.clienteTelefono && this.ventaForm.clienteTelefono.length !== 9) { Swal.fire('Atención', 'El celular debe tener exactamente 9 dígitos.', 'warning'); return; }
+                    if (!this.ventaForm.modoSeller && this.ventaForm.canalVenta === 'Facebook' && !this.ventaForm.perfilFacebook) { Swal.fire('Atención', 'Selecciona el perfil de Facebook que realizó la venta.', 'warning'); return; }
+                    if (!this.ventaForm.modoSeller && !this.ventaForm.tipoMascota) { Swal.fire('Atención', 'Selecciona el tipo de mascota.', 'warning'); return; }
+                    if (!this.ventaForm.modoSeller && this.ventaForm.generarVale && !this.ventaForm.clienteTelefono) { Swal.fire('Vale promocional', 'Para emitir un vale debes registrar el celular del cliente.', 'warning'); return; }
+                    if (!this.ventaForm.modoSeller && this.ventaForm.generarVale && !this.distritoElegibleParaVale(this.ventaForm.distrito)) { Swal.fire('Vale promocional', `El distrito ${this.ventaForm.distrito || 'seleccionado'} no está configurado como distrito promocional. Puedes cambiarlo en Admin → Vales promocionales.`, 'warning'); return; }
+                    if (!this.ventaForm.modoSeller && this.ventaForm.usarVale && !this.valeValidado) { Swal.fire('Vale promocional', 'Activa el uso de vale y valida el código antes de registrar la venta.', 'warning'); return; }
                     if (this.ventaForm.tipoComprobante === 'Boleta' && !this.ventaForm.numeroDocumento) { Swal.fire('Atención', 'Ingresa el número del documento para la boleta.', 'warning'); return; }
                     if (this.ventaForm.tipoComprobante === 'Boleta' && !this.documentoValido(this.ventaForm.tipoDocumento, this.ventaForm.numeroDocumento)) { Swal.fire('Documento incompleto', `El ${this.ventaForm.tipoDocumento || 'documento'} debe tener exactamente ${this.maxDigitosDocumento(this.ventaForm.tipoDocumento)} dígitos.`, 'warning'); return; }
                     if (this.ventaForm.tipoComprobante === 'Factura' && (!this.ventaForm.ruc || !String(this.ventaForm.razonSocial || '').trim())) { Swal.fire('Atención', 'Ingresa el RUC y la Razón Social para la factura.', 'warning'); return; }
@@ -4430,10 +4573,16 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                             seleccionados.push(producto);
                         }
 
-                        const canalVenta = this.ventaForm.canalVenta;
+                        const canalVenta = this.ventaForm.modoSeller ? 'Falabella' : this.ventaForm.canalVenta;
+                        if (canalVenta === 'Falabella' && (Number(this.ventaForm.sellerTotalVenta) || 0) <= 0) throw new Error('Ingresa el total real cobrado por Seller Falabella.');
                         const comisionTotal = canalVenta === 'Falabella' ? Number(this.ventaForm.comision) || 0 : 0;
                         const logisticaTotal = canalVenta === 'Falabella' ? Number(this.ventaForm.confLogistico) || 0 : 0;
+                    const sellerPagoEstado = canalVenta === 'Falabella' && this.ventaForm.sellerPagoStandby !== false ? 'pendiente' : 'aplicado';
                         const totalPrecios = seleccionados.reduce((sum, p) => sum + (Number(p.precioVenta) || 0), 0) || 1;
+                        const totalSeller = canalVenta === 'Falabella' ? (Number(this.ventaForm.sellerTotalVenta) || 0) : totalPrecios;
+                        let precioSellerAsignado = 0;
+                        let comisionAsignada = 0;
+                        let logisticaAsignada = 0;
                         const perfilFacebook = canalVenta === 'Facebook' ? (this.ventaForm.perfilFacebook || '') : '';
                         const tipoMascota = this.ventaForm.tipoMascota || '';
                         const fechaVenta = this.ventaForm.fechaVenta || this.fechaPeru();
@@ -4456,11 +4605,20 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         const updatesProductos = {};
                         const registrosVentas = [];
 
-                        seleccionados.forEach((item) => {
-                            const precio = Number(item.precioVenta) || 0;
-                            const proporcion = precio / totalPrecios;
-                            const comision = Number((comisionTotal * proporcion).toFixed(2));
-                            const confLogistico = Number((logisticaTotal * proporcion).toFixed(2));
+                        seleccionados.forEach((item, index) => {
+                            const precioBase = Number(item.precioVenta) || 0;
+                            const proporcion = precioBase / totalPrecios;
+                            let precio = canalVenta === 'Falabella' ? Number((totalSeller * proporcion).toFixed(2)) : precioBase;
+                            let comision = canalVenta === 'Falabella' ? Number((comisionTotal * proporcion).toFixed(2)) : 0;
+                            let confLogistico = canalVenta === 'Falabella' ? Number((logisticaTotal * proporcion).toFixed(2)) : 0;
+                            if (index === seleccionados.length - 1 && canalVenta === 'Falabella') {
+                                precio = Number((totalSeller - precioSellerAsignado).toFixed(2));
+                                comision = Number((comisionTotal - comisionAsignada).toFixed(2));
+                                confLogistico = Number((logisticaTotal - logisticaAsignada).toFixed(2));
+                            }
+                            precioSellerAsignado += precio;
+                            comisionAsignada += comision;
+                            logisticaAsignada += confLogistico;
                             const datosVenta = {
                                 estado: 'vendido',
                                 fechaVenta,
@@ -4479,6 +4637,10 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                 precioVenta: precio,
                                 comision,
                                 confLogistico,
+                                sellerTotalVenta: canalVenta === 'Falabella' ? totalSeller : 0,
+                                sellerNetoRecibido: canalVenta === 'Falabella' ? Number((totalSeller - comisionTotal - logisticaTotal).toFixed(2)) : 0,
+                                sellerComisionTotal: canalVenta === 'Falabella' ? comisionTotal : 0,
+                                sellerLogisticaTotal: canalVenta === 'Falabella' ? logisticaTotal : 0,
                                 observacion: String(this.ventaForm.observacion || '').trim(),
                                 tipoComprobante,
                                 tipoDocumento,
@@ -4486,7 +4648,8 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                 ruc,
                                 razonSocial,
                                 comprobanteNumero,
-                                ventaGrupoId
+                                ventaGrupoId,
+                                sellerPagoEstado
                             };
 
                             // MUY IMPORTANTE: conservamos nombre, SKU, costo, categoria, talla,
@@ -4513,7 +4676,9 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                     distrito,
                                     direccionEntrega: String(this.ventaForm.direccionEntrega || '').trim(),
                                     montoTotal: precio,
-                                    totalVenta: this.totalVentaSeleccionada,
+                                    totalVenta: canalVenta === 'Falabella' ? totalSeller : this.totalVentaSeleccionada,
+                                    sellerTotalVenta: canalVenta === 'Falabella' ? totalSeller : 0,
+                                    sellerNetoRecibido: canalVenta === 'Falabella' ? Number((totalSeller - comisionTotal - logisticaTotal).toFixed(2)) : 0,
                                     cantidadProductos: seleccionados.length,
                                     fechaEntrega: String(this.ventaForm.fechaEntrega || ''),
                                     horarioEntrega: String(this.ventaForm.horarioEntrega || '').trim(),
@@ -4525,6 +4690,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                     razonSocial,
                                     comprobanteNumero,
                                     ventaGrupoId,
+                                    sellerPagoEstado,
                                     seguimientoEstado: 'Solicitud Recibida',
                                     estadoEnvio: 'Solicitud Recibida',
                                     seguimientoToken: ''
@@ -4586,6 +4752,23 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 },
 
                 // =================================================
+                // ACTIVAR PAGO SELLER
+                // =================================================
+                async activarPagoSeller(item) {
+                    if (!item || item.canalVenta !== 'Falabella' || item.sellerPagoEstado === 'aplicado') return;
+                    const grupo = String(item.ventaGrupoId || '').trim();
+                    const relacionadas = grupo ? this.productos.filter(p => p.estado === 'vendido' && String(p.ventaGrupoId || '') === grupo) : [item];
+                    const result = await Swal.fire({ title:'¿Confirmar pago Seller?', html:'<div class="text-sm text-left">La venta <b>Seller Falabella</b> pasará de <b>Stand by</b> a <b>Pagado</b> y su costo/ganancia comenzará a participar en los pozos.</div>', icon:'question', showCancelButton:true, confirmButtonColor:'#16a34a', cancelButtonText:'Cancelar', confirmButtonText:'Sí, activar pago' });
+                    if (!result.isConfirmed) return;
+                    try {
+                        const now = new Date().toISOString();
+                        const updates = {};
+                        relacionadas.forEach(p => { updates[`productos/${p.id}/sellerPagoEstado`] = 'aplicado'; updates[`productos/${p.id}/sellerPagoAplicadoEn`] = now; updates[`ventas/${p.id}/sellerPagoEstado`] = 'aplicado'; updates[`ventas/${p.id}/sellerPagoAplicadoEn`] = now; });
+                        await window.fb.update(window.fb.ref(window.db), updates);
+                        this.notificarToast('success','Pago Seller activado. La venta ya participa en los pozos.');
+                    } catch (error) { console.error('ERROR ACTIVANDO PAGO SELLER:', error); Swal.fire('Error', error?.message || 'No se pudo activar el pago Seller.','error'); }
+                },
+                // =================================================
                 // VER VENTA
                 // =================================================
                 async editarVenta(item) {
@@ -4609,6 +4792,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     this.ventaEditando.observacion = this.ventaEditando.observacion || '';
                     this.ventaEditando.comision = Number(this.ventaEditando.comision || 0);
                     this.ventaEditando.confLogistico = Number(this.ventaEditando.confLogistico || 0);
+                    this.ventaEditando.sellerPagoEstado = this.ventaEditando.sellerPagoEstado || (this.ventaEditando.canalVenta === 'Falabella' ? 'aplicado' : '');
                     this.ventaEditando.precioVenta = Number(this.ventaEditando.precioVenta || 0);
                     this.modalEditarVenta = true;
                 },
@@ -4628,7 +4812,8 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         const comision = venta.canalVenta === 'Falabella' ? Number(venta.comision) || 0 : 0;
                         const confLogistico = venta.canalVenta === 'Falabella' ? Number(venta.confLogistico) || 0 : 0;
                         const perfilFacebook = venta.canalVenta === 'Facebook' ? String(venta.perfilFacebook || '') : '';
-                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.tipoMascota || '', medioPago: 'Yape', precioVenta: precio, comision, confLogistico, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '' };
+                        const sellerPagoEstado = venta.canalVenta === 'Falabella' ? (venta.sellerPagoEstado === 'pendiente' ? 'pendiente' : 'aplicado') : '';
+                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.tipoMascota || '', medioPago: 'Yape', precioVenta: precio, comision, confLogistico, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', sellerPagoEstado };
                         await window.fb.update(window.fb.ref(window.db, `productos/${venta.id}`), datos);
                         await this.guardarRegistroVentaAdicional(venta, datos);
                         Swal.close();
@@ -5289,6 +5474,10 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 </span>
 </div>
 <div class="flex flex-wrap gap-2">
+<select class="bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-xs font-bold" x-model="filtroAño">
+<option value="todos">Todos los años</option>
+<template :key="'anio-fin-'+a" x-for="a in listaAniosFinancieros"><option :value="a" x-text="a"></option></template>
+</select>
 <select class="bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-xs font-bold" x-model="filtroMes">
 <option value="todos">
                         Todos los meses
@@ -5528,6 +5717,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
 <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs">
 </i>
 </div>
+<button @click="busqueda='';filtroCategoria='todas';filtroTalla='todas';filtroEstadoStock='todos';filtroCanal='todos';filtroVenta='todos'" type="button" class="px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 hover:bg-rose-500 hover:text-white text-xs font-black whitespace-nowrap"><i class="fa-solid fa-eraser mr-1"></i>Limpiar filtros</button>
 </div>
 </div>
 <div class="overflow-x-auto">
@@ -5547,7 +5737,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                 Estado
                             </th>
 <th class="py-3 px-4">
-                                Ingreso
+                                Fecha de ingreso
                             </th>
 <th class="py-3 px-4">
                                 Venta
@@ -5564,7 +5754,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
 <th class="py-3 px-4">
                                 Ganancia
                             </th>
-<th class="py-3 px-4 text-center">
+<th class="py-3 px-4 text-center inventory-action-cell">
                                 Acción
                             </th>
 </tr>
@@ -5656,15 +5846,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                             )
                                         ">
 </div>
-<div class="text-[10px] text-slate-400 mt-1">
-<span x-text="
-                                                diasInventario(
-                                                    item
-                                                )
-                                            ">
-</span>
-                                        días
-                                    </div>
+
 </td>
 <!-- VENTA -->
 <td class="py-3 px-4">
@@ -5684,6 +5866,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                                                     'Sin canal'
                                                 ">
 </div>
+<template x-if="item.canalVenta === 'Facebook' && item.perfilFacebook"><div class="text-[10px] font-black text-blue-600 dark:text-blue-400 mt-0.5" x-text="item.perfilFacebook"></div></template>
 </div>
 </template>
 <template x-if="
@@ -5788,7 +5971,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
 </template>
 </td>
 <!-- ACCIONES -->
-<td class="py-3 px-4 text-center">
+<td class="py-3 px-4 text-center inventory-action-cell">
 <div class="flex items-center justify-center gap-1.5">
 <template x-if="
                                                 item.estado !==
@@ -5902,7 +6085,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
 <td class="py-4 px-4 text-sm font-bold" x-text="item.clienteNombre || 'Sin registrar'"></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="obtenerDniItem(item) || '—'"></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="item.clienteTelefono || '—'"></td>
-<td class="py-4 px-4 text-sm font-bold"><div x-text="item.canalVenta || '—'"></div><div x-show="item.canalVenta === 'Facebook' && item.perfilFacebook" class="text-[10px] text-blue-600 dark:text-blue-400 mt-1" x-text="item.perfilFacebook"></div></td>
+<td class="py-4 px-4 text-sm font-bold"><div x-text="item.canalVenta || '—'"></div><div x-show="item.canalVenta === 'Facebook' && item.perfilFacebook" class="text-[10px] text-blue-600 dark:text-blue-400 mt-1" x-text="item.perfilFacebook"></div><span x-show="item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'" class="inline-flex mt-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-[9px] font-black">Seller · Stand by</span><button x-show="item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'" @click="activarPagoSeller(item)" type="button" class="mt-2 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black"><i class="fa-solid fa-check"></i> Activar pago</button></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="item.tipoMascota || '—'"></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="item.distrito || '—'"></td>
 <td class="py-4 px-4 text-right text-sm font-black text-emerald-600 dark:text-emerald-400">S/ <span x-text="formatMonto(item.precioVenta)"></span></td>
@@ -6038,15 +6221,15 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
     </div>
 
     <div class="px-5 pb-5 grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-700"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-black">Ventas registradas</div><div class="text-2xl font-black mt-1"><span x-text="ventasFinancieras.length"></span></div></div>
+      <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-700"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-black">Ventas registradas</div><div class="text-2xl font-black mt-1"><span x-text="ventasFinancierasHistorico.length"></span></div></div>
       <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-700"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-black">Capital histórico</div><div class="text-2xl font-black mt-1 text-amber-600">S/ <span x-text="formatMonto(totalCapitalHistorico)"></span></div></div>
       <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-700"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-black">Ganancia histórica</div><div class="text-2xl font-black mt-1 text-emerald-600">S/ <span x-text="formatMonto(totalGananciaHistorica)"></span></div></div>
       <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-700"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-black">Movimientos manuales</div><div class="text-2xl font-black mt-1"><span x-text="movimientosFinancieros.length"></span></div></div>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 xl:grid-cols-[420px_minmax(0,1fr)] gap-5">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl p-5">
+  <div class="grid grid-cols-1 xl:grid-cols-[320px_minmax(0,1fr)] gap-4 items-start">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl p-5 self-start h-fit">
       <div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-plus-minus"></i></div><div><h3 class="font-black text-lg">Registrar movimiento</h3><p class="text-[11px] text-slate-400">Compras, pagos, aportes, retiros y otros.</p></div></div>
       <div class="space-y-3">
         <div class="grid grid-cols-2 gap-3">
@@ -6066,29 +6249,55 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
       </div>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden">
-      <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><h3 class="font-black text-lg">Historial de movimientos manuales</h3><p class="text-[11px] text-slate-400">Las ventas automáticas se reflejan arriba y no se duplican aquí.</p></div><span class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-xs font-black"><span x-text="movimientosFinancieros.length"></span> movimientos</span></div>
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-[820px] text-left">
-          <thead class="bg-slate-50 dark:bg-slate-900/70"><tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-black"><th class="py-3 px-4">Fecha</th><th class="py-3 px-4">Pozo</th><th class="py-3 px-4">Tipo</th><th class="py-3 px-4">Concepto</th><th class="py-3 px-4 text-right">Monto</th><th class="py-3 px-4 text-center">Estado</th><th class="py-3 px-4 text-center">Acción</th></tr></thead>
-          <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-            <template x-for="mov in movimientosFinancierosOrdenados" :key="mov.key">
-              <tr class="fin-movement-row">
-                <td class="py-3 px-4 text-sm font-bold whitespace-nowrap" x-text="formatearFecha(mov.fecha)"></td>
-                <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-black" :class="mov.pozo === 'capital' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300' : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'" x-text="mov.pozo === 'capital' ? 'Capital' : 'Mancomunado'"></span></td>
-                <td class="py-3 px-4"><span class="font-black text-xs" :class="mov.tipo === 'salida' ? 'text-rose-600' : 'text-emerald-600'" x-text="mov.tipo === 'salida' ? 'Salida' : 'Ingreso'"></span></td>
-                <td class="py-3 px-4"><div class="font-bold text-sm" x-text="mov.concepto || '—'"></div><div class="text-[10px] text-slate-400 mt-1" x-text="mov.observacion || ''"></div></td>
-                <td class="py-3 px-4 text-right font-black" :class="mov.tipo === 'salida' ? 'text-rose-600' : 'text-emerald-600'">S/ <span x-text="formatMonto(mov.monto)"></span></td>
-                <td class="py-3 px-4 text-center"><button @click="cambiarEstadoMovimientoFinanciero(mov)" class="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full text-[10px] font-black transition" :class="(mov.aplicado === true || mov.estado === 'aplicado') ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'bg-amber-500/10 text-amber-700 dark:text-amber-300'" :title="(mov.aplicado === true || mov.estado === 'aplicado') ? 'Cambiar a pendiente' : 'Aplicar al pozo'"><i :class="(mov.aplicado === true || mov.estado === 'aplicado') ? 'fa-solid fa-circle-check' : 'fa-solid fa-clock'"></i><span x-text="(mov.aplicado === true || mov.estado === 'aplicado') ? 'Aplicado' : 'Pendiente'"></span></button></td>
-                <td class="py-3 px-4 text-center"><button @click="eliminarMovimientoFinanciero(mov)" class="p-2 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500 hover:text-white" title="Eliminar movimiento"><i class="fa-solid fa-trash"></i></button></td>
-              </tr>
-            </template>
-            <tr x-show="movimientosFinancieros.length === 0"><td colspan="8" class="py-12 text-center text-slate-400">Todavía no hay movimientos manuales.</td></tr>
-          </tbody>
-        </table>
+    <div class="space-y-5 self-start">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden min-h-[620px]">
+        <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><h3 class="font-black text-lg">Historial de ventas por pozo</h3><p class="text-[11px] text-slate-400">Cada producto vendido muestra cuánto corresponde a Capital y cuánto a Mancomunado.</p></div><span class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-xs font-black"><span x-text="historialVentasFinancieroOrdenado.length"></span> ventas</span></div>
+        <div class="overflow-x-auto max-h-[640px]">
+          <table class="w-full min-w-[940px] text-left">
+            <thead class="bg-slate-50 dark:bg-slate-900/70"><tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-black"><th class="py-3 px-4">Fecha</th><th class="py-3 px-4">Venta</th><th class="py-3 px-4">Producto</th><th class="py-3 px-4">Talla</th><th class="py-3 px-4">Cliente</th><th class="py-3 px-4 text-right">Capital</th><th class="py-3 px-4 text-right">Mancomunado</th><th class="py-3 px-4 text-right">Total</th><th class="py-3 px-4 text-center">Estado</th><th class="py-3 px-4 text-center">Acción</th></tr></thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+              <template x-for="mov in historialVentasFinancieroOrdenado" :key="mov.key">
+                <tr class="fin-movement-row align-top">
+                  <td class="py-3 px-4 text-sm font-bold whitespace-nowrap" x-text="formatearFecha(mov.fecha)"></td>
+                  <td class="py-3 px-4"><div class="font-mono text-[10px] font-black text-slate-500" x-text="mov.ventaGrupoId ? mov.ventaGrupoId.slice(-8).toUpperCase() : '—'"></div><div x-show="mov.comprobanteNumero" class="text-[9px] text-slate-400 mt-1" x-text="mov.comprobanteNumero"></div></td>
+                  <td class="py-3 px-4"><div class="font-black text-sm" x-text="mov.nombre"></div><div x-show="mov.detalle" class="text-[10px] text-slate-400 mt-1" x-text="mov.detalle"></div></td>
+                  <td class="py-3 px-4"><span class="inline-flex px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 text-[10px] font-black" x-text="mov.talla || 'Única'"></span></td>
+                  <td class="py-3 px-4"><div class="font-bold text-sm" x-text="mov.clienteNombre"></div><div x-show="mov.canalVenta" class="text-[10px] text-slate-400 mt-1" x-text="mov.canalVenta === 'Falabella' ? 'Seller Falabella' : mov.canalVenta"></div></td>
+                  <td class="py-3 px-4 text-right font-black text-amber-600">S/ <span x-text="formatMonto(mov.capital)"></span></td>
+                  <td class="py-3 px-4 text-right font-black text-emerald-600">S/ <span x-text="formatMonto(mov.mancomunado)"></span></td>
+                  <td class="py-3 px-4 text-right font-black text-slate-800 dark:text-white">S/ <span x-text="formatMonto(mov.total)"></span></td>
+                  <td class="py-3 px-4 text-center"><span class="inline-flex px-2.5 py-1.5 rounded-full text-[10px] font-black" :class="mov.aplicado ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'bg-amber-500/10 text-amber-700 dark:text-amber-300'" x-text="mov.aplicado ? 'Aplicado' : 'Stand by'"></span><div x-show="mov.sellerPendiente" class="text-[9px] text-amber-600 mt-1 font-bold">Pago Seller pendiente</div></td>
+                  <td class="py-3 px-4 text-center"><button x-show="mov.sellerPendiente" @click="activarPagoSeller(productos.find(p => p.id === mov.productoId))" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black"><i class="fa-solid fa-check"></i> Activar</button><span x-show="!mov.sellerPendiente" class="text-[10px] text-slate-400">—</span></td>
+                </tr>
+              </template>
+              <tr x-show="historialVentasFinancieroOrdenado.length === 0"><td colspan="10" class="py-12 text-center text-slate-400">Todavía no hay ventas registradas en Finanzas.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden">
+        <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between gap-3"><div><h3 class="font-black text-lg">Movimientos manuales</h3><p class="text-[11px] text-slate-400">Ingresos y salidas que registras manualmente. Se mantienen independientes de las ventas.</p></div><span class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-xs font-black"><span x-text="movimientosManualesOrdenados.length"></span> movimientos</span></div>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[820px] text-left">
+            <thead class="bg-slate-50 dark:bg-slate-900/70"><tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-black"><th class="py-3 px-4">Fecha</th><th class="py-3 px-4">Pozo</th><th class="py-3 px-4">Tipo</th><th class="py-3 px-4">Concepto</th><th class="py-3 px-4 text-right">Monto</th><th class="py-3 px-4 text-center">Estado</th><th class="py-3 px-4 text-center">Acción</th></tr></thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+              <template x-for="mov in movimientosManualesOrdenados" :key="mov.key">
+                <tr class="fin-movement-row">
+                  <td class="py-3 px-4 text-sm font-bold whitespace-nowrap" x-text="formatearFecha(mov.fecha)"></td>
+                  <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-black" :class="mov.pozo === 'capital' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300' : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'" x-text="mov.pozo === 'capital' ? 'Capital' : 'Mancomunado'"></span></td>
+                  <td class="py-3 px-4"><span class="font-black text-xs" :class="mov.tipo === 'salida' ? 'text-rose-600' : 'text-emerald-600'" x-text="mov.tipo === 'salida' ? 'Salida' : 'Ingreso'"></span></td>
+                  <td class="py-3 px-4"><div class="font-bold text-sm" x-text="mov.concepto || '—'"></div><div x-show="mov.observacion" class="text-[10px] text-slate-400 mt-1" x-text="mov.observacion"></div></td>
+                  <td class="py-3 px-4 text-right font-black" :class="mov.tipo === 'salida' ? 'text-rose-600' : 'text-emerald-600'">S/ <span x-text="formatMonto(mov.monto)"></span></td>
+                  <td class="py-3 px-4 text-center"><button @click="cambiarEstadoMovimientoFinanciero(mov)" class="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full text-[10px] font-black transition" :class="(mov.aplicado === true || mov.estado === 'aplicado') ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'bg-amber-500/10 text-amber-700 dark:text-amber-300'"><i :class="(mov.aplicado === true || mov.estado === 'aplicado') ? 'fa-solid fa-circle-check' : 'fa-solid fa-clock'"></i><span x-text="(mov.aplicado === true || mov.estado === 'aplicado') ? 'Aplicado' : 'Pendiente'"></span></button></td>
+                  <td class="py-3 px-4 text-center"><button @click="eliminarMovimientoFinanciero(mov)" class="p-2 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500 hover:text-white" title="Eliminar movimiento"><i class="fa-solid fa-trash"></i></button></td>
+                </tr>
+              </template>
+              <tr x-show="movimientosManualesOrdenados.length === 0"><td colspan="7" class="py-12 text-center text-slate-400">Todavía no hay movimientos manuales.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 
   <div class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 text-xs text-blue-800 dark:text-blue-200">
     <div class="font-black mb-1"><i class="fa-solid fa-calculator mr-1"></i> Cómo se alimentan los pozos</div>
@@ -6097,7 +6306,8 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
     <div>• Las compras de mercadería y otros pagos se registran como <b>salidas manuales</b> del pozo que tú elijas. No cambian el inventario ni modifican las ventas.</div>
   </div>
 </div>
-</div><div x-show="activeTab === 'vales'" x-transition class="inventory-section"><div class="rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-900/50 bg-white dark:bg-slate-900 shadow-xl"><div class="p-6 md:p-7 bg-gradient-to-br from-blue-800 to-blue-600 text-white relative overflow-hidden"><div class="absolute -right-8 -top-8 text-[130px] opacity-10">🐾</div><div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5"><div><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-black uppercase tracking-widest"><i class="fa-solid fa-ticket"></i> Centro de vales</div><h2 class="text-3xl font-black mt-3">Vales promocionales</h2><p class="text-sm text-blue-100 mt-1 max-w-2xl">Administra aquí todos los vales emitidos. Admin ya no contiene el historial de vales.</p></div><div class="flex flex-wrap gap-2"><button @click="cargarValesPromocionales()" class="px-4 py-3 rounded-xl bg-white/15 font-black text-xs"><i class="fa-solid fa-rotate"></i> Actualizar</button><button @click="exportarValesCSV()" class="px-4 py-3 rounded-xl bg-white text-blue-800 font-black text-xs"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button></div></div></div><div class="p-5 md:p-7"><div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6"><div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800"><div class="text-[10px] uppercase font-black text-slate-400">Total</div><div class="text-2xl font-black" x-text="valesPromocionalesData.length"></div></div><div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20"><div class="text-[10px] uppercase font-black text-emerald-600">Disponibles</div><div class="text-2xl font-black text-emerald-600" x-text="contarValesEstado('Disponible')"></div></div><div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/20"><div class="text-[10px] uppercase font-black text-blue-600">Usados</div><div class="text-2xl font-black text-blue-600" x-text="contarValesEstado('Usado')"></div></div><div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/20"><div class="text-[10px] uppercase font-black text-rose-600">Vencidos</div><div class="text-2xl font-black text-rose-600" x-text="contarValesEstado('Vencido')"></div></div><div class="p-4 rounded-2xl bg-violet-50 dark:bg-violet-950/20"><div class="text-[10px] uppercase font-black text-violet-600">Encontrados</div><div class="text-2xl font-black text-violet-600" x-text="valesFiltrados().length"></div></div></div><div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 mb-6"><div class="flex items-center gap-2 mb-4 font-black"><i class="fa-solid fa-magnifying-glass text-orange-500"></i> Buscador profesional</div><div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3"><div class="relative xl:col-span-2"><i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="filtroValesTexto" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm" placeholder="Buscar por código, DNI, cliente, teléfono o distrito..."></div><div class="relative"><i class="fa-solid fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="filtroValesDni" @input="filtroValesDni=normalizarDniVale(filtroValesDni)" inputmode="numeric" maxlength="12" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm" placeholder="Filtrar por DNI..."></div><select x-model="filtroValesEstado" class="px-3 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm"><option value="todos">Todos los estados</option><option value="disponible">Disponibles</option><option value="usado">Usados</option><option value="vencido">Vencidos</option><option value="reservado">Reservados</option></select><select x-model="filtroValesDistrito" class="px-3 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm"><option value="todos">Todos los distritos</option><template x-for="d in distritosValesDisponibles()" :key="d"><option :value="d" x-text="d"></option></template></select></div><div class="flex flex-wrap gap-2 mt-3"><select x-model="filtroValesFecha" class="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs font-bold"><option value="todos">Cualquier vencimiento</option><option value="7">Vencen en 7 días</option><option value="30">Vencen en 30 días</option><option value="vencidos">Ya vencidos</option></select><button @click="filtroValesTexto='';filtroValesDni='';filtroValesEstado='todos';filtroValesDistrito='todos';filtroValesFecha='todos'" class="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs font-black"><i class="fa-solid fa-eraser"></i> Limpiar filtros</button></div></div><div class="mb-6 p-5 rounded-2xl border border-violet-200 dark:border-violet-900/60 bg-violet-50/70 dark:bg-violet-950/20"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-link"></i></div><div class="min-w-0"><div class="font-black text-sm">Vincular un vale existente a una venta</div><div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Si eliminaste por error el registro de un vale, puedes volver a crearlo usando exactamente el mismo código y asociarlo al pedido original.</div></div></div><div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_auto] gap-3 mt-4 items-end"><div><label class="block text-[10px] uppercase tracking-wider font-black mb-1">Código original</label><input x-model="valeReponerCodigo" @input="valeReponerCodigo=normalizarCodigoVale(valeReponerCodigo)" maxlength="20" placeholder="PS-26-XXXXXXX" class="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-violet-200 dark:border-violet-800 font-mono font-black uppercase"></div><div><label class="block text-[10px] uppercase tracking-wider font-black mb-1">Venta / pedido</label><select x-model="valeReponerVentaGrupoId" class="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-violet-200 dark:border-violet-800 font-bold"><option value="">Selecciona la venta</option><template x-for="v in ventasRegistradas.filter(x => x.ventaGrupoId && x.clienteNombre).filter((v,i,a)=>a.findIndex(z=>String(z.ventaGrupoId)===String(v.ventaGrupoId))===i)" :key="'vale-link-'+v.ventaGrupoId"><option :value="v.ventaGrupoId" x-text="'#'+(v.comprobanteNumero||'—')+' · '+(v.clienteNombre||'Cliente')+' · '+(v.distrito||'')"></option></template></select></div><button @click="vincularValeExistente()" type="button" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-black text-xs"><i class="fa-solid fa-link mr-1"></i>Vincular vale</button></div></div><div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700"><table class="w-full text-left text-xs"><thead class="bg-slate-900 text-white"><tr><th class="px-4 py-4">Vale</th><th class="px-4 py-4">Cliente</th><th class="px-4 py-4">DNI</th><th class="px-4 py-4">Contacto</th><th class="px-4 py-4">Distrito</th><th class="px-4 py-4">Vence</th><th class="px-4 py-4">Estado</th><th class="px-4 py-4 text-right">Acciones</th></tr></thead><tbody><template x-for="vale in valesFiltrados()" :key="vale.codigo"><tr class="border-t border-slate-100 dark:border-slate-800"><td class="px-4 py-4"><div class="font-mono font-black text-yellow-600" x-text="vale.codigo"></div><div class="text-[9px] text-slate-400" x-text="vale.creadoEn ? new Date(vale.creadoEn).toLocaleString('es-PE') : '—'"></div></td><td class="px-4 py-4 font-black" x-text="vale.clienteNombre || '—'"></td><td class="px-4 py-4 font-mono font-bold" x-text="vale.numeroDocumento || vale.dni || '—'"></td><td class="px-4 py-4 font-bold" x-text="vale.clienteTelefono || '—'"></td><td class="px-4 py-4" x-text="vale.distrito || '—'"></td><td class="px-4 py-4 font-bold" x-text="vale.fechaVencimiento || '—'"></td><td class="px-4 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-black" :class="estadoValeVisual(vale)==='Disponible'?'bg-emerald-100 text-emerald-700':estadoValeVisual(vale)==='Usado'?'bg-blue-100 text-blue-700':estadoValeVisual(vale)==='Reservado'?'bg-violet-100 text-violet-700':'bg-rose-100 text-rose-700'" x-text="estadoValeVisual(vale)"></span></td><td class="px-4 py-4"><div class="flex justify-end gap-2"><button @click="copiarCodigoValeDesdeRegistro(vale.codigo)" class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-700" title="Copiar código"><i class="fa-solid fa-copy"></i></button><button @click="verValeDesdeRegistro(vale)" class="w-9 h-9 rounded-lg bg-blue-700 text-white" title="Ver y descargar vale"><i class="fa-solid fa-image"></i></button><button @click="imprimirValeDesdeRegistro(vale)" class="w-9 h-9 rounded-lg bg-orange-500 text-white" title="Imprimir vale"><i class="fa-solid fa-print"></i></button><button @click="eliminarValePromocional(vale.codigo)" class="w-9 h-9 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-500 hover:text-white" title="Eliminar vale"><i class="fa-solid fa-trash"></i></button></div></td></tr></template><tr x-show="!valesFiltrados().length"><td colspan="7" class="px-6 py-14 text-center"><div class="text-4xl">🐾</div><div class="font-black text-lg mt-2">No encontramos vales</div></td></tr></tbody></table></div><div class="mt-6 p-4 rounded-2xl border border-orange-200 bg-orange-50 dark:bg-orange-950/20 text-xs"><b>Almacenamiento:</b> los vales se guardan en <code>valesPromocionales</code> de Firebase y se gestionan desde esta pestaña, no desde Admin.</div></div></div></div>
+</div>
+</div><div x-show="activeTab === 'vales'" x-transition x-init="setTimeout(() => cargarValesPromocionales(), 0)" class="inventory-section"><div class="rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-900/50 bg-white dark:bg-slate-900 shadow-xl"><div class="p-6 md:p-7 bg-gradient-to-br from-blue-800 to-blue-600 text-white relative overflow-hidden"><div class="absolute -right-8 -top-8 text-[130px] opacity-10">🐾</div><div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5"><div><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-black uppercase tracking-widest"><i class="fa-solid fa-ticket"></i> Centro de vales</div><h2 class="text-3xl font-black mt-3">Vales promocionales</h2><p class="text-sm text-blue-100 mt-1 max-w-2xl">Administra aquí todos los vales emitidos. Admin ya no contiene el historial de vales.</p></div><div class="flex flex-wrap gap-2"><button @click="cargarValesPromocionales()" class="px-4 py-3 rounded-xl bg-white/15 font-black text-xs"><i class="fa-solid fa-rotate"></i> Actualizar</button><button @click="exportarValesCSV()" class="px-4 py-3 rounded-xl bg-white text-blue-800 font-black text-xs"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button></div></div></div><div class="p-5 md:p-7"><div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6"><div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800"><div class="text-[10px] uppercase font-black text-slate-400">Total</div><div class="text-2xl font-black" x-text="valesPromocionalesData.length"></div></div><div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20"><div class="text-[10px] uppercase font-black text-emerald-600">Disponibles</div><div class="text-2xl font-black text-emerald-600" x-text="contarValesEstado('Disponible')"></div></div><div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/20"><div class="text-[10px] uppercase font-black text-blue-600">Usados</div><div class="text-2xl font-black text-blue-600" x-text="contarValesEstado('Usado')"></div></div><div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/20"><div class="text-[10px] uppercase font-black text-rose-600">Vencidos</div><div class="text-2xl font-black text-rose-600" x-text="contarValesEstado('Vencido')"></div></div><div class="p-4 rounded-2xl bg-violet-50 dark:bg-violet-950/20"><div class="text-[10px] uppercase font-black text-violet-600">Encontrados</div><div class="text-2xl font-black text-violet-600" x-text="valesFiltrados().length"></div></div></div><div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 mb-6"><div class="flex items-center gap-2 mb-4 font-black"><i class="fa-solid fa-magnifying-glass text-orange-500"></i> Buscador profesional</div><div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3"><div class="relative xl:col-span-2"><i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="filtroValesTexto" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm" placeholder="Buscar por código, DNI, cliente, teléfono o distrito..."></div><div class="relative"><i class="fa-solid fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="filtroValesDni" @input="filtroValesDni=normalizarDniVale(filtroValesDni)" inputmode="numeric" maxlength="12" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm" placeholder="Filtrar por DNI..."></div><select x-model="filtroValesEstado" class="px-3 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm"><option value="todos">Todos los estados</option><option value="disponible">Disponibles</option><option value="usado">Usados</option><option value="vencido">Vencidos</option><option value="reservado">Reservados</option></select><select x-model="filtroValesDistrito" class="px-3 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm"><option value="todos">Todos los distritos</option><template x-for="d in distritosValesDisponibles()" :key="d"><option :value="d" x-text="d"></option></template></select></div><div class="flex flex-wrap gap-2 mt-3"><select x-model="filtroValesFecha" class="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs font-bold"><option value="todos">Cualquier vencimiento</option><option value="7">Vencen en 7 días</option><option value="30">Vencen en 30 días</option><option value="vencidos">Ya vencidos</option></select><button @click="filtroValesTexto='';filtroValesDni='';filtroValesEstado='todos';filtroValesDistrito='todos';filtroValesFecha='todos'" class="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs font-black"><i class="fa-solid fa-eraser"></i> Limpiar filtros</button></div></div><div class="mb-6 p-5 rounded-2xl border border-violet-200 dark:border-violet-900/60 bg-violet-50/70 dark:bg-violet-950/20"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-link"></i></div><div class="min-w-0"><div class="font-black text-sm">Vincular un vale existente a una venta</div><div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Si eliminaste por error el registro de un vale, puedes volver a crearlo usando exactamente el mismo código y asociarlo al pedido original.</div></div></div><div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_auto] gap-3 mt-4 items-end"><div><label class="block text-[10px] uppercase tracking-wider font-black mb-1">Código original</label><input x-model="valeReponerCodigo" @input="valeReponerCodigo=normalizarCodigoVale(valeReponerCodigo)" maxlength="20" placeholder="PS-26-XXXXXXX" class="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-violet-200 dark:border-violet-800 font-mono font-black uppercase"></div><div><label class="block text-[10px] uppercase tracking-wider font-black mb-1">Venta / pedido</label><select x-model="valeReponerVentaGrupoId" class="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-violet-200 dark:border-violet-800 font-bold"><option value="">Selecciona la venta</option><template x-for="v in ventasRegistradas.filter(x => x.ventaGrupoId && x.clienteNombre).filter((v,i,a)=>a.findIndex(z=>String(z.ventaGrupoId)===String(v.ventaGrupoId))===i)" :key="'vale-link-'+v.ventaGrupoId"><option :value="v.ventaGrupoId" x-text="'#'+(v.comprobanteNumero||'—')+' · '+(v.clienteNombre||'Cliente')+' · '+(v.distrito||'')"></option></template></select></div><button @click="vincularValeExistente()" type="button" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-black text-xs"><i class="fa-solid fa-link mr-1"></i>Vincular vale</button></div></div><div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700"><table class="w-full text-left text-xs"><thead class="bg-slate-900 text-white"><tr><th class="px-4 py-4">Vale</th><th class="px-4 py-4">Cliente</th><th class="px-4 py-4">DNI</th><th class="px-4 py-4">Contacto</th><th class="px-4 py-4">Distrito</th><th class="px-4 py-4">Vence</th><th class="px-4 py-4">Estado</th><th class="px-4 py-4 text-right">Acciones</th></tr></thead><tbody><template x-for="vale in valesFiltrados()" :key="vale.codigo"><tr class="border-t border-slate-100 dark:border-slate-800"><td class="px-4 py-4"><div class="font-mono font-black text-yellow-600" x-text="vale.codigo"></div><div class="text-[9px] text-slate-400" x-text="vale.creadoEn ? new Date(vale.creadoEn).toLocaleString('es-PE') : '—'"></div></td><td class="px-4 py-4 font-black" x-text="vale.clienteNombre || '—'"></td><td class="px-4 py-4 font-mono font-bold" x-text="vale.numeroDocumento || vale.dni || '—'"></td><td class="px-4 py-4 font-bold" x-text="vale.clienteTelefono || '—'"></td><td class="px-4 py-4" x-text="vale.distrito || '—'"></td><td class="px-4 py-4 font-bold" x-text="vale.fechaVencimiento || '—'"></td><td class="px-4 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-black" :class="estadoValeVisual(vale)==='Disponible'?'bg-emerald-100 text-emerald-700':estadoValeVisual(vale)==='Usado'?'bg-blue-100 text-blue-700':estadoValeVisual(vale)==='Reservado'?'bg-violet-100 text-violet-700':'bg-rose-100 text-rose-700'" x-text="estadoValeVisual(vale)"></span></td><td class="px-4 py-4"><div class="flex justify-end gap-2"><button @click="copiarCodigoValeDesdeRegistro(vale.codigo)" class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-700" title="Copiar código"><i class="fa-solid fa-copy"></i></button><button @click="verValeDesdeRegistro(vale)" class="w-9 h-9 rounded-lg bg-blue-700 text-white" title="Ver y descargar vale"><i class="fa-solid fa-image"></i></button><button @click="imprimirValeDesdeRegistro(vale)" class="w-9 h-9 rounded-lg bg-orange-500 text-white" title="Imprimir vale"><i class="fa-solid fa-print"></i></button><button @click="eliminarValePromocional(vale.codigo)" class="w-9 h-9 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-500 hover:text-white" title="Eliminar vale"><i class="fa-solid fa-trash"></i></button></div></td></tr></template><tr x-show="!valesFiltrados().length"><td colspan="8" class="px-6 py-14 text-center"><div class="text-4xl">🐾</div><div class="font-black text-lg mt-2">No encontramos vales</div></td></tr></tbody></table></div><div class="mt-6 p-4 rounded-2xl border border-orange-200 bg-orange-50 dark:bg-orange-950/20 text-xs"><b>Almacenamiento:</b> los vales se guardan en <code>valesPromocionales</code> de Firebase y se gestionan desde esta pestaña, no desde Admin.</div></div></div></div>
 </main></div></div>
 <div class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 z-[96]" style="display:none;" x-cloak x-show="modalSeguimientoPedido" x-transition.opacity>
   <div class="w-full max-w-3xl ps-admin-track">
