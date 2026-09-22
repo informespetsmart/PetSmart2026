@@ -34,6 +34,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <!-- =========================================================
          ESTILOS
     ========================================================== -->
@@ -164,6 +165,63 @@
 body.tracking-only > :not(.ps-track-v2){display:none!important;}
 body.tracking-only{padding:0!important;margin:0!important;background:#06366f!important;}
 .ps-track-v2{position:relative;z-index:9999;}
+
+/* CATÁLOGO — mismo texto negro/negrita en claro y oscuro */
+#catalogoExportable, #catalogoExportable.catalogo-export-premium {
+  background:#f4f7f9 !important;
+  color:#000000 !important;
+}
+#catalogoExportable .cat-product {
+  background:#ffffff !important;
+  color:#000000 !important;
+  border-color:#edf2f7 !important;
+}
+#catalogoExportable .cat-name {
+  color:#000000 !important;
+  font-weight:700 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  text-shadow:none !important;
+}
+#catalogoExportable .cat-detail {
+  color:#475569 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+.dark #catalogoExportable,
+.dark #catalogoExportable.catalogo-export-premium {
+  background:#f4f7f9 !important;
+  color:#000000 !important;
+}
+.dark #catalogoExportable .cat-product {
+  background:#ffffff !important;
+  color:#000000 !important;
+}
+.dark #catalogoExportable .cat-name {
+  color:#000000 !important;
+  font-weight:700 !important;
+}
+.dark #catalogoExportable .cat-detail {
+  color:#475569 !important;
+}
+/* También fija el nombre en la lista de selección del catálogo. */
+.catalogo-premium-card label.catalogo-premium-item span.block.font-black {
+  color:#000000 !important;
+  font-weight:900 !important;
+}
+.dark .catalogo-premium-card label.catalogo-premium-item span.block.font-black {
+  color:#000000 !important;
+}
+
+/* CATÁLOGO · título de selección visible idéntico en claro y oscuro */
+.catalogo-select-title,
+.dark .catalogo-select-title {
+  color:#0f172a !important;
+  font-weight:900 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  text-shadow:none !important;
+}
 </style>
 <style>
 :root{--ps-amber:#f59e0b;--ps-amber2:#fbbf24;--ps-dark:#0f172a;--ps-panel:#ffffff;--ps-line:#e2e8f0;--ps-muted:#64748b;--ps-green:#10b981;--ps-blue:#4f46e5;--ps-red:#f43f5e}
@@ -729,6 +787,46 @@ body.dark{background:#070d19!important}
 #reportePedidoPreview .pedido-footer{border-top:2px dashed #e2e8f0!important;padding-top:25px!important;color:#64748b!important;font-size:13px!important;line-height:1.6!important;margin-top:0!important}
 #reportePedidoPreview .pedido-footer strong{color:#0a4076!important;font-weight:600!important}
 @media(max-width:700px){#reportePedidoPreview .pedido-paper-inner{padding:30px 20px!important}#reportePedidoPreview .pedido-delivery{grid-template-columns:1fr!important}#reportePedidoPreview .pedido-delivery>div{align-items:flex-start}#reportePedidoPreview .pedido-delivery strong{white-space:normal}#reportePedidoPreview .pedido-title{font-size:20px!important}}
+</style>
+
+<style>
+/* =========================================================
+   COMPROBANTE PETSMART · PREMIUM SIGNATURE
+   Lenguaje visual inspirado en Seguimiento + Catálogo Premium
+   ========================================================= */
+.cmp-label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:#64748b;margin-bottom:6px}
+.cmp-mini{display:block;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;margin-bottom:4px}
+.cmp-input{width:100%;background:#f8fafc;border:1px solid #cbd5e1;border-radius:11px;padding:10px 12px;font-size:12px;font-weight:700;color:#172033;outline:none;transition:.2s}
+.cmp-input:focus{border-color:#0a5aab;box-shadow:0 0 0 3px rgba(10,90,171,.10)}
+.dark .cmp-input{background:#0f172a;border-color:#334155;color:#f8fafc}
+.cmp-readonly{height:40px;display:flex;align-items:center;padding:0 10px;border-radius:11px;background:#f1f5f9;border:1px solid #e2e8f0;font-size:11px;font-weight:900;color:#334155}
+.dark .cmp-readonly{background:#0f172a;border-color:#334155;color:#e2e8f0}
+
+/* Documento A4 · Designer Expert · identidad PetSmart basada en Seguimiento + Catálogo */
+.comprobante-paper{width:794px;height:1123px;min-height:1123px;background:#fff;color:#172033;font-family:'Poppins',Arial,Helvetica,sans-serif;padding:28px 34px 26px;box-shadow:0 24px 70px rgba(7,59,120,.14);box-sizing:border-box;position:relative;overflow:hidden;border:1px solid #dbe5ee;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.comprobante-paper:before{content:"";position:absolute;right:-220px;top:235px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(7,59,120,.055);box-shadow:0 0 0 35px rgba(7,59,120,.018),0 0 0 70px rgba(242,139,40,.012);pointer-events:none}
+.comprobante-paper:after{content:"";position:absolute;left:0;top:0;width:100%;height:4px;background:linear-gradient(90deg,#073b78 0%,#0a5aab 76%,#f28b28 76%,#f28b28 100%);z-index:5}
+.cmp-brandbar{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) 270px;align-items:center;gap:20px;padding:10px 0 19px;border-bottom:1px solid #d8e2ec;background:#fff;color:#172033;overflow:visible;box-shadow:none}
+.cmp-brandbar:after{content:"";position:absolute;left:0;bottom:-2px;width:72px;height:3px;border-radius:99px;background:#f28b28}
+.cmp-brand{font-size:25px;line-height:1;font-weight:800;letter-spacing:-.04em;color:#073b78;position:relative;z-index:2}
+.cmp-brand-sub{font-size:8.8px;color:#647b8f;font-weight:800;margin-top:7px;letter-spacing:.045em;text-transform:uppercase;position:relative;z-index:2;max-width:390px}
+.cmp-logo{max-width:167px;max-height:62px;width:auto;height:auto;object-fit:contain;background:transparent!important;padding:0!important;border-radius:0!important;box-shadow:none!important;position:relative;z-index:3;display:block;margin-bottom:5px;image-rendering:auto}
+.cmp-doc-box{border:1.5px solid #0a4d91;border-radius:12px;padding:11px 14px;text-align:center;background:linear-gradient(180deg,#fff,#f8fbfe);box-shadow:0 8px 20px rgba(7,59,120,.055)}
+.cmp-doc-box-title{font-size:10px;line-height:1.25;font-weight:800;letter-spacing:.07em;color:#173f68;text-transform:uppercase}
+.cmp-doc-box-ruc{font-size:9px;font-weight:700;color:#6a7e8f;margin-top:5px}.cmp-doc-box-address{font-size:6.8px;line-height:1.28;font-weight:600;color:#536b7f;margin-top:3px;overflow-wrap:anywhere}.cmp-doc-box-number{font-size:16px;font-weight:800;color:#f28b28;margin-top:5px;letter-spacing:.035em;font-variant-numeric:tabular-nums}
+.cmp-doc-head{position:relative;z-index:2;display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-top:20px;padding:0 3px}
+.cmp-kicker{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;background:#edf5fd;color:#0b5db7;font-size:8px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;border:1px solid #d8e8f7}
+.cmp-number{font-size:24px;font-weight:800;letter-spacing:-.02em;color:#173f68;margin-top:8px;font-variant-numeric:tabular-nums}.cmp-date{text-align:right;font-size:9px;color:#6b7e8d;font-weight:600;line-height:1.65;font-variant-numeric:tabular-nums}
+.cmp-rule{height:1px;background:linear-gradient(90deg,#0a4d91 0%,#b9cfe2 72%,transparent 100%);margin:16px 0 16px;position:relative;z-index:2}
+.cmp-client-grid{position:relative;z-index:2;display:block;margin-bottom:21px}.cmp-client-grid>div{border:1px solid #dce5ef;border-radius:14px;padding:12px 15px;background:linear-gradient(135deg,#fbfdff,#f6f9fc);min-height:0}
+.cmp-client-top{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:18px;align-items:start}.cmp-client-doc{text-align:right}.cmp-client-address{margin-top:10px;padding-top:9px;border-top:1px dashed #d7e1ea}.cmp-client-address-label{font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#f28b28;margin-bottom:3px}.cmp-client-address .cmp-muted{font-size:8.5px}
+.cmp-section-label{font-size:8px;letter-spacing:.18em;font-weight:800;color:#f28b28}.cmp-client-name{font-size:14px;font-weight:800;color:#172033;margin-top:5px;line-height:1.25}.cmp-muted{font-size:9px;color:#66788a;font-weight:600;line-height:1.5}.cmp-client-doc .cmp-muted{font-variant-numeric:tabular-nums}
+.cmp-section-title{display:flex;align-items:center;gap:9px;font-size:9px;letter-spacing:.15em;font-weight:800;color:#244b67;margin:19px 0 8px;position:relative;z-index:2}.cmp-section-title:after{content:"";height:3px;width:42px;border-radius:99px;background:#f28b28}
+.cmp-table{width:100%;border-collapse:separate;border-spacing:0;position:relative;z-index:2;overflow:hidden;border:1px solid #dce5ef;border-radius:12px}.cmp-table th{text-align:left;font-size:7.5px;text-transform:uppercase;letter-spacing:.07em;color:#eaf4ff;background:#0a4d91;padding:8px 9px;border:0;font-weight:800}.cmp-table th:first-child{border-radius:11px 0 0 0}.cmp-table th:last-child{border-radius:0 11px 0 0}.cmp-table th:nth-child(n+2),.cmp-table td:nth-child(n+2){text-align:right;font-variant-numeric:tabular-nums}.cmp-table td{padding:9px 9px;border-bottom:1px solid #edf1f4;font-size:9px;color:#33485a;vertical-align:top;background:#fff;font-variant-numeric:tabular-nums}.cmp-table tbody tr:last-child td{border-bottom:0}.cmp-table tbody tr:nth-child(even) td{background:#fbfdff}.cmp-prod-name{font-size:9.5px;font-weight:700;color:#172033;line-height:1.35}
+.cmp-summary-grid{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:end;margin-top:16px;position:relative;z-index:2}.cmp-tax-box{border:1px solid #dce5ef;border-radius:14px;padding:12px 15px;background:#fbfdff}.cmp-tax-title{font-size:8px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;color:#244b67;margin-bottom:8px}.cmp-tax-row{display:flex;justify-content:space-between;gap:18px;padding:3px 0;font-size:8.5px;color:#718396;font-weight:600}.cmp-tax-row b{color:#33485a;font-weight:700;font-variant-numeric:tabular-nums}.cmp-totals{width:auto;margin:0;position:relative;z-index:2;padding:11px 15px 13px;border:1px solid #dce5ef;border-radius:14px;background:#fff}.cmp-totals>div{display:flex;justify-content:space-between;gap:20px;padding:4px 0;font-size:9px;color:#718396;font-weight:600}.cmp-totals b{color:#33485a;font-weight:700;font-variant-numeric:tabular-nums}.cmp-totals .cmp-total{margin-top:6px;padding:10px 0 1px;border-top:2px solid #0a4d91;color:#173f68;font-size:11px;font-weight:800}.cmp-totals .cmp-total b{font-size:21px;color:#f28b28;letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+.cmp-sunat-note{margin-top:10px;font-size:7.5px;line-height:1.5;color:#82919d}.cmp-footer{position:relative;z-index:2;margin-top:18px;padding-top:13px;border-top:1px solid #e1e8ed;text-align:center;color:#7b8c9b;font-size:8px;line-height:1.55}.cmp-footer-main{font-size:10.5px;font-weight:800;color:#244b67;margin-bottom:2px}.cmp-footer-legal{font-size:7.2px;color:#98a5af;margin-top:6px;max-width:610px;margin-left:auto;margin-right:auto}
+@media(max-width:900px){.comprobante-paper{width:794px;height:1123px}.cmp-input{font-size:16px}.cmp-brandbar{grid-template-columns:minmax(0,1fr) 270px}.cmp-client-top{grid-template-columns:minmax(0,1fr) 170px}}
+@media print{@page{size:A4 portrait;margin:0}.comprobante-paper{box-shadow:none!important;width:210mm!important;height:297mm!important;min-height:297mm!important}.cmp-brandbar{box-shadow:none!important}.comprobante-paper:before{display:none!important}}
 </style>
 </head>
 <body :class="[darkMode ? 'dark bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-800', modoSeguimientoCliente ? 'tracking-only' : '']" class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 font-sans transition-colors duration-300" x-data="inventarioApp()"><div x-show="modoSeguimientoCliente" x-cloak class="ps-track-v2" :class="{'is-destination': seguimientoClienteData?.estado==='En destino'}">
@@ -1742,6 +1840,20 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     false,
                 modalReportePedido:
                     false,
+                // =================================================
+                // COMPROBANTE PETSMART · REPRESENTACIÓN SUNAT
+                // =================================================
+                comprobantePetSmart: {
+                    ventaId: '', ventaGrupoId: '', tipo: 'Boleta', serie: 'EB01', numero: '',
+                    fecha: '', hora: '', rucEmisor: '', razonSocialEmisor: '',
+                    clienteNombre: '', tipoDocumento: 'DNI', numeroDocumento: '', direccionCliente: '',
+                    moneda: 'PEN', subtotal: 0, igv: 0, total: 0,
+                    observacion: '', opGravada: 0, opExonerada: 0, opInafecta: 0, isc: 0, icbper: 0, otrosCargos: 0, otrosTributos: 0, redondeo: 0, items: []
+                },
+                comprobantePetSmartGenerado: false,
+                comprobantePetSmartGuardando: false,
+                comprobantePetSmartQr: false,
+                comprobantePetSmartHistorial: [],
                 modalValeGenerado:
                     false,
                 mostrarVistaClienteSeguimiento:
@@ -3244,6 +3356,145 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         console.warn('No se pudo crear el registro adicional de ventas/clientes:', e);
                         throw e;
                     }
+                },
+
+                // =================================================
+                // COMPROBANTE PETSMART · REPRESENTACIÓN DE SUNAT
+                // =================================================
+                limpiarComprobantePetSmart() {
+                    this.comprobantePetSmart = { ventaId:'', ventaGrupoId:'', tipo:'Boleta', serie:'EB01', numero:'', fecha:'', hora:'', rucEmisor:'', razonSocialEmisor:'', clienteNombre:'', tipoDocumento:'DNI', numeroDocumento:'', direccionCliente:'', moneda:'PEN', subtotal:0, igv:0, total:0, observacion:'', fechaVencimiento:'', opGravada:0, opExonerada:0, opInafecta:0, isc:0, icbper:0, otrosCargos:0, otrosTributos:0, redondeo:0, items:[] };
+                    this.comprobantePetSmartGenerado = false;
+                },
+                async seleccionarVentaComprobante(id) {
+                    const item=(this.ventasRegistradas||[]).find(v=>String(v.id)===String(id));
+                    if(item) await this.abrirComprobanteDesdeVenta(item);
+                },
+                async abrirComprobanteDesdeVenta(item) {
+                    if(!item || !item.id) { this.activeTab='comprobantes'; return; }
+                    this.activeTab='comprobantes';
+                    const grupo=String(item.ventaGrupoId||'');
+                    const relacionadas=grupo ? this.productos.filter(p=>p.estado==='vendido' && String(p.ventaGrupoId||'')===grupo) : [item];
+                    const guardado=item.comprobantePetSmart || {};
+                    const fuente=Object.keys(guardado).length ? guardado : {};
+                    const tipoComprobante=fuente.tipo||item.tipoComprobante||'Boleta';
+                    const serieComprobante=tipoComprobante==='Boleta' ? 'EB01' : (fuente.serie||'');
+                    this.comprobantePetSmart={
+                        ventaId:String(item.id), ventaGrupoId:grupo, tipo:tipoComprobante, serie:serieComprobante, numero:fuente.numero||item.comprobanteNumero||'',
+                        fecha:fuente.fecha||item.fechaVenta||this.fechaPeru(), hora:fuente.hora||'', rucEmisor:fuente.rucEmisor||this.configNegocio.ruc||'', razonSocialEmisor:fuente.razonSocialEmisor||this.configNegocio.nombre||'',
+                        clienteNombre:fuente.clienteNombre||item.clienteNombre||'', tipoDocumento:fuente.tipoDocumento||item.tipoDocumento||'DNI', numeroDocumento:fuente.numeroDocumento||item.numeroDocumento||'', direccionCliente:fuente.direccionCliente||item.direccionEntrega||'',
+                        moneda:fuente.moneda||'PEN', subtotal:Number(fuente.subtotal||0), igv:Number(fuente.igv||0), total:Number(fuente.total||item.precioVenta||0), observacion:fuente.observacion||'', opGravada:Number(fuente.opGravada ?? fuente.subtotal ?? 0), opExonerada:Number(fuente.opExonerada||0), opInafecta:Number(fuente.opInafecta||0), isc:Number(fuente.isc||0), icbper:Number(fuente.icbper||0), otrosCargos:Number(fuente.otrosCargos||0), otrosTributos:Number(fuente.otrosTributos||0), redondeo:Number(fuente.redondeo||0),
+                        items:Array.isArray(fuente.items)&&fuente.items.length ? fuente.items : relacionadas.map(p=>({descripcion:p.nombre||'',cantidad:1,precioUnitario:Number(p.precioVenta||0)}))
+                    };
+                    this.recalcularComprobantePetSmart();
+                    this.comprobantePetSmartGenerado=!!fuente.generadoEn;
+                },
+                agregarItemComprobante(){ this.comprobantePetSmart.items.push({descripcion:'',cantidad:1,precioUnitario:0}); this.recalcularComprobantePetSmart(); },
+                quitarItemComprobante(i){ if(this.comprobantePetSmart.items.length<=1)return; this.comprobantePetSmart.items.splice(i,1); this.recalcularComprobantePetSmart(); },
+                recalcularComprobantePetSmart(){
+                    const brutoProductos=(this.comprobantePetSmart.items||[]).reduce((a,it)=>a+(Number(it.cantidad)||0)*(Number(it.precioUnitario)||0),0);
+                    const extras=(Number(this.comprobantePetSmart.otrosCargos)||0)+(Number(this.comprobantePetSmart.otrosTributos)||0)+(Number(this.comprobantePetSmart.redondeo)||0);
+                    const totalBruto=Number((brutoProductos+extras).toFixed(2));
+                    const base=Number((totalBruto/1.18).toFixed(2));
+                    const igv=Number((totalBruto-base).toFixed(2));
+                    this.comprobantePetSmart.opGravada=base;
+                    this.comprobantePetSmart.subtotal=base;
+                    this.comprobantePetSmart.igv=igv;
+                    this.comprobantePetSmart.total=totalBruto;
+                },
+                validarComprobantePetSmart(){
+                    const c=this.comprobantePetSmart;
+                    const falt=[];
+                    if(!String(c.serie||'').trim())falt.push('serie'); if(!String(c.numero||'').trim())falt.push('número'); if(!c.fecha)falt.push('fecha'); if(!this.normalizarDocumento(c.rucEmisor) || this.normalizarDocumento(c.rucEmisor).length!==11)falt.push('RUC del emisor'); if(!String(c.razonSocialEmisor||'').trim())falt.push('razón social del emisor'); if(!String(c.clienteNombre||'').trim())falt.push('cliente'); if(!String(c.numeroDocumento||'').trim())falt.push('documento del cliente'); if(!Array.isArray(c.items)||!c.items.length)falt.push('productos');
+                    if((c.items||[]).some(i=>!String(i.descripcion||'').trim() || !(Number(i.cantidad)>0) || Number(i.precioUnitario)<0))falt.push('productos/cantidades/precios');
+                    if(!(Number(c.total)>=0) || !String(c.moneda||'').trim())falt.push('total/moneda');
+                    return falt;
+                },
+                validarYGenerarComprobantePetSmart(){
+                    if((this.comprobantePetSmart.tipo||'')==='Boleta') this.comprobantePetSmart.serie='EB01';
+                    this.recalcularComprobantePetSmart();
+                    const falt=this.validarComprobantePetSmart();
+                    if(falt.length){ Swal.fire({icon:'warning',title:'Faltan datos del comprobante',html:'Completa o confirma: <b>'+this.escapeHtml(falt.join(', '))+'</b>.',confirmButtonColor:'#0b6b9e'}); return false; }
+                    this.comprobantePetSmart.rucEmisor=this.normalizarDocumento(this.comprobantePetSmart.rucEmisor);
+                    this.comprobantePetSmart.numeroDocumento=this.normalizarDocumento(this.comprobantePetSmart.numeroDocumento);
+                    this.comprobantePetSmart.total=Number(Number(this.comprobantePetSmart.total||0).toFixed(2));
+                    this.comprobantePetSmart.subtotal=Number(Number(this.comprobantePetSmart.subtotal||0).toFixed(2));
+                    this.comprobantePetSmart.opGravada=Number(Number(this.comprobantePetSmart.opGravada||0).toFixed(2));
+                    this.comprobantePetSmart.igv=Number(Number(this.comprobantePetSmart.igv||0).toFixed(2));
+                    this.comprobantePetSmartGenerado=true;
+                    return true;
+                },
+                async guardarComprobantePetSmart(){
+                    if(!this.validarYGenerarComprobantePetSmart())return;
+                    const c=JSON.parse(JSON.stringify(this.comprobantePetSmart)); c.generadoEn=new Date().toISOString(); c.representacionVersion='PetSmart-1';
+                    if(!c.ventaId){Swal.fire('Venta no vinculada','Selecciona una venta existente antes de guardar la relación.','warning');return;}
+                    this.comprobantePetSmartGuardando=true;
+                    try{
+                        const grupo=String(c.ventaGrupoId||''); const relacionadas=grupo ? this.productos.filter(p=>p.estado==='vendido'&&String(p.ventaGrupoId||'')===grupo) : this.productos.filter(p=>String(p.id)===String(c.ventaId));
+                        const updates={}; relacionadas.forEach(p=>{updates[`productos/${p.id}/comprobantePetSmart`]=c; updates[`ventas/${p.id}/comprobantePetSmart`]=c;});
+                        await window.fb.update(window.fb.ref(window.db),updates);
+                        this.comprobantePetSmart={...this.comprobantePetSmart,generadoEn:c.generadoEn,representacionVersion:c.representacionVersion};
+                        this.comprobantePetSmartGenerado=true;
+                        this.notificarToast('success','Relación del comprobante guardada correctamente.');
+                    }catch(e){console.error('ERROR GUARDANDO COMPROBANTE PETSMART:',e);Swal.fire('No se pudo guardar',e?.message||'Error desconocido','error');}
+                    finally{this.comprobantePetSmartGuardando=false;}
+                },
+                async descargarComprobantePetSmartPDF(){
+                    if(!this.comprobantePetSmartGenerado && !this.validarYGenerarComprobantePetSmart())return;
+                    const original=document.getElementById('comprobantePetSmartPreview');
+                    if(!original){ Swal.fire('PDF','No se encontró la previsualización del comprobante.','error'); return; }
+                    if(!window.html2canvas || !window.jspdf){ Swal.fire('PDF','No se pudo cargar el motor de PDF. Recarga la página e inténtalo nuevamente.','error'); return; }
+                    const nombre=`PetSmart_${this.comprobantePetSmart.tipo||'Comprobante'}_${this.comprobantePetSmart.serie||'SN'}-${this.comprobantePetSmart.numero||'SN'}.pdf`.replace(/[^a-zA-Z0-9_.-]+/g,'_');
+                    const A4_W=210, A4_H=297;
+                    try{
+                        Swal.fire({title:'Generando PDF...',text:'Preparando el comprobante en formato A4 y alta nitidez.',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
+                        await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+                        if(document.fonts?.ready) await document.fonts.ready;
+                        const logo=original.querySelector('.cmp-logo');
+                        if(logo && !(logo.complete && logo.naturalWidth>0)) await new Promise(resolve=>{const done=()=>{logo.removeEventListener('load',done);logo.removeEventListener('error',done);resolve();};logo.addEventListener('load',done,{once:true});logo.addEventListener('error',done,{once:true});});
+                        if(logo?.decode){ try{await logo.decode();}catch(_){}}
+                        const rect=original.getBoundingClientRect();
+                        if(rect.width<100 || rect.height<100) throw new Error('La previsualización del comprobante no está visible para capturarla.');
+                        const canvas=await window.html2canvas(original,{
+                            scale:3,
+                            useCORS:true,
+                            allowTaint:false,
+                            backgroundColor:'#ffffff',
+                            logging:false,
+                            imageTimeout:20000,
+                            scrollX:0,
+                            scrollY:-window.scrollY,
+                            width:Math.round(rect.width),
+                            height:Math.round(rect.height),
+                            windowWidth:document.documentElement.clientWidth,
+                            windowHeight:document.documentElement.clientHeight,
+                            letterRendering:true
+                        });
+                        if(!canvas || !canvas.width || !canvas.height) throw new Error('La captura del comprobante quedó vacía.');
+                        const {jsPDF}=window.jspdf;
+                        const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});
+                        const image=canvas.toDataURL('image/png');
+                        const ratio=canvas.width/canvas.height;
+                        let imgW=A4_W, imgH=A4_W/ratio, x=0, y=(A4_H-imgH)/2;
+                        if(imgH>A4_H){imgH=A4_H;imgW=A4_H*ratio;x=(A4_W-imgW)/2;y=0;}
+                        pdf.setFillColor(255,255,255);pdf.rect(0,0,A4_W,A4_H,'F');
+                        pdf.addImage(image,'PNG',x,y,imgW,imgH,undefined,'FAST');
+                        pdf.save(nombre);
+                        Swal.close();
+                    }catch(error){
+                        console.error('ERROR PDF COMPROBANTE PETSMART:',error);
+                        Swal.close();
+                        Swal.fire('No se pudo generar el PDF','La captura del comprobante no pudo convertirse correctamente. Verifica que la previsualización sea visible y vuelve a intentarlo.','warning');
+                    }
+                },
+                async compartirComprobantePetSmart(){
+                    if(!this.comprobantePetSmartGenerado && !this.validarYGenerarComprobantePetSmart())return;
+                    const texto=`${this.comprobantePetSmart.tipo||'Comprobante'} ${this.comprobantePetSmart.serie||''}-${this.comprobantePetSmart.numero||''} · ${this.comprobantePetSmart.clienteNombre||''} · ${this.comprobantePetSmart.moneda==='USD'?'$':'S/'} ${this.formatMonto(this.comprobantePetSmart.total)}`;
+                    if(navigator.share){try{await navigator.share({title:'Comprobante PetSmart',text:texto});}catch(e){}}else{await navigator.clipboard?.writeText(texto);this.notificarToast('success','Resumen copiado para compartir.');}
+                },
+                async compartirComprobantePetSmartWhatsApp(){
+                    if(!this.comprobantePetSmartGenerado && !this.validarYGenerarComprobantePetSmart())return;
+                    const texto=encodeURIComponent(`Hola ${this.comprobantePetSmart.clienteNombre||''}. Te compartimos la representación personalizada de tu ${this.comprobantePetSmart.tipo||'comprobante'} ${this.comprobantePetSmart.serie||''}-${this.comprobantePetSmart.numero||''} emitido oficialmente. Total: ${this.comprobantePetSmart.moneda==='USD'?'$':'S/'} ${this.formatMonto(this.comprobantePetSmart.total)}. Gracias por confiar en PetSmart 🐾`);
+                    window.open(`https://wa.me/?text=${texto}`,'_blank','noopener');
                 },
 
                 // =================================================
@@ -4802,7 +5053,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     if (!String(venta.clienteNombre || '').trim()) { Swal.fire('Atención', 'Debes registrar el nombre del cliente.', 'warning'); return; }
                     if (!venta.fechaVenta) { Swal.fire('Atención', 'Debes registrar la fecha de venta.', 'warning'); return; }
                     if (venta.canalVenta === 'Facebook' && !venta.perfilFacebook) { Swal.fire('Atención', 'Selecciona el perfil de Facebook.', 'warning'); return; }
-                    if (!venta.tipoMascota) { Swal.fire('Atención', 'Selecciona el tipo de mascota.', 'warning'); return; }
+                    if (venta.canalVenta !== 'Falabella' && !venta.tipoMascota) { Swal.fire('Atención', 'Selecciona el tipo de mascota.', 'warning'); return; }
                     if (venta.tipoComprobante === 'Boleta' && venta.numeroDocumento && !this.documentoValido(venta.tipoDocumento, venta.numeroDocumento)) {
                         Swal.fire('Documento incompleto', `El ${venta.tipoDocumento || 'documento'} debe tener exactamente ${this.maxDigitosDocumento(venta.tipoDocumento)} dígitos.`, 'warning'); return;
                     }
@@ -4813,7 +5064,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         const confLogistico = venta.canalVenta === 'Falabella' ? Number(venta.confLogistico) || 0 : 0;
                         const perfilFacebook = venta.canalVenta === 'Facebook' ? String(venta.perfilFacebook || '') : '';
                         const sellerPagoEstado = venta.canalVenta === 'Falabella' ? (venta.sellerPagoEstado === 'pendiente' ? 'pendiente' : 'aplicado') : '';
-                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.tipoMascota || '', medioPago: 'Yape', precioVenta: precio, comision, confLogistico, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', sellerPagoEstado };
+                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', sellerPagoEstado };
                         await window.fb.update(window.fb.ref(window.db, `productos/${venta.id}`), datos);
                         await this.guardarRegistroVentaAdicional(venta, datos);
                         Swal.close();
@@ -5453,6 +5704,9 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 <button :class="activeTab === 'ventas' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'ventas'" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
 <i class="fa-solid fa-cart-shopping"></i> Ventas
             </button>
+<button :class="activeTab === 'comprobantes' ? 'bg-sky-700 text-white shadow-lg' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'comprobantes'" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
+<i class="fa-solid fa-receipt"></i> Comprobante
+            </button>
 <button :class="activeTab === 'clientes' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'clientes'" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
 <i class="fa-solid fa-users"></i> Clientes
             </button>
@@ -6085,7 +6339,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 <td class="py-4 px-4 text-sm font-bold" x-text="item.clienteNombre || 'Sin registrar'"></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="obtenerDniItem(item) || '—'"></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="item.clienteTelefono || '—'"></td>
-<td class="py-4 px-4 text-sm font-bold"><div x-text="item.canalVenta || '—'"></div><div x-show="item.canalVenta === 'Facebook' && item.perfilFacebook" class="text-[10px] text-blue-600 dark:text-blue-400 mt-1" x-text="item.perfilFacebook"></div><span x-show="item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'" class="inline-flex mt-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-[9px] font-black">Seller · Stand by</span><button x-show="item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'" @click="activarPagoSeller(item)" type="button" class="mt-2 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black"><i class="fa-solid fa-check"></i> Activar pago</button></td>
+<td class="py-4 px-4 text-sm font-bold"><div x-text="item.canalVenta || '—'"></div><div x-show="item.canalVenta === 'Facebook' && item.perfilFacebook" class="text-[10px] text-blue-600 dark:text-blue-400 mt-1" x-text="item.perfilFacebook"></div><span x-show="item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'" class="inline-flex mt-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-[9px] font-black">Seller</span><button x-show="item.canalVenta === 'Falabella' && item.sellerPagoEstado === 'pendiente'" @click="activarPagoSeller(item)" type="button" class="mt-2 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black"><i class="fa-solid fa-check"></i> Activar pago</button></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="item.tipoMascota || '—'"></td>
 <td class="py-4 px-4 text-sm font-bold" x-text="item.distrito || '—'"></td>
 <td class="py-4 px-4 text-right text-sm font-black text-emerald-600 dark:text-emerald-400">S/ <span x-text="formatMonto(item.precioVenta)"></span></td>
@@ -6097,6 +6351,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 <button @click="abrirSeguimientoCliente(item)" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 text-xs font-black transition-colors shadow-sm" title="Abrir seguimiento del cliente">
 <i class="fa-solid fa-truck-fast"></i><span>Seguimiento</span>
 </button>
+<button @click="abrirComprobanteDesdeVenta(item)" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-sky-700 text-white hover:bg-sky-600 text-xs font-black transition-colors shadow-sm" title="Generar representación del comprobante emitido en SUNAT"><i class="fa-solid fa-receipt"></i><span>Comprobante</span></button>
 </div>
 </td>
 <td class="py-4 px-4 text-center">
@@ -6111,7 +6366,32 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 </table>
 </div>
 </div>
-</div><div style="display:none;" x-show="activeTab === 'clientes'" x-transition="">
+</div><!-- =====================================================
+     COMPROBANTE PETSMART · REPRESENTACIÓN PERSONALIZADA
+====================================================== -->
+<div style="display:none;" x-show="activeTab === 'comprobantes'" x-transition>
+<div class="space-y-5">
+<div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden">
+<div class="p-6 md:p-7 border-b border-slate-200 dark:border-slate-700 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+<div><div class="text-[10px] uppercase tracking-[.22em] text-sky-600 dark:text-sky-400 font-black">PetSmart · Representación personalizada</div><h2 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mt-1 flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-sky-500/10 text-sky-700 dark:text-sky-400 flex items-center justify-center"><i class="fa-solid fa-receipt"></i></span> Comprobante</h2><p class="text-xs text-slate-500 dark:text-slate-400 mt-2 max-w-3xl">Registra los datos de la boleta o factura que ya fue emitida oficialmente en SUNAT y genera una representación visual PetSmart. Este módulo no emite ni modifica comprobantes tributarios.</p></div>
+<div class="flex flex-wrap gap-2"><button type="button" @click="activeTab='ventas'" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-black">Volver a ventas</button><button type="button" @click="limpiarComprobantePetSmart()" class="px-4 py-2.5 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs font-black"><i class="fa-solid fa-plus mr-1"></i> Nuevo</button></div>
+</div>
+<div class="p-5 md:p-7 grid grid-cols-1 xl:grid-cols-[minmax(320px,480px)_minmax(0,1fr)] gap-6">
+<div class="space-y-4">
+<div class="rounded-2xl border border-sky-200 dark:border-sky-900/60 bg-sky-50/70 dark:bg-sky-950/20 p-4"><div class="text-xs font-black uppercase tracking-wider text-sky-700 dark:text-sky-300 mb-3"><i class="fa-solid fa-link mr-1"></i> Venta vinculada</div><select @change="seleccionarVentaComprobante($event.target.value)" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm font-bold"><option value="">Selecciona una venta existente…</option><template x-for="v in ventasRegistradas" :key="'cmp-sale-'+v.id"><option :value="v.id" x-text="formatearFecha(v.fechaVenta)+' · '+(v.clienteNombre||'Sin cliente')+' · '+(v.nombre||'Producto')"></option></template></select><div class="text-[10px] text-slate-500 dark:text-slate-400 mt-2">Los datos del cliente y productos se reutilizan de la venta. Los datos tributarios se confirman con el comprobante real.</div></div>
+<div class="grid grid-cols-2 gap-3"><div><label class="cmp-label">Tipo *</label><select x-model="comprobantePetSmart.tipo" @change="if(comprobantePetSmart.tipo==='Boleta') comprobantePetSmart.serie='EB01'" class="cmp-input"><option>Boleta</option><option>Factura</option><option>Nota de crédito</option><option>Nota de débito</option></select></div><div><label class="cmp-label">Moneda *</label><select x-model="comprobantePetSmart.moneda" class="cmp-input"><option value="PEN">Soles (PEN)</option><option value="USD">Dólares (USD)</option></select></div><div><label class="cmp-label">Serie *</label><input x-model="comprobantePetSmart.serie" @input="if((comprobantePetSmart.tipo||'')==='Boleta') comprobantePetSmart.serie='EB01'" class="cmp-input" placeholder="EB01"></div><div><label class="cmp-label">Número *</label><input x-model="comprobantePetSmart.numero" class="cmp-input" inputmode="numeric"></div><div><label class="cmp-label">Fecha *</label><input x-model="comprobantePetSmart.fecha" class="cmp-input" type="date"></div><div><label class="cmp-label">Hora</label><input x-model="comprobantePetSmart.hora" class="cmp-input" type="time"></div></div>
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4"><div class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 mb-3">Emisor</div><div class="space-y-3"><div><label class="cmp-label">RUC *</label><input x-model="comprobantePetSmart.rucEmisor" class="cmp-input" inputmode="numeric" maxlength="11"></div><div><label class="cmp-label">Nombre / razón social *</label><input x-model="comprobantePetSmart.razonSocialEmisor" class="cmp-input"></div></div></div>
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4"><div class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-200 mb-3">Cliente</div><div class="grid grid-cols-2 gap-3"><div class="col-span-2"><label class="cmp-label">Nombre *</label><input x-model="comprobantePetSmart.clienteNombre" class="cmp-input"></div><div><label class="cmp-label">Tipo documento</label><select x-model="comprobantePetSmart.tipoDocumento" class="cmp-input"><option>DNI</option><option>RUC</option><option>CE</option><option>Pasaporte</option></select></div><div><label class="cmp-label">Número *</label><input x-model="comprobantePetSmart.numeroDocumento" class="cmp-input" inputmode="numeric"></div><div class="col-span-2"><label class="cmp-label">Dirección</label><input x-model="comprobantePetSmart.direccionCliente" class="cmp-input"></div></div></div>
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4"><div class="flex items-center justify-between gap-3 mb-3"><div class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-200">Productos</div><button type="button" @click="agregarItemComprobante()" class="px-3 py-2 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[10px] font-black">+ Producto</button></div><div class="space-y-3"><template x-for="(it,i) in comprobantePetSmart.items" :key="'cmp-item-'+i"><div class="grid grid-cols-[minmax(0,1fr)_60px_90px_90px_34px] gap-2 items-end"><div><label class="cmp-mini">Descripción *</label><input x-model="it.descripcion" class="cmp-input"></div><div><label class="cmp-mini">Cant.</label><input x-model.number="it.cantidad" @input="recalcularComprobantePetSmart()" class="cmp-input" type="number" min="0.001" step="0.001"></div><div><label class="cmp-mini">P. unit.</label><input x-model.number="it.precioUnitario" @input="recalcularComprobantePetSmart()" class="cmp-input" type="number" min="0" step="0.01"></div><div><label class="cmp-mini">Importe</label><div class="cmp-readonly">S/ <span x-text="formatMonto(Number(it.cantidad||0)*Number(it.precioUnitario||0))"></span></div></div><button type="button" @click="quitarItemComprobante(i)" class="w-9 h-9 rounded-lg bg-rose-500/10 text-rose-600"><i class="fa-solid fa-trash"></i></button></div></template></div></div>
+<div class="grid grid-cols-3 gap-3"><div><label class="cmp-label">Base imponible / Operación gravada</label><div class="cmp-readonly">S/ <span x-text="formatMonto(comprobantePetSmart.opGravada)"></span></div></div><div><label class="cmp-label">IGV (18%)</label><div class="cmp-readonly">S/ <span x-text="formatMonto(comprobantePetSmart.igv)"></span></div></div><div><label class="cmp-label">Total</label><div class="cmp-readonly">S/ <span x-text="formatMonto(comprobantePetSmart.total)"></span></div></div></div>
+
+<div><label class="cmp-label">Observación</label><textarea x-model="comprobantePetSmart.observacion" class="cmp-input" rows="2"></textarea></div>
+<div class="flex flex-wrap gap-2"><button type="button" @click="validarYGenerarComprobantePetSmart()" class="px-5 py-3 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs font-black shadow-lg"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Generar comprobante PetSmart</button><button type="button" @click="guardarComprobantePetSmart()" :disabled="comprobantePetSmartGuardando" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black disabled:opacity-50"><i class="fa-solid fa-floppy-disk mr-1"></i> Guardar relación</button></div>
+<div x-show="comprobantePetSmartGenerado" x-transition class="rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-sm font-black text-emerald-700 dark:text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i> Comprobante generado correctamente<div class="flex flex-wrap gap-2 mt-3"><button type="button" @click="descargarComprobantePetSmartPDF()" class="px-3 py-2 rounded-xl bg-slate-900 text-white text-[10px] font-black">Descargar PDF</button><button type="button" @click="compartirComprobantePetSmart()" class="px-3 py-2 rounded-xl bg-sky-700 text-white text-[10px] font-black">Compartir</button><button type="button" @click="compartirComprobantePetSmartWhatsApp()" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-[10px] font-black">WhatsApp</button></div></div>
+</div>
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-900/50 p-3 md:p-5 overflow-auto"><div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-500 mb-3 text-center">Previsualización · documento final</div><div id="comprobantePetSmartPreview" class="comprobante-paper mx-auto"><div class="cmp-brandbar"><div><template x-if="configNegocio.logoUrl"><img :src="configNegocio.logoUrl" class="cmp-logo" alt="PetSmart"></template><div class="cmp-brand">PETSMART</div><div class="cmp-brand-sub">COMPROMETIDOS POR MÁS COLITAS FELICES</div></div><div class="cmp-doc-box"><div class="cmp-doc-box-title" x-text="(comprobantePetSmart.tipo || 'BOLETA DE VENTA') + ' ELECTRÓNICA'"></div><div class="cmp-doc-box-ruc" x-text="'RUC: '+(comprobantePetSmart.rucEmisor||'—')"></div><div class="cmp-doc-box-address">CAL. LOS CEDROS KM. 14.5 MZA. X INT. 1 LT. 27 - PANAMERICANA SUR AUXILIAR - SAN JUAN DE MIRAFLORES - LIMA - LIMA</div><div class="cmp-doc-box-number" x-text="(comprobantePetSmart.serie || '—')+' - '+(comprobantePetSmart.numero || '—')"></div></div></div><div class="cmp-doc-head"><div><div class="cmp-kicker">REPRESENTACIÓN PETSMART</div><div class="cmp-number" x-text="(comprobantePetSmart.serie || '—') + ' - ' + (comprobantePetSmart.numero || '—')"></div></div><div class="cmp-date"><div><b>Fecha de emisión</b> · <span x-text="comprobantePetSmart.fecha ? formatearFecha(comprobantePetSmart.fecha) : '—'"></span></div><div x-show="comprobantePetSmart.hora" x-text="comprobantePetSmart.hora"></div></div></div><div class="cmp-rule"></div><div class="cmp-client-grid"><div><div class="cmp-client-top"><div><div class="cmp-section-label">CLIENTE</div><div class="cmp-client-name" x-text="comprobantePetSmart.clienteNombre || '—'"></div></div><div class="cmp-client-doc"><div class="cmp-section-label">DOCUMENTO</div><div class="cmp-client-name" style="font-size:12px" x-text="(comprobantePetSmart.tipoDocumento||'DNI')+': '+(comprobantePetSmart.numeroDocumento||'—')"></div></div></div><div class="cmp-client-address"><div class="cmp-client-address-label">Dirección</div><div class="cmp-muted" x-text="comprobantePetSmart.direccionCliente || '—'"></div></div></div></div><div class="cmp-section-title">DETALLE DE LA OPERACIÓN</div><table class="cmp-table"><thead><tr><th>Producto</th><th>Cant.</th><th>P. unit.</th><th>Importe</th></tr></thead><tbody><template x-for="(it,i) in comprobantePetSmart.items" :key="'cmp-prev-'+i"><tr><td><div class="cmp-prod-name" x-text="it.descripcion||'—'"></div></td><td x-text="it.cantidad||0"></td><td x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(it.precioUnitario)"></td><td x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(Number(it.cantidad||0)*Number(it.precioUnitario||0))"></td></tr></template></tbody></table><div class="cmp-summary-grid"><div class="cmp-tax-box"><div class="cmp-tax-title">Información tributaria</div><div class="cmp-tax-row"><span>Operación gravada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opGravada)"></b></div><div class="cmp-tax-row"><span>Operación exonerada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opExonerada)"></b></div><div class="cmp-tax-row"><span>Operación inafecta</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opInafecta)"></b></div><div class="cmp-tax-row"><span>ISC</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.isc)"></b></div><div class="cmp-tax-row"><span>IGV</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.igv)"></b></div><div class="cmp-tax-row"><span>ICBPER</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.icbper)"></b></div><div class="cmp-tax-row"><span>Otros cargos / tributos</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(Number(comprobantePetSmart.otrosCargos||0)+Number(comprobantePetSmart.otrosTributos||0))"></b></div></div><div class="cmp-totals"><div><span>Base imponible</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.subtotal)"></b></div><div><span>IGV</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.igv)"></b></div><div class="cmp-total"><span>IMPORTE TOTAL</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.total)"></b></div></div></div><div class="cmp-note" x-show="comprobantePetSmart.observacion" x-text="comprobantePetSmart.observacion"></div><div class="cmp-footer"><div class="cmp-footer-main">Gracias por confiar en PetSmart 🐾</div><div>COMPROMETIDOS POR MÁS COLITAS FELICES</div><div class="cmp-footer-legal">Representación personalizada de los datos del comprobante electrónico emitido oficialmente. No constituye una nueva emisión tributaria ni modifica el comprobante registrado ante SUNAT.</div></div></div></div>
+</div></div></div></div>
+<div style="display:none;" x-show="activeTab === 'clientes'" x-transition="">
 <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden">
 <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
 <div>
@@ -6170,7 +6450,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 </div></div>
 <div class="p-5 md:p-7 grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-5">
 <div class="catalogo-premium-card p-4 md:p-5">
-<div class="flex items-center justify-between gap-3 mb-3"><div><div class="text-[10px] uppercase tracking-[0.18em] font-black text-blue-700">Productos</div><div class="font-black text-lg">Seleccionar artículos</div></div><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black" x-text="productosSeleccionadosCatalogo.length + ' seleccionados'"></span></div>
+<div class="flex items-center justify-between gap-3 mb-3"><div><div class="text-[10px] uppercase tracking-[0.18em] font-black text-blue-700">Productos</div><div class="font-black text-lg catalogo-select-title">Seleccionar artículos</div></div><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-black" x-text="productosSeleccionadosCatalogo.length + ' seleccionados'"></span></div>
 <div class="relative mb-3"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="catalogoFiltro" placeholder="Buscar producto..." class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-200"></div>
 <div class="max-h-[600px] overflow-auto space-y-2 pr-1"><template x-for="p in productosCatalogoDisponibles" :key="'cat-select-'+p.id"><label class="catalogo-premium-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer bg-white"><input type="checkbox" :checked="catalogoSeleccionados.includes(p.id)" @change="toggleCatalogoProducto(p.id)" class="w-4 h-4 accent-blue-700"><img :src="p.imagenUrl || ''" class="w-14 h-14 object-contain rounded-xl bg-slate-50 border border-slate-100"><span class="min-w-0"><span class="block font-black text-xs truncate" x-text="p.nombre"></span><span class="block text-[10px] text-slate-400 mt-1" x-text="[p.talla && 'Talla '+p.talla,p.sku && 'SKU '+p.sku].filter(Boolean).join(' · ')"></span></span></label></template></div>
 </div>
