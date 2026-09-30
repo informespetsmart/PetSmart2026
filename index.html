@@ -742,7 +742,9 @@ body.dark{background:#070d19!important}
 .vale-paw{opacity:.045!important}
 
 /* CATÁLOGO */
-.catalogo-export-premium{font-family:'Poppins',sans-serif!important;width:1080px!important;max-width:none!important;min-height:0!important;background:#f4f7f9!important;color:#1e293b!important;padding:0 0 24px!important}
+.catalogo-export-premium{font-family:'Poppins',sans-serif!important;width:100%!important;max-width:900px!important;min-width:0!important;min-height:0!important;background:#f4f7f9!important;color:#1e293b!important;padding:0 0 24px!important;box-sizing:border-box!important;margin:0 auto!important}
+@media(max-width:1000px){.catalogo-export-premium{max-width:100%!important;width:100%!important}.catalogo-export-premium>.grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;padding-left:28px!important;padding-right:28px!important;gap:20px!important}}
+@media(max-width:700px){.catalogo-export-premium>.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding-left:18px!important;padding-right:18px!important;gap:16px!important}.catalogo-export-premium .cat-export-top{padding-left:28px!important;padding-right:28px!important}}
 .catalogo-export-premium .cat-export-top{background:linear-gradient(135deg,#0a4076 0%,#062649 100%)!important;border-radius:0 0 40px 40px!important;padding:40px 60px!important;box-shadow:0 10px 25px rgba(10,64,118,.15)!important}
 .catalogo-export-premium .cat-export-top:after{width:250px!important;height:250px!important;right:-100px!important;top:-145px!important;border:38px solid rgba(255,255,255,.06)!important}
 .catalogo-export-premium .cat-export-logo{max-height:70px!important;max-width:230px!important;background:transparent!important;border-radius:0!important;padding:0!important;object-fit:contain!important}
@@ -3365,7 +3367,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 // COMPROBANTE PETSMART · REPRESENTACIÓN DE SUNAT
                 // =================================================
                 limpiarComprobantePetSmart() {
-                    this.comprobantePetSmart = { ventaId:'', ventaGrupoId:'', tipo:'Boleta', serie:'EB01', numero:'', fecha:'', hora:'', rucEmisor:'', razonSocialEmisor:'', clienteNombre:'', tipoDocumento:'DNI', numeroDocumento:'', direccionCliente:'', moneda:'PEN', subtotal:0, igv:0, total:0, observacion:'', fechaVencimiento:'', opGravada:0, opExonerada:0, opInafecta:0, isc:0, icbper:0, otrosCargos:0, otrosTributos:0, redondeo:0, items:[] };
+                    this.comprobantePetSmart = { ventaId:'', ventaGrupoId:'', tipo:'Boleta', serie:'EB01', numero:'', fecha:this.fechaPeru(), hora:'', rucEmisor:'', razonSocialEmisor:'', clienteNombre:'', tipoDocumento:'DNI', numeroDocumento:'', direccionCliente:'', moneda:'PEN', subtotal:0, igv:0, total:0, observacion:'', fechaVencimiento:'', opGravada:0, opExonerada:0, opInafecta:0, isc:0, icbper:0, otrosCargos:0, otrosTributos:0, redondeo:0, items:[] };
                     this.comprobantePetSmartGenerado = false;
                 },
                 async seleccionarVentaComprobante(id) {
@@ -3383,7 +3385,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     const serieComprobante=tipoComprobante==='Boleta' ? 'EB01' : (fuente.serie||'');
                     this.comprobantePetSmart={
                         ventaId:String(item.id), ventaGrupoId:grupo, tipo:tipoComprobante, serie:serieComprobante, numero:fuente.numero||item.comprobanteNumero||'',
-                        fecha:fuente.fecha||item.fechaVenta||this.fechaPeru(), hora:fuente.hora||'', rucEmisor:fuente.rucEmisor||this.configNegocio.ruc||'', razonSocialEmisor:fuente.razonSocialEmisor||this.configNegocio.nombre||'',
+                        fecha:fuente.fecha||this.fechaPeru(), hora:fuente.hora||'', rucEmisor:fuente.rucEmisor||this.configNegocio.ruc||'', razonSocialEmisor:fuente.razonSocialEmisor||this.configNegocio.nombre||'',
                         clienteNombre:fuente.clienteNombre||item.clienteNombre||'', tipoDocumento:fuente.tipoDocumento||item.tipoDocumento||'DNI', numeroDocumento:fuente.numeroDocumento||item.numeroDocumento||'', direccionCliente:fuente.direccionCliente||item.direccionEntrega||'',
                         moneda:fuente.moneda||'PEN', subtotal:Number(fuente.subtotal||0), igv:Number(fuente.igv||0), total:Number(fuente.total||item.precioVenta||0), observacion:fuente.observacion||'', opGravada:Number(fuente.opGravada ?? fuente.subtotal ?? 0), opExonerada:Number(fuente.opExonerada||0), opInafecta:Number(fuente.opInafecta||0), isc:Number(fuente.isc||0), icbper:Number(fuente.icbper||0), otrosCargos:Number(fuente.otrosCargos||0), otrosTributos:Number(fuente.otrosTributos||0), redondeo:Number(fuente.redondeo||0),
                         items:Array.isArray(fuente.items)&&fuente.items.length ? fuente.items : relacionadas.map(p=>({descripcion:p.nombre||'',cantidad:1,precioUnitario:Number(p.precioVenta||0)}))
@@ -3413,6 +3415,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     return falt;
                 },
                 validarYGenerarComprobantePetSmart(){
+                    if(!this.comprobantePetSmart.fecha) this.comprobantePetSmart.fecha=this.fechaPeru();
                     if((this.comprobantePetSmart.tipo||'')==='Boleta') this.comprobantePetSmart.serie='EB01';
                     this.recalcularComprobantePetSmart();
                     const falt=this.validarComprobantePetSmart();
@@ -3448,17 +3451,12 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     if(!window.html2canvas || !window.jspdf){ Swal.fire('PDF','No se pudo cargar el motor de PDF. Recarga la página e inténtalo nuevamente.','error'); return; }
                     const nombre=`PetSmart_${this.comprobantePetSmart.tipo||'Comprobante'}_${this.comprobantePetSmart.serie||'SN'}-${this.comprobantePetSmart.numero||'SN'}.pdf`.replace(/[^a-zA-Z0-9_.-]+/g,'_');
                     const A4_W=210, A4_H=297;
-                    try{
-                        Swal.fire({title:'Generando PDF...',text:'Preparando el comprobante en formato A4 y alta nitidez.',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
-                        await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-                        if(document.fonts?.ready) await document.fonts.ready;
-                        const logo=original.querySelector('.cmp-logo');
-                        if(logo && !(logo.complete && logo.naturalWidth>0)) await new Promise(resolve=>{const done=()=>{logo.removeEventListener('load',done);logo.removeEventListener('error',done);resolve();};logo.addEventListener('load',done,{once:true});logo.addEventListener('error',done,{once:true});});
-                        if(logo?.decode){ try{await logo.decode();}catch(_){}}
+                    const esperarFrame=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+                    const capturar=async()=>{
                         const rect=original.getBoundingClientRect();
                         if(rect.width<100 || rect.height<100) throw new Error('La previsualización del comprobante no está visible para capturarla.');
-                        const canvas=await window.html2canvas(original,{
-                            scale:3,
+                        return await window.html2canvas(original,{
+                            scale:2.5,
                             useCORS:true,
                             allowTaint:false,
                             backgroundColor:'#ffffff',
@@ -3472,21 +3470,68 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                             windowHeight:document.documentElement.clientHeight,
                             letterRendering:true
                         });
-                        if(!canvas || !canvas.width || !canvas.height) throw new Error('La captura del comprobante quedó vacía.');
+                    };
+                    const crearPdf=canvas=>{
                         const {jsPDF}=window.jspdf;
                         const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true,putOnlyUsedFonts:true});
-                        const image=canvas.toDataURL('image/png');
+                        // JPEG de alta calidad: mantiene la nitidez del comprobante pero evita el enorme
+                        // consumo de memoria que provocaba el PNG A4 a escala 3x.
+                        const image=canvas.toDataURL('image/jpeg',0.985);
                         const ratio=canvas.width/canvas.height;
                         let imgW=A4_W, imgH=A4_W/ratio, x=0, y=(A4_H-imgH)/2;
                         if(imgH>A4_H){imgH=A4_H;imgW=A4_H*ratio;x=(A4_W-imgW)/2;y=0;}
                         pdf.setFillColor(255,255,255);pdf.rect(0,0,A4_W,A4_H,'F');
-                        pdf.addImage(image,'PNG',x,y,imgW,imgH,undefined,'FAST');
+                        pdf.addImage(image,'JPEG',x,y,imgW,imgH,undefined,'FAST');
                         pdf.save(nombre);
-                        Swal.close();
+                    };
+                    let logo=null, logoOculto=false;
+                    try{
+                        Swal.fire({title:'Generando PDF...',text:'Preparando el comprobante en formato A4 y alta nitidez.',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
+                        await esperarFrame();
+                        if(document.fonts?.ready) await document.fonts.ready;
+                        logo=original.querySelector('.cmp-logo');
+                        if(logo){
+                            // Fuerza CORS desde el inicio para logos alojados en Cloudinary/u otro dominio.
+                            try{logo.crossOrigin='anonymous';}catch(_){}
+                            if(!(logo.complete && logo.naturalWidth>0)){
+                                await new Promise(resolve=>{
+                                    const done=()=>{logo.removeEventListener('load',done);logo.removeEventListener('error',done);resolve();};
+                                    logo.addEventListener('load',done,{once:true});logo.addEventListener('error',done,{once:true});
+                                });
+                            }
+                            if(logo.decode){try{await logo.decode();}catch(_){}
+                            }
+                        }
+                        let canvas;
+                        try{
+                            canvas=await capturar();
+                            if(!canvas || !canvas.width || !canvas.height) throw new Error('La captura del comprobante quedó vacía.');
+                            crearPdf(canvas);
+                            Swal.close();
+                            return;
+                        }catch(firstError){
+                            console.warn('Primer intento de PDF falló; se activará la ruta de compatibilidad:',firstError);
+                            // La causa típica es que el logo externo impide exportar el canvas. Ocultamos
+                            // exclusivamente el logo para que el PDF nunca quede bloqueado por un recurso externo.
+                            if(!logo) throw firstError;
+                            const previousVisibility=logo.style.visibility;
+                            logo.style.visibility='hidden'; logoOculto=true;
+                            await esperarFrame();
+                            canvas=await capturar();
+                            if(!canvas || !canvas.width || !canvas.height) throw firstError;
+                            crearPdf(canvas);
+                            logo.style.visibility=previousVisibility; logoOculto=false;
+                            Swal.close();
+                            this.notificarToast('warning','PDF generado. El logo no pudo incorporarse por una restricción de carga de imagen externa.');
+                            return;
+                        }
                     }catch(error){
                         console.error('ERROR PDF COMPROBANTE PETSMART:',error);
                         Swal.close();
-                        Swal.fire('No se pudo generar el PDF','La captura del comprobante no pudo convertirse correctamente. Verifica que la previsualización sea visible y vuelve a intentarlo.','warning');
+                        const detalle=this.escapeHtml(String(error?.message||error||'Error inesperado.').replace(/[<>]/g,''));
+                        Swal.fire('No se pudo generar el PDF',`No se pudo convertir la previsualización. Detalle: <b>${detalle}</b>`,'warning');
+                    }finally{
+                        if(logoOculto && logo) logo.style.visibility='';
                     }
                 },
                 async compartirComprobantePetSmart(){
@@ -6392,7 +6437,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 <div class="flex flex-wrap gap-2"><button type="button" @click="validarYGenerarComprobantePetSmart()" class="px-5 py-3 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs font-black shadow-lg"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Generar comprobante PetSmart</button><button type="button" @click="guardarComprobantePetSmart()" :disabled="comprobantePetSmartGuardando" class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black disabled:opacity-50"><i class="fa-solid fa-floppy-disk mr-1"></i> Guardar relación</button></div>
 <div x-show="comprobantePetSmartGenerado" x-transition class="rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-sm font-black text-emerald-700 dark:text-emerald-300"><i class="fa-solid fa-circle-check mr-1"></i> Comprobante generado correctamente<div class="flex flex-wrap gap-2 mt-3"><button type="button" @click="descargarComprobantePetSmartPDF()" class="px-3 py-2 rounded-xl bg-slate-900 text-white text-[10px] font-black">Descargar PDF</button><button type="button" @click="compartirComprobantePetSmart()" class="px-3 py-2 rounded-xl bg-sky-700 text-white text-[10px] font-black">Compartir</button><button type="button" @click="compartirComprobantePetSmartWhatsApp()" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-[10px] font-black">WhatsApp</button></div></div>
 </div>
-<div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-900/50 p-3 md:p-5 overflow-auto"><div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-500 mb-3 text-center">Previsualización · documento final</div><div id="comprobantePetSmartPreview" class="comprobante-paper mx-auto"><div class="cmp-brandbar"><div><template x-if="configNegocio.logoUrl"><img :src="configNegocio.logoUrl" class="cmp-logo" alt="PetSmart"></template><div class="cmp-brand">PETSMART</div><div class="cmp-brand-sub">COMPROMETIDOS POR MÁS COLITAS FELICES</div></div><div class="cmp-doc-box"><div class="cmp-doc-box-title" x-text="(comprobantePetSmart.tipo || 'BOLETA DE VENTA') + ' ELECTRÓNICA'"></div><div class="cmp-doc-box-ruc" x-text="'RUC: '+(comprobantePetSmart.rucEmisor||'—')"></div><div class="cmp-doc-box-address">CAL. LOS CEDROS KM. 14.5 MZA. X INT. 1 LT. 27 - PANAMERICANA SUR AUXILIAR - SAN JUAN DE MIRAFLORES - LIMA - LIMA</div><div class="cmp-doc-box-number" x-text="(comprobantePetSmart.serie || '—')+' - '+(comprobantePetSmart.numero || '—')"></div></div></div><div class="cmp-doc-head"><div><div class="cmp-kicker">REPRESENTACIÓN PETSMART</div><div class="cmp-number" x-text="(comprobantePetSmart.serie || '—') + ' - ' + (comprobantePetSmart.numero || '—')"></div></div><div class="cmp-date"><div><b>Fecha de emisión</b> · <span x-text="comprobantePetSmart.fecha ? formatearFecha(comprobantePetSmart.fecha) : '—'"></span></div><div x-show="comprobantePetSmart.hora" x-text="comprobantePetSmart.hora"></div></div></div><div class="cmp-rule"></div><div class="cmp-client-grid"><div><div class="cmp-client-top"><div><div class="cmp-section-label">CLIENTE</div><div class="cmp-client-name" x-text="comprobantePetSmart.clienteNombre || '—'"></div></div><div class="cmp-client-doc"><div class="cmp-section-label">DOCUMENTO</div><div class="cmp-client-name" style="font-size:12px" x-text="(comprobantePetSmart.tipoDocumento||'DNI')+': '+(comprobantePetSmart.numeroDocumento||'—')"></div></div></div><div class="cmp-client-address"><div class="cmp-client-address-label">Dirección</div><div class="cmp-muted" x-text="comprobantePetSmart.direccionCliente || '—'"></div></div></div></div><div class="cmp-section-title">DETALLE DE LA OPERACIÓN</div><table class="cmp-table"><thead><tr><th>Producto</th><th>Cant.</th><th>P. unit.</th><th>Importe</th></tr></thead><tbody><template x-for="(it,i) in comprobantePetSmart.items" :key="'cmp-prev-'+i"><tr><td><div class="cmp-prod-name" x-text="it.descripcion||'—'"></div></td><td x-text="it.cantidad||0"></td><td x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(it.precioUnitario)"></td><td x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(Number(it.cantidad||0)*Number(it.precioUnitario||0))"></td></tr></template></tbody></table><div class="cmp-summary-grid"><div class="cmp-tax-box"><div class="cmp-tax-title">Información tributaria</div><div class="cmp-tax-row"><span>Operación gravada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opGravada)"></b></div><div class="cmp-tax-row"><span>Operación exonerada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opExonerada)"></b></div><div class="cmp-tax-row"><span>Operación inafecta</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opInafecta)"></b></div><div class="cmp-tax-row"><span>ISC</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.isc)"></b></div><div class="cmp-tax-row"><span>IGV</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.igv)"></b></div><div class="cmp-tax-row"><span>ICBPER</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.icbper)"></b></div><div class="cmp-tax-row"><span>Otros cargos / tributos</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(Number(comprobantePetSmart.otrosCargos||0)+Number(comprobantePetSmart.otrosTributos||0))"></b></div></div><div class="cmp-totals"><div><span>Base imponible</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.subtotal)"></b></div><div><span>IGV</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.igv)"></b></div><div class="cmp-total"><span>IMPORTE TOTAL</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.total)"></b></div></div></div><div class="cmp-note" x-show="comprobantePetSmart.observacion" x-text="comprobantePetSmart.observacion"></div><div class="cmp-footer"><div class="cmp-footer-main">Gracias por confiar en PetSmart 🐾</div><div>COMPROMETIDOS POR MÁS COLITAS FELICES</div><div class="cmp-footer-legal">Representación personalizada de los datos del comprobante electrónico emitido oficialmente. No constituye una nueva emisión tributaria ni modifica el comprobante registrado ante SUNAT.</div></div></div></div>
+<div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-900/50 p-3 md:p-5 overflow-auto"><div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-500 mb-3 text-center">Previsualización · documento final</div><div id="comprobantePetSmartPreview" class="comprobante-paper mx-auto"><div class="cmp-brandbar"><div><template x-if="configNegocio.logoUrl"><img :src="configNegocio.logoUrl" class="cmp-logo" alt="PetSmart" crossorigin="anonymous"></template><div class="cmp-brand">PETSMART</div><div class="cmp-brand-sub">COMPROMETIDOS POR MÁS COLITAS FELICES</div></div><div class="cmp-doc-box"><div class="cmp-doc-box-title" x-text="(comprobantePetSmart.tipo || 'BOLETA DE VENTA') + ' ELECTRÓNICA'"></div><div class="cmp-doc-box-ruc" x-text="'RUC: '+(comprobantePetSmart.rucEmisor||'—')"></div><div class="cmp-doc-box-address">CAL. LOS CEDROS KM. 14.5 MZA. X INT. 1 LT. 27 - PANAMERICANA SUR AUXILIAR - SAN JUAN DE MIRAFLORES - LIMA - LIMA</div><div class="cmp-doc-box-number" x-text="(comprobantePetSmart.serie || '—')+' - '+(comprobantePetSmart.numero || '—')"></div></div></div><div class="cmp-doc-head"><div><div class="cmp-kicker">REPRESENTACIÓN PETSMART</div><div class="cmp-number" x-text="(comprobantePetSmart.serie || '—') + ' - ' + (comprobantePetSmart.numero || '—')"></div></div><div class="cmp-date"><div><b>Fecha de emisión</b> · <span x-text="comprobantePetSmart.fecha ? formatearFecha(comprobantePetSmart.fecha) : '—'"></span></div><div x-show="comprobantePetSmart.hora" x-text="comprobantePetSmart.hora"></div></div></div><div class="cmp-rule"></div><div class="cmp-client-grid"><div><div class="cmp-client-top"><div><div class="cmp-section-label">CLIENTE</div><div class="cmp-client-name" x-text="comprobantePetSmart.clienteNombre || '—'"></div></div><div class="cmp-client-doc"><div class="cmp-section-label">DOCUMENTO</div><div class="cmp-client-name" style="font-size:12px" x-text="(comprobantePetSmart.tipoDocumento||'DNI')+': '+(comprobantePetSmart.numeroDocumento||'—')"></div></div></div><div class="cmp-client-address"><div class="cmp-client-address-label">Dirección</div><div class="cmp-muted" x-text="comprobantePetSmart.direccionCliente || '—'"></div></div></div></div><div class="cmp-section-title">DETALLE DE LA OPERACIÓN</div><table class="cmp-table"><thead><tr><th>Producto</th><th>Cant.</th><th>P. unit.</th><th>Importe</th></tr></thead><tbody><template x-for="(it,i) in comprobantePetSmart.items" :key="'cmp-prev-'+i"><tr><td><div class="cmp-prod-name" x-text="it.descripcion||'—'"></div></td><td x-text="it.cantidad||0"></td><td x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(it.precioUnitario)"></td><td x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(Number(it.cantidad||0)*Number(it.precioUnitario||0))"></td></tr></template></tbody></table><div class="cmp-summary-grid"><div class="cmp-tax-box"><div class="cmp-tax-title">Información tributaria</div><div class="cmp-tax-row"><span>Operación gravada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opGravada)"></b></div><div class="cmp-tax-row"><span>Operación exonerada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opExonerada)"></b></div><div class="cmp-tax-row"><span>Operación inafecta</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.opInafecta)"></b></div><div class="cmp-tax-row"><span>ISC</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.isc)"></b></div><div class="cmp-tax-row"><span>IGV</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.igv)"></b></div><div class="cmp-tax-row"><span>ICBPER</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.icbper)"></b></div><div class="cmp-tax-row"><span>Otros cargos / tributos</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(Number(comprobantePetSmart.otrosCargos||0)+Number(comprobantePetSmart.otrosTributos||0))"></b></div></div><div class="cmp-totals"><div><span>Operación gravada</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.subtotal)"></b></div><div><span>IGV</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.igv)"></b></div><div class="cmp-total"><span>IMPORTE TOTAL</span><b x-text="(comprobantePetSmart.moneda==='USD'?'$ ':'S/ ')+formatMonto(comprobantePetSmart.total)"></b></div></div></div><div class="cmp-note" x-show="comprobantePetSmart.observacion" x-text="comprobantePetSmart.observacion"></div><div class="cmp-footer"><div class="cmp-footer-main">Gracias por confiar en PetSmart 🐾</div><div>COMPROMETIDOS POR MÁS COLITAS FELICES</div><div class="cmp-footer-legal">Representación personalizada de los datos del comprobante electrónico emitido oficialmente. No constituye una nueva emisión tributaria ni modifica el comprobante registrado ante SUNAT.</div></div></div></div>
 </div></div></div></div>
 <div style="display:none;" x-show="activeTab === 'clientes'" x-transition="">
 <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden">
@@ -6457,7 +6502,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 <div class="relative mb-3"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="catalogoFiltro" placeholder="Buscar producto..." class="w-full pl-9 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold outline-none focus:ring-2 focus:ring-blue-200"></div>
 <div class="max-h-[600px] overflow-auto space-y-2 pr-1"><template x-for="p in productosCatalogoDisponibles" :key="'cat-select-'+p.id"><label class="catalogo-premium-item flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer bg-white"><input type="checkbox" :checked="catalogoSeleccionados.includes(p.id)" @change="toggleCatalogoProducto(p.id)" class="w-4 h-4 accent-blue-700"><img :src="p.imagenUrl || ''" class="w-14 h-14 object-contain rounded-xl bg-slate-50 border border-slate-100"><span class="min-w-0"><span class="block font-black text-xs truncate" x-text="p.nombre"></span><span class="block text-[10px] text-slate-400 mt-1" x-text="[p.talla && 'Talla '+p.talla,p.sku && 'SKU '+p.sku].filter(Boolean).join(' · ')"></span></span></label></template></div>
 </div>
-<div class="catalogo-premium-card p-3 md:p-4 overflow-auto">
+<div class="catalogo-premium-card p-3 md:p-4 overflow-x-hidden overflow-y-auto">
 <div id="catalogoExportable" class="catalogo-export-premium p-4 md:p-7 min-h-[900px]">
 <div class="cat-export-top">
 <div class="relative z-10 flex flex-col items-start">
