@@ -712,6 +712,23 @@ body.dark{background:#070d19!important}
 .ps-track-thanks i{color:#fde68a}
 .ps-track-thanks.delivered{background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,.10));border-color:rgba(253,230,138,.32)}
 
+/* EXPERIENCIA PÚBLICA DEDICADA: ESTRELLAS DE PETSMART */
+.ps-track-photo-mode{width:min(100%,900px);margin:0 auto;padding:clamp(6px,2vw,22px);animation:psPhotoModeIn .45s ease both}
+.ps-track-photo-brand{display:flex;justify-content:center;align-items:center;margin:0 auto 10px;min-height:64px}
+.ps-track-photo-brand img{display:block;max-width:min(230px,72vw);max-height:82px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 10px 22px rgba(1,26,63,.22))}
+.ps-track-photo-welcome{max-width:660px;margin:12px auto 0;text-align:center;color:#dbeafe;font-size:13px;font-weight:750;line-height:1.65}
+.ps-track-photo-mode .ps-track-thanks{flex-wrap:wrap;gap:10px;padding:17px clamp(12px,3vw,26px);background:linear-gradient(130deg,rgba(255,255,255,.18),rgba(255,255,255,.10));border-color:rgba(253,230,138,.38);text-align:center}
+.ps-track-photo-mode .ps-track-photo-card{margin-top:22px;padding:clamp(20px,4vw,34px);border-radius:24px;box-shadow:0 22px 55px rgba(1,27,65,.24)}
+.ps-track-photo-mode .ps-track-photo-title{font-size:clamp(21px,3vw,27px);letter-spacing:-.02em}
+.ps-track-photo-mode .ps-track-photo-text{font-size:clamp(14px,2vw,16px);margin-top:10px}
+.ps-track-photo-mode .ps-track-photo-hint{font-size:12px;margin-top:9px}
+.ps-track-photo-mode .ps-track-photo-button{width:auto;min-width:190px;height:auto;min-height:58px;flex-direction:row;padding:15px 24px;border-radius:16px;font-weight:900;font-size:14px}
+.ps-track-photo-mode .ps-track-photo-button i{font-size:19px}
+.ps-track-photo-mode .ps-track-photo-footer{margin:18px auto 0;text-align:center;color:#dbeafe;font-size:12px;font-weight:700;line-height:1.6}
+.ps-track-photo-mode .ps-track-photo-footer i{color:#fde68a;margin-right:5px}
+@keyframes psPhotoModeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:520px){.ps-track-photo-mode{padding:4px}.ps-track-photo-mode .ps-track-thanks{font-size:clamp(17px,5vw,21px);gap:8px}.ps-track-photo-mode .ps-track-photo-card{padding:20px 15px;border-radius:20px}.ps-track-photo-mode .ps-track-photo-button{width:100%;min-width:0}.ps-track-photo-mode .ps-track-photo-footer{padding:0 8px}}
+
 /* MENSAJE CONTEXTUAL POR ESTADO */
 .ps-track-context{
   margin:18px auto 0;max-width:900px;padding:16px 20px;border-radius:18px;
@@ -1161,7 +1178,7 @@ body.dark{background:#070d19!important}
 <body :class="[darkMode ? 'dark bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-800', modoSeguimientoCliente ? 'tracking-only' : '', modoClubPublico ? 'club-only' : '']" class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 font-sans transition-colors duration-300" x-data="inventarioApp()"><div x-show="modoSeguimientoCliente" x-cloak class="ps-track-v2" :class="{'is-destination': seguimientoClienteData?.estado==='En destino', 'is-photo': seguimientoClienteData?.estado==='Fotografía'}">
   <div class="ps-track-wrap">
     <div class="ps-track-paw-bg" aria-hidden="true"></div>
-    <div class="text-center mb-8">
+    <div class="text-center mb-8" x-show="seguimientoCargando || !seguimientoClienteData || seguimientoClienteData?.error || seguimientoClienteData?.estado!=='Fotografía'" x-transition>
       <template x-if="configNegocio.logoUrl"><div class="ps-track-logo"><img :src="configNegocio.logoUrl" alt="PetSmart"></div></template>
       <div class="ps-track-eyebrow">PetSmart · Seguimiento</div>
       <div class="ps-track-title">Seguimiento de pedido</div>
@@ -1170,6 +1187,7 @@ body.dark{background:#070d19!important}
     <div x-show="seguimientoCargando" class="ps-track-error" style="color:#31506e"><i class="fa-solid fa-spinner fa-spin text-3xl text-blue-600"></i><div class="mt-3 font-black">Cargando tu pedido…</div></div>
     <div x-show="!seguimientoCargando && seguimientoClienteData?.error" class="ps-track-error"><i class="fa-solid fa-circle-exclamation text-3xl"></i><div class="mt-3 font-black" x-text="seguimientoClienteData?.error"></div></div>
     <div x-show="!seguimientoCargando && seguimientoClienteData && !seguimientoClienteData.error">
+      <div x-show="seguimientoClienteData?.estado!=='Fotografía'" x-transition class="ps-track-normal-mode">
       <div class="ps-track-card">
         <div class="ps-track-card-head flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div><div class="ps-track-order">Pedido</div><div class="ps-track-number" x-text="'#'+(seguimientoClienteData?.pedidoNumero||'—')"></div><div class="ps-track-client-name" x-text="seguimientoClienteData?.clienteNombre||'Cliente'"></div></div>
@@ -1178,8 +1196,8 @@ body.dark{background:#070d19!important}
         <div class="ps-track-progress">
           <div class="relative pt-1">
             <div class="ps-track-line"></div>
-            <div class="ps-track-line-fill" :style="'width: '+((indiceEtapaVisualSeguimiento()/6)*85.7)+'%'"></div>
-            <div class="ps-track-truck" :class="[seguimientoAnimando?'moving':'', seguimientoClienteData?.estado==='Entregado'?'is-delivered':'', ['Enviado','En camino'].includes(seguimientoClienteData?.estado)?'is-enroute':'', seguimientoClienteData?.estado==='Fotografía'?'is-photo':'']" :style="'left: '+(7.15+(indiceEtapaVisualSeguimiento()/6)*85.7)+'%'" title="Estado actual del pedido"><i :class="seguimientoClienteData?.estado==='Fotografía'?'fa-solid fa-camera':(seguimientoClienteData?.estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-truck-fast')"></i></div>
+            <div class="ps-track-line-fill" :style="'width: '+((indiceEtapaVisualSeguimiento()/5)*85.7)+'%'"></div>
+            <div class="ps-track-truck" :class="[seguimientoAnimando?'moving':'', seguimientoClienteData?.estado==='Entregado'?'is-delivered':'', ['Enviado','En camino'].includes(seguimientoClienteData?.estado)?'is-enroute':'', seguimientoClienteData?.estado==='Fotografía'?'is-photo':'']" :style="'left: '+(7.15+(indiceEtapaVisualSeguimiento()/5)*85.7)+'%'" title="Estado actual del pedido"><i :class="seguimientoClienteData?.estado==='Fotografía'?'fa-solid fa-camera':(seguimientoClienteData?.estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-truck-fast')"></i></div>
             <div class="ps-track-stages">
               <template x-for="(etapa,index) in seguimientoEtapasPublicas" :key="'v3-stage-'+etapa.key">
                 <div class="ps-track-stage" :class="{'done':index<indiceEtapaVisualSeguimiento() && etapa.key!=='estrellas','current':index===indiceEtapaVisualSeguimiento(),'midpoint':etapa.key==='en-camino','photo-stage':etapa.key==='estrellas','photo-ready':etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía','photo-locked':etapa.key==='estrellas' && seguimientoClienteData?.estado!=='Fotografía'}" :title="etapa.key==='estrellas' ? (seguimientoClienteData?.estado==='Fotografía' ? 'Estrellas de PetSmart — Comparte una foto de tu engreído disfrutando de su pedido. Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.' : 'Cuando el seguimiento llegue a Fotografía, podrás compartir una foto de tu mascota.') : (etapa.key==='en-camino' ? 'Tu pedido está avanzando hacia el destino.' : etapa.label)" :role="etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía' ? 'button' : null" :tabindex="etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía' ? 0 : null" :aria-label="etapa.key==='estrellas' ? 'Estrellas de PetSmart. Comparte una foto de tu mascota cuando el estado sea Fotografía.' : etapa.label" @click="if(etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía') document.getElementById('psTrackPhotoCard')?.scrollIntoView({behavior:'smooth',block:'center'})" @keydown.enter.prevent="if(etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía') document.getElementById('psTrackPhotoCard')?.scrollIntoView({behavior:'smooth',block:'center'})">
@@ -1201,15 +1219,21 @@ body.dark{background:#070d19!important}
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Enviado'" x-transition><div class="ps-track-context-title">📦 Tu pedido ya fue enviado</div><div class="ps-track-context-text">Tu pedido fue despachado. En cuanto avance en su recorrido, actualizaremos su estado.</div></div>
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='En camino'" x-transition><div class="ps-track-context-title">🚚 ¡Tu pedido está avanzando!</div><div class="ps-track-context-text">Tu pedido ya está en camino hacia el destino. Seguiremos actualizando su avance.</div></div>
       <div class="ps-track-context destination" x-show="seguimientoClienteData?.estado==='En destino'" x-transition><div class="ps-track-context-title">📍 ¡Tu pedido ya llegó a destino! 😊</div><div class="ps-track-context-text">Nuestro equipo ya se encuentra en el punto de entrega. ¡Prepárate para recibir tu pedido!</div></div>
-      <div x-show="seguimientoClienteData?.estado==='Fotografía'" x-transition class="ps-track-thanks delivered"><i class="fa-solid fa-heart"></i><span x-text="(seguimientoClienteData?.clienteNombre ? seguimientoClienteData.clienteNombre + ', ' : '') + '¡Muchas gracias por tu compra!'"></span><i class="fa-solid fa-paw"></i></div>
-      <div id="psTrackPhotoCard" x-show="seguimientoClienteData?.estado==='Fotografía'" x-transition class="ps-track-photo-card">
-        <div class="ps-track-photo-copy"><div class="ps-track-photo-title"><i class="fa-solid fa-star mr-1" aria-hidden="true"></i> Estrellas de PetSmart</div><div class="ps-track-photo-text">Comparte una foto de tu engreído disfrutando de su pedido. 📸✨<br>Queremos conocer a las estrellas de PetSmart. 🐶🐱</div><div class="ps-track-photo-hint">Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.</div></div>
-        <input id="psTrackPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="seleccionarFotoCliente($event)">
-        <label for="psTrackPhotoInput" class="ps-track-photo-button" title="Seleccionar foto"><i class="fa-solid fa-camera"></i><span>Compartir foto</span></label>
-        <div x-show="fotoClientePreview" x-transition class="ps-track-photo-preview-wrap"><img :src="fotoClientePreview" class="ps-track-photo-preview" alt="Vista previa de la foto seleccionada"><div class="ps-track-photo-actions"><button type="button" @click="subirFotoClienteCloudinary()" :disabled="fotoClienteSubiendo" class="ps-track-photo-upload"><i :class="fotoClienteSubiendo?'fa-solid fa-spinner fa-spin':'fa-solid fa-cloud-arrow-up'"></i><span x-text="fotoClienteSubiendo?'Subiendo foto…':'Subir foto'"></span></button><button type="button" @click="cancelarFotoCliente()" class="ps-track-photo-cancel" :disabled="fotoClienteSubiendo">Cambiar</button></div></div>
-        <div x-show="fotoClienteSubida" x-transition class="ps-track-photo-success"><i class="fa-solid fa-circle-check"></i><span>¡Gracias! Recibimos tu foto y nos ayudas a seguir creciendo. 🐾</span></div>
-      </div>
       <div x-show="seguimientoClienteData?.estado!=='En destino' && seguimientoClienteData?.estado!=='Entregado' && seguimientoClienteData?.estado!=='Fotografía'" class="text-center text-[11px] text-blue-100 mt-5">PetSmart · Te mantendremos informado del avance de tu pedido.</div>
+      </div><!-- /ps-track-normal-mode -->
+      <section x-show="seguimientoClienteData?.estado==='Fotografía'" x-transition class="ps-track-photo-mode" aria-label="Estrellas de PetSmart">
+        <template x-if="configNegocio.logoUrl"><div class="ps-track-photo-brand"><img :src="configNegocio.logoUrl" alt="PetSmart"></div></template>
+        <div class="ps-track-thanks delivered"><i class="fa-solid fa-heart" aria-hidden="true"></i><span x-text="(seguimientoClienteData?.clienteNombre ? seguimientoClienteData.clienteNombre + ', ' : '') + '¡Muchas gracias por tu compra!' "></span><i class="fa-solid fa-paw" aria-hidden="true"></i></div>
+        <div class="ps-track-photo-welcome">Tu experiencia también forma parte de la familia PetSmart. 🐾</div>
+        <div id="psTrackPhotoCard" class="ps-track-photo-card">
+          <div class="ps-track-photo-copy"><div class="ps-track-photo-title"><i class="fa-solid fa-star mr-1" aria-hidden="true"></i> Estrellas de PetSmart</div><div class="ps-track-photo-text">Comparte una foto de tu engreído disfrutando de su pedido. 📸✨<br>Queremos conocer a las estrellas de PetSmart. 🐶🐱</div><div class="ps-track-photo-hint">Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.</div></div>
+          <input id="psTrackPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="seleccionarFotoCliente($event)">
+          <label for="psTrackPhotoInput" class="ps-track-photo-button" title="Seleccionar foto"><i class="fa-solid fa-camera"></i><span>Compartir foto</span></label>
+          <div x-show="fotoClientePreview" x-transition class="ps-track-photo-preview-wrap"><img :src="fotoClientePreview" class="ps-track-photo-preview" alt="Vista previa de la foto seleccionada"><div class="ps-track-photo-actions"><button type="button" @click="subirFotoClienteCloudinary()" :disabled="fotoClienteSubiendo" class="ps-track-photo-upload"><i :class="fotoClienteSubiendo?'fa-solid fa-spinner fa-spin':'fa-solid fa-cloud-arrow-up'"></i><span x-text="fotoClienteSubiendo?'Subiendo foto…':'Subir foto'"></span></button><button type="button" @click="cancelarFotoCliente()" class="ps-track-photo-cancel" :disabled="fotoClienteSubiendo">Cambiar</button></div></div>
+          <div x-show="fotoClienteSubida" x-transition class="ps-track-photo-success"><i class="fa-solid fa-circle-check"></i><span>¡Gracias! Recibimos tu foto y nos ayudas a seguir creciendo. 🐾</span></div>
+        </div>
+        <div class="ps-track-photo-footer"><i class="fa-solid fa-heart"></i> Gracias por confiar en PetSmart para consentir a tu engreído.</div>
+      </section>
     </div>
   </div>
 </div>
@@ -2304,8 +2328,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     { key: 'enviado', label: 'Enviado', icon: 'fa-solid fa-truck-fast' },
                     { key: 'en-camino', label: 'En camino', icon: 'fa-solid fa-route' },
                     { key: 'destino', label: 'En destino', icon: 'fa-solid fa-location-dot' },
-                    { key: 'entregado', label: 'Entregado', icon: 'fa-solid fa-box-open' },
-                    { key: 'estrellas', label: 'Estrellas', icon: 'fa-solid fa-camera' }
+                    { key: 'entregado', label: 'Entregado', icon: 'fa-solid fa-box-open' }
                 ],
                 modalSeguimientoPedido: false,
                 seguimientoAdmin: null,
@@ -2584,11 +2607,23 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     return Array.from(años).sort((a,b) => Number(b) - Number(a));
                 },
                 periodoFinancieroCoincide(fecha) {
-                    const f = String(fecha || '');
-                    if (this.filtroAño !== 'todos' && !f.startsWith(String(this.filtroAño))) return false;
-                    if (this.filtroMes !== 'todos') {
-                        if (!/^\d{4}-\d{2}/.test(f)) return false;
-                        if (!f.startsWith(String(this.filtroAño === 'todos' ? f.slice(0,4) : this.filtroAño) + '-' + String(this.filtroMes).slice(-2))) return false;
+                    const f = String(fecha || '').trim();
+                    const anioSeleccionado = String(this.filtroAño || 'todos');
+                    const mesSeleccionado = String(this.filtroMes || 'todos');
+                    if (anioSeleccionado === 'todos' && mesSeleccionado === 'todos') return true;
+
+                    const partes = /^(\d{4})-(\d{2})/.exec(f);
+                    if (!partes) return false;
+                    const anioFecha = partes[1];
+                    const mesFecha = partes[2];
+
+                    if (anioSeleccionado !== 'todos' && anioFecha !== anioSeleccionado) return false;
+                    if (mesSeleccionado !== 'todos') {
+                        // Admite también valores antiguos del selector con formato YYYY-MM.
+                        const mesNormalizado = /^\d{4}-(\d{2})$/.test(mesSeleccionado)
+                            ? mesSeleccionado.slice(5, 7)
+                            : mesSeleccionado.padStart(2, '0');
+                        if (mesFecha !== mesNormalizado) return false;
                     }
                     return true;
                 },
@@ -2596,54 +2631,18 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 // MESES
                 // =================================================
                 listaMeses: [
-                    {
-                        val: '2026-01',
-                        label: 'Enero 2026'
-                    },
-                    {
-                        val: '2026-02',
-                        label: 'Febrero 2026'
-                    },
-                    {
-                        val: '2026-03',
-                        label: 'Marzo 2026'
-                    },
-                    {
-                        val: '2026-04',
-                        label: 'Abril 2026'
-                    },
-                    {
-                        val: '2026-05',
-                        label: 'Mayo 2026'
-                    },
-                    {
-                        val: '2026-06',
-                        label: 'Junio 2026'
-                    },
-                    {
-                        val: '2026-07',
-                        label: 'Julio 2026'
-                    },
-                    {
-                        val: '2026-08',
-                        label: 'Agosto 2026'
-                    },
-                    {
-                        val: '2026-09',
-                        label: 'Septiembre 2026'
-                    },
-                    {
-                        val: '2026-10',
-                        label: 'Octubre 2026'
-                    },
-                    {
-                        val: '2026-11',
-                        label: 'Noviembre 2026'
-                    },
-                    {
-                        val: '2026-12',
-                        label: 'Diciembre 2026'
-                    }
+                    { val: '01', label: 'Enero' },
+                    { val: '02', label: 'Febrero' },
+                    { val: '03', label: 'Marzo' },
+                    { val: '04', label: 'Abril' },
+                    { val: '05', label: 'Mayo' },
+                    { val: '06', label: 'Junio' },
+                    { val: '07', label: 'Julio' },
+                    { val: '08', label: 'Agosto' },
+                    { val: '09', label: 'Septiembre' },
+                    { val: '10', label: 'Octubre' },
+                    { val: '11', label: 'Noviembre' },
+                    { val: '12', label: 'Diciembre' }
                 ],
                 // =================================================
                 // FORM PRODUCTO
@@ -4120,9 +4119,10 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     return `${base}?seguimiento=${encodeURIComponent(token)}`;
                 },
                 indiceEtapaVisualSeguimiento() {
-                    const estado=String(this.seguimientoClienteData?.estado||'Solicitud Recibida').replace(/^Recibido$/,'Solicitud Recibida');
-                    const indices={'Solicitud Recibida':0,'Preparando':1,'Enviado':2,'En camino':3,'En destino':4,'Entregado':5,'Fotografía':6};
-                    return Object.prototype.hasOwnProperty.call(indices,estado) ? indices[estado] : 0;
+                    const estado = String(this.seguimientoClienteData?.estado || 'Solicitud Recibida').replace(/^Recibido$/, 'Solicitud Recibida');
+                    // La línea pública termina en Entregado. Fotografía abre una pantalla aparte.
+                    const indices = {'Solicitud Recibida':0,'Preparando':1,'Enviado':2,'En camino':3,'En destino':4,'Entregado':5,'Fotografía':5};
+                    return Object.prototype.hasOwnProperty.call(indices, estado) ? indices[estado] : 0;
                 },
                 async cargarSeguimientoPublico(token) {
                     this.seguimientoCargando=true; this.seguimientoClienteData=null;
@@ -5064,10 +5064,13 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                 // INDICADORES DE VENTAS
                 // =================================================
                 get ventasDelPeriodo() {
-                    return this.productos.filter(item =>
-                        item.estado === 'vendido' &&
-                        this.periodoFinancieroCoincide(item.fechaVenta)
-                    );
+                    return (this.productos || []).filter(item => {
+                        if (item.estado !== 'vendido') return false;
+                        const coincidePeriodo = this.periodoFinancieroCoincide(item.fechaVenta);
+                        const coincideCanal = this.filtroCanalGanancia === 'todos'
+                            || String(item.canalVenta || '') === String(this.filtroCanalGanancia);
+                        return coincidePeriodo && coincideCanal;
+                    });
                 },
                 get perfilFacebookMasVendido() {
                     const conteo = {};
@@ -5118,6 +5121,18 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                             item.estado ===
                             'vendido'
                     ).length;
+                },
+                get totalBolsasNotexEntregadas() {
+                    const pedidosConBolsa = new Set();
+                    (this.productos || []).forEach((item, index) => {
+                        const marcada = item.conBolsa === true
+                            || String(item.conBolsa).toLowerCase() === 'true'
+                            || Number(item.conBolsa) === 1;
+                        if (item.estado !== 'vendido' || !marcada) return;
+                        const grupo = String(item.ventaGrupoId || item.pedidoId || item.comprobanteId || item.comprobanteNumero || '').trim();
+                        pedidosConBolsa.add(grupo ? `pedido:${grupo}` : `registro:${item.id || item.sku || index}`);
+                    });
+                    return pedidosConBolsa.size;
                 },
                 get productosBajoStock() {
                     return this.productos.filter(
@@ -6817,12 +6832,22 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 </span>
 </div>
 <div class="text-2xl font-black text-rose-600 dark:text-rose-400">
-<span x-text="totalVendidos">
+<span x-text="ventasDelPeriodo.length">
 </span>
 </div>
 <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
-                    Unidades vendidas históricamente.
+                    Unidades del período y canal seleccionados.
                 </div>
+</div>
+<!-- BOLSAS NOTEX -->
+<div class="bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg relative overflow-hidden">
+  <div class="absolute right-0 top-0 w-24 h-24 rounded-full bg-sky-500/10 -translate-y-7 translate-x-7"></div>
+  <div class="flex items-center justify-between mb-2 gap-3">
+    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Bolsas Notex entregadas</span>
+    <span class="p-2 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-lg"><i class="fa-solid fa-bag-shopping text-xl"></i></span>
+  </div>
+  <div class="text-2xl font-black text-sky-600 dark:text-sky-400" x-text="totalBolsasNotexEntregadas"></div>
+  <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">Pedidos registrados con bolsa · total histórico.</div>
 </div>
 </div>
 <!-- =====================================================
