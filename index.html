@@ -164,6 +164,119 @@
             .sku-label-grid { grid-template-columns: 1fr; }
         }
     
+
+/* =========================================================
+   PETSMART CLUB · MODO PÚBLICO Y FIDELIZACIÓN
+   ========================================================= */
+body.club-only > :not(.ps-club-public){display:none!important;}
+body.club-only{padding:0!important;margin:0!important;background:#f5f8ff!important;color:#172033!important;overflow-x:hidden!important;}
+.ps-club-public{min-height:100vh;width:100%;position:relative;overflow:hidden;background:
+  radial-gradient(circle at 12% 8%, rgba(99,102,241,.10), transparent 28%),
+  radial-gradient(circle at 88% 12%, rgba(236,72,153,.09), transparent 25%),
+  linear-gradient(180deg,#f9fbff 0%,#f1f5fb 100%);}
+.ps-club-public:before{content:"";position:absolute;width:460px;height:460px;border-radius:50%;right:-250px;top:-220px;border:76px solid rgba(79,70,229,.055);pointer-events:none;}
+.ps-club-public:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;left:-240px;bottom:-260px;border:62px solid rgba(236,72,153,.045);pointer-events:none;}
+.ps-club-shell{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:30px 18px 60px;}
+.ps-club-brand{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:24px;}
+.ps-club-logo{width:min(210px,55vw);height:86px;object-fit:contain;display:block;margin:0 auto 8px;filter:drop-shadow(0 10px 18px rgba(15,23,42,.08));}
+.ps-club-brand-text{font-size:30px;font-weight:900;letter-spacing:-.05em;color:#18243a;}
+.ps-club-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:#eef2ff;border:1px solid #dfe5ff;color:#4f46e5;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;}
+.ps-club-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:22px;align-items:stretch;}
+.ps-club-search-card,.ps-club-balance-card,.ps-club-reward-panel{background:rgba(255,255,255,.90);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid #e5eaf2;border-radius:28px;box-shadow:0 18px 55px rgba(15,23,42,.08);}
+.ps-club-search-card{padding:28px;display:flex;flex-direction:column;justify-content:center;}
+.ps-club-search-title{font-size:28px;line-height:1.05;font-weight:900;letter-spacing:-.04em;color:#16233a;}
+.ps-club-search-sub{font-size:13px;line-height:1.6;color:#718096;margin-top:10px;max-width:560px;}
+.ps-club-search-wrap{position:relative;margin-top:23px;}
+.ps-club-search-wrap i{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:#94a3b8;}
+.ps-club-search-input{width:100%;padding:16px 122px 16px 48px;border-radius:18px;border:1px solid #d8deea;background:#fbfcff;color:#172033;font-weight:900;font-size:18px;letter-spacing:.10em;outline:none;transition:.2s;}
+.ps-club-search-input:focus{border-color:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,.11);}
+.ps-club-search-btn{position:absolute;right:7px;top:7px;bottom:7px;border:0;border-radius:14px;padding:0 18px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-weight:900;font-size:12px;cursor:pointer;box-shadow:0 10px 22px rgba(79,70,229,.22);}
+.ps-club-search-btn:disabled{opacity:.6;cursor:wait;}
+.ps-club-mini-note{display:flex;align-items:flex-start;gap:8px;margin-top:12px;font-size:10px;color:#7b8798;line-height:1.45;}
+.ps-club-mini-note i{color:#6366f1;margin-top:1px;}
+.ps-club-balance-card{padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:260px;overflow:hidden;position:relative;}
+.ps-club-balance-card:before{content:"";position:absolute;inset:auto -65px -95px auto;width:240px;height:240px;border-radius:50%;background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(236,72,153,.08));}
+.ps-club-balance-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.ps-club-label{font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#8a94a5;}
+.ps-club-customer{font-size:18px;font-weight:900;color:#16233a;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ps-club-points{position:relative;z-index:1;margin-top:20px;display:flex;align-items:flex-end;gap:10px;}
+.ps-club-points-number{font-size:70px;line-height:.84;font-weight:950;letter-spacing:-.07em;color:#4f46e5;}
+.ps-club-points-word{font-size:14px;font-weight:900;color:#6d7890;padding-bottom:7px;}
+.ps-club-level{position:relative;z-index:1;margin-top:18px;padding:14px 15px;border-radius:18px;background:linear-gradient(135deg,#f5f3ff,#fff1f7);border:1px solid #ece8ff;}
+.ps-club-level-row{display:flex;justify-content:space-between;gap:12px;font-size:11px;font-weight:900;color:#596579;}
+.ps-club-progress{height:10px;border-radius:999px;background:#e9edf4;overflow:hidden;margin-top:9px;}
+.ps-club-progress>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4f46e5,#ec4899);transition:width .5s ease;}
+.ps-club-progress-text{font-size:10px;color:#7a8699;font-weight:800;margin-top:7px;}
+.ps-club-reward-panel{margin-top:22px;padding:26px;}
+.ps-club-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;}
+.ps-club-section-title{font-size:23px;font-weight:950;letter-spacing:-.035em;color:#16233a;}
+.ps-club-section-sub{font-size:11px;color:#778398;margin-top:4px;}
+.ps-club-reward-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.ps-club-reward-card{position:relative;overflow:hidden;border:1px solid #e4e9f1;border-radius:24px;background:#fff;box-shadow:0 12px 30px rgba(15,23,42,.06);padding:14px;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;}
+.ps-club-reward-card:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(15,23,42,.09);}
+.ps-club-reward-card.is-eligible{border-color:#c8bfff;box-shadow:0 16px 36px rgba(79,70,229,.13);}
+.ps-club-reward-image{aspect-ratio:1/1;border-radius:18px;background:linear-gradient(135deg,#f7f9fd,#eef2f9);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.ps-club-reward-image img{width:100%;height:100%;object-fit:contain;padding:15px;display:block;}
+.ps-club-reward-placeholder{font-size:46px;color:#b5bfd0;}
+.ps-club-reward-name{font-size:15px;font-weight:950;color:#172033;margin-top:13px;line-height:1.25;}
+.ps-club-reward-desc{font-size:10px;line-height:1.5;color:#778398;margin-top:5px;min-height:30px;}
+.ps-club-reward-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:15px;}
+.ps-club-reward-points{font-size:15px;font-weight:950;color:#4f46e5;white-space:nowrap;}
+.ps-club-reward-points span{font-size:10px;color:#7b8799;font-weight:900;letter-spacing:.08em;text-transform:uppercase;}
+.ps-club-redeem-btn{border:0;border-radius:13px;padding:11px 14px;background:#eef1f6;color:#7d8799;font-size:10px;font-weight:950;cursor:not-allowed;transition:.2s;white-space:nowrap;}
+.ps-club-redeem-btn.ready{background:linear-gradient(135deg,#4f46e5,#ec4899);color:#fff;cursor:pointer;box-shadow:0 10px 18px rgba(79,70,229,.20);}
+.ps-club-redeem-btn.ready:hover{transform:translateY(-1px);filter:saturate(1.08);}
+.ps-club-missing{font-size:9px;color:#a06476;font-weight:800;margin-top:7px;min-height:14px;}
+.ps-club-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3;}
+.ps-club-stars span{position:absolute;font-size:13px;opacity:0;animation:psClubStar 1.8s ease-in-out infinite;}
+.ps-club-stars span:nth-child(1){left:9%;top:16%;animation-delay:.1s;color:#f59e0b}.ps-club-stars span:nth-child(2){right:13%;top:12%;animation-delay:.35s;color:#ec4899}.ps-club-stars span:nth-child(3){left:18%;bottom:17%;animation-delay:.55s;color:#06b6d4}.ps-club-stars span:nth-child(4){right:18%;bottom:15%;animation-delay:.8s;color:#22c55e}.ps-club-stars span:nth-child(5){left:50%;top:7%;animation-delay:1s;color:#8b5cf6}
+@keyframes psClubStar{0%,100%{opacity:0;transform:translateY(5px) scale(.6) rotate(0deg)}30%{opacity:1;transform:translateY(0) scale(1.1) rotate(18deg)}65%{opacity:.8;transform:translateY(-4px) scale(.9) rotate(-10deg)}}
+.ps-club-login-empty{text-align:center;padding:36px 16px;color:#7b8798;}
+.ps-club-login-empty .icon{width:64px;height:64px;border-radius:22px;background:#eef2ff;color:#4f46e5;display:flex;align-items:center;justify-content:center;margin:0 auto 13px;font-size:24px;}
+.ps-club-history{margin-top:22px;padding-top:18px;border-top:1px dashed #e1e6ee;}
+.ps-club-history-list{display:grid;gap:8px;margin-top:10px;}
+.ps-club-history-row{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:11px 12px;border-radius:14px;background:#f8fafc;border:1px solid #edf1f5;}
+.ps-club-history-row .label{font-size:10px;font-weight:850;color:#475569;}
+.ps-club-history-row .date{display:block;font-size:9px;color:#94a3b8;margin-top:2px;}
+.ps-club-history-row .pts{font-size:12px;font-weight:950;white-space:nowrap;}
+.ps-club-history-row .pts.plus{color:#16a34a}.ps-club-history-row .pts.minus{color:#e11d48}
+.ps-club-status{margin-top:16px;padding:12px 14px;border-radius:16px;font-size:11px;font-weight:850;line-height:1.45;}
+.ps-club-status.error{background:#fff1f2;border:1px solid #fecdd3;color:#be123c}.ps-club-status.ok{background:#ecfdf5;border:1px solid #bbf7d0;color:#15803d}.ps-club-status.info{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
+.ps-club-footer{text-align:center;margin-top:22px;color:#8b95a5;font-size:10px;line-height:1.6;}
+.ps-club-modal{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.62);backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:16px;}
+.ps-club-modal-card{width:min(540px,100%);background:#fff;border:1px solid #e3e8ef;border-radius:28px;box-shadow:0 30px 90px rgba(15,23,42,.25);padding:22px;}
+.ps-club-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}
+.ps-club-modal-title{font-size:20px;font-weight:950;color:#16233a;}
+.ps-club-modal-sub{font-size:10px;color:#7d899b;margin-top:4px;line-height:1.5;}
+.ps-club-modal-close{width:38px;height:38px;border:0;border-radius:12px;background:#f1f5f9;color:#64748b;cursor:pointer;}
+.ps-club-modal-reward{display:flex;align-items:center;gap:14px;margin-top:18px;padding:13px;border-radius:18px;background:#f8fafc;border:1px solid #edf1f5;}
+.ps-club-modal-reward img{width:72px;height:72px;border-radius:16px;object-fit:contain;background:#fff;}
+.ps-club-modal-points{font-size:18px;font-weight:950;color:#4f46e5;}
+.ps-club-modal-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;}
+.ps-club-modal-actions button{flex:1;min-width:170px;border:0;border-radius:14px;padding:12px 14px;font-size:11px;font-weight:950;cursor:pointer;}
+.ps-club-btn-confirm{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;}
+.ps-club-btn-whatsapp{background:#16a34a;color:#fff;}
+.ps-club-btn-muted{background:#eef2f6;color:#667085;}
+.ps-club-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:#111827;}
+.ps-club-admin-grid{display:grid;grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:20px;align-items:start;}
+.ps-club-admin-card{background:#fff;border:1px solid #e5eaf2;border-radius:24px;padding:20px;box-shadow:0 12px 34px rgba(15,23,42,.06);}
+.ps-club-admin-card h3{font-size:16px;font-weight:950;color:#172033;}
+.ps-club-admin-label{display:block;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.12em;color:#7f8a9d;margin:12px 0 6px;}
+.ps-club-admin-input{width:100%;padding:11px 12px;border-radius:13px;border:1px solid #dbe1ea;background:#fbfcfe;color:#172033;font-size:12px;font-weight:800;outline:none;}
+.ps-club-admin-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.10);}
+.ps-club-admin-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.ps-club-admin-btn{border:0;border-radius:12px;padding:10px 13px;font-size:10px;font-weight:950;cursor:pointer;}
+.ps-club-admin-btn.primary{background:#4f46e5;color:#fff}.ps-club-admin-btn.secondary{background:#eef2f6;color:#475569}.ps-club-admin-btn.danger{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}.ps-club-admin-btn.green{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.ps-club-admin-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.ps-club-kpi{padding:15px;border-radius:18px;background:#f8fafc;border:1px solid #edf1f5;}.ps-club-kpi .k{font-size:9px;text-transform:uppercase;letter-spacing:.12em;font-weight:950;color:#8b95a6}.ps-club-kpi .v{font-size:22px;font-weight:950;color:#172033;margin-top:4px}
+.ps-club-admin-reward-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;}
+.ps-club-admin-reward{display:grid;grid-template-columns:86px minmax(0,1fr);gap:13px;padding:12px;border:1px solid #e7ebf1;border-radius:18px;background:#fff;}
+.ps-club-admin-reward img{width:86px;height:86px;border-radius:14px;object-fit:contain;background:#f5f7fa;}
+.ps-club-admin-reward-name{font-size:12px;font-weight:950;color:#172033}.ps-club-admin-reward-meta{font-size:10px;color:#6b7280;margin-top:4px;line-height:1.5}
+.ps-club-admin-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid #e4e9f1;border-radius:18px;background:#fff;}.ps-club-admin-table th{padding:11px 12px;background:#0f172a;color:#fff;font-size:9px;text-align:left;text-transform:uppercase;letter-spacing:.08em}.ps-club-admin-table td{padding:11px 12px;border-top:1px solid #edf1f5;font-size:10px;color:#475569;vertical-align:top}.ps-club-admin-table td strong{color:#172033}
+@media(max-width:980px){.ps-club-hero{grid-template-columns:1fr}.ps-club-reward-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ps-club-admin-grid{grid-template-columns:1fr}.ps-club-admin-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.ps-club-shell{padding:20px 12px 40px}.ps-club-search-card,.ps-club-balance-card,.ps-club-reward-panel{border-radius:22px}.ps-club-search-card{padding:21px}.ps-club-search-title{font-size:23px}.ps-club-search-input{font-size:16px;padding-right:110px}.ps-club-search-btn{padding:0 13px}.ps-club-points-number{font-size:58px}.ps-club-reward-grid,.ps-club-admin-reward-grid{grid-template-columns:1fr}.ps-club-reward-panel{padding:18px}.ps-club-section-head{display:block}.ps-club-admin-kpis{grid-template-columns:1fr 1fr}.ps-club-modal{padding:10px}.ps-club-modal-card{border-radius:22px;padding:18px}}
+
 /* Seguimiento público: mostrar únicamente la ventana de seguimiento, sin inventario debajo. */
 body.tracking-only > :not(.ps-track-v2){display:none!important;}
 body.tracking-only{padding:0!important;margin:0!important;background:#06366f!important;}
@@ -696,6 +809,62 @@ body.dark{background:#070d19!important}
   .ps-track-context-title{font-size:16px}
 }
 
+
+/* Hitos adicionales de seguimiento: punto medio en ruta y llamada a compartir foto. */
+.ps-track-line,.ps-track-line-fill{left:7.15%;right:7.15%}
+.ps-track-line-fill{right:auto}
+.ps-track-stages{grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.ps-track-stage{min-width:0}
+.ps-track-stage span{font-size:10px;line-height:1.2;overflow-wrap:anywhere}
+.ps-track-stage.midpoint.current .ps-track-dot{background:linear-gradient(135deg,#0b72cf,#f59b22);color:#fff;box-shadow:0 0 0 6px rgba(11,114,207,.12),0 10px 24px rgba(11,114,207,.28)}
+.ps-track-stage.midpoint.current .ps-track-dot:after{border-color:rgba(11,114,207,.42)}
+.ps-track-v2.is-enroute .ps-track-truck{filter:drop-shadow(0 5px 10px rgba(0,86,179,.24))}
+.ps-track-v2.is-enroute .ps-track-truck i{animation:psTruckCruise 1.6s ease-in-out infinite}
+@keyframes psTruckCruise{0%,100%{transform:translateX(-1px)}50%{transform:translateX(3px)}}
+.ps-track-stage.photo-stage{cursor:default}
+.ps-track-stage.photo-stage.photo-ready{cursor:pointer}
+.ps-track-stage.photo-stage.photo-ready .ps-track-dot{background:linear-gradient(135deg,#f59b22,#fbd34d);color:#073b78;box-shadow:0 0 0 6px rgba(245,155,34,.16),0 10px 26px rgba(245,155,34,.30);animation:psPhotoPointGlow 2s ease-in-out infinite}
+.ps-track-stage.photo-stage.photo-ready span{color:#0a4076;font-weight:900}
+.ps-track-stage.photo-stage.photo-locked .ps-track-dot{background:#eef2f6;color:#a0aec0;box-shadow:0 5px 16px rgba(24,55,89,.08)}
+.ps-track-stage.photo-stage:after{content:attr(title);position:absolute;z-index:30;right:0;bottom:calc(100% + 12px);width:230px;max-width:70vw;padding:10px 12px;border-radius:12px;background:#082f5f;color:#fff;border:1px solid rgba(255,255,255,.20);box-shadow:0 12px 28px rgba(3,32,76,.24);font-size:10px;line-height:1.45;font-weight:700;text-align:left;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .18s ease,transform .18s ease;pointer-events:none;white-space:normal}
+.ps-track-stage.photo-stage:hover:after,.ps-track-stage.photo-stage:focus-visible:after{opacity:1;visibility:visible;transform:translateY(0)}
+.ps-track-stage.photo-stage:focus-visible{outline:2px solid #f59b22;outline-offset:4px;border-radius:12px}
+.ps-track-photo-title{color:#0a4076}
+@keyframes psPhotoPointGlow{0%,100%{box-shadow:0 0 0 5px rgba(245,155,34,.12),0 10px 24px rgba(245,155,34,.22)}50%{box-shadow:0 0 0 8px rgba(245,155,34,.18),0 13px 30px rgba(245,155,34,.33)}}
+@media(max-width:720px){
+  .ps-track-stages{gap:0}
+  .ps-track-stage span{font-size:8px;line-height:1.15;margin-top:7px;letter-spacing:-.02em}
+  .ps-track-dot{width:40px;height:40px;font-size:13px;border-width:3px}
+  .ps-track-line,.ps-track-line-fill{top:20px}
+  .ps-track-truck{top:-2px;width:42px;height:42px;font-size:23px!important}
+  .ps-track-stage.photo-stage:after{right:0;width:190px}
+}
+@media(max-width:430px){
+  .ps-track-dot{width:34px;height:34px;font-size:11px}
+  .ps-track-line,.ps-track-line-fill{top:17px}
+  .ps-track-truck{top:-3px;width:36px;height:36px;font-size:20px!important}
+  .ps-track-stage span{font-size:7px}
+}
+
+/* AJUSTE FUNCIONAL DE SEGUIMIENTO · pasos manuales y accesibilidad móvil */
+.ps-admin-track-modal{overflow-y:auto!important;overscroll-behavior:contain;}
+.ps-admin-track-modal>.ps-admin-track{max-height:calc(100dvh - 16px);overflow-y:auto;overscroll-behavior:contain;}
+.ps-admin-status-grid{grid-template-columns:repeat(auto-fit,minmax(112px,1fr));}
+.ps-admin-status{min-height:48px;white-space:normal;line-height:1.25;}
+.ps-track-v2.is-photo .ps-track-truck{filter:drop-shadow(0 7px 13px rgba(245,155,34,.35));}
+.ps-track-v2.is-photo .ps-track-truck i{color:#f59b22!important;}
+@media(max-width:720px){
+  .ps-admin-track-modal{align-items:flex-start!important;padding:8px!important;}
+  .ps-admin-track-modal>.ps-admin-track{max-height:calc(100dvh - 16px);}
+  .ps-admin-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px;}
+  .ps-admin-status{padding:12px 8px;font-size:11px;}
+  .ps-track-progress{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.65) rgba(255,255,255,.12);}
+  .ps-track-progress>.relative.pt-1{min-width:640px;}
+  .ps-track-progress::-webkit-scrollbar{height:7px;}
+  .ps-track-progress::-webkit-scrollbar-track{background:rgba(255,255,255,.12);border-radius:99px;}
+  .ps-track-progress::-webkit-scrollbar-thumb{background:rgba(255,255,255,.62);border-radius:99px;}
+}
+@media(min-width:721px){.ps-admin-track-modal>.ps-admin-track{max-height:92vh;}}
 </style>
 <style id="petsmart-tracking-effects">
 /* Efectos visuales sin tocar la lógica */
@@ -833,8 +1002,163 @@ body.dark{background:#070d19!important}
 @media(max-width:900px){.comprobante-paper{width:794px;height:1123px}.cmp-input{font-size:16px}.cmp-brandbar{grid-template-columns:minmax(0,1fr) 270px}.cmp-client-top{grid-template-columns:minmax(0,1fr) 170px}}
 @media print{@page{size:A4 portrait;margin:0}.comprobante-paper{box-shadow:none!important;width:210mm!important;height:297mm!important;min-height:297mm!important}.cmp-brandbar{box-shadow:none!important}.comprobante-paper:before{display:none!important}}
 </style>
+
+<style id="petsmart-club-premium-refresh">
+/* PetSmart Club — evolución visual alineada con Catálogo Premium */
+.ps-club-public{font-family:'Poppins',ui-sans-serif,system-ui,sans-serif!important;background:#f4f7f9!important;color:#1e293b!important}
+.ps-club-public:before{width:560px;height:560px;right:-280px;top:410px;border:70px solid rgba(10,64,118,.045);box-shadow:0 0 0 28px rgba(242,139,40,.018)}
+.ps-club-public:after{width:430px;height:430px;left:-260px;bottom:5%;border:60px solid rgba(10,64,118,.035)}
+.ps-club-shell{max-width:1280px!important;padding:25px 22px 54px!important}
+.ps-club-brand{position:relative;isolation:isolate;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:26px!important;text-align:left!important;min-height:190px;margin:0 0 26px!important;padding:30px 38px!important;border-radius:0 0 34px 34px!important;color:#fff!important;overflow:hidden!important;background:linear-gradient(118deg,#0a4076 0%,#073260 54%,#062649 100%)!important;box-shadow:0 18px 38px rgba(7,59,120,.16)!important}
+.ps-club-brand:after{content:"";position:absolute;z-index:-1;right:12%;top:-178px;width:350px;height:350px;border:38px solid rgba(255,255,255,.055);border-radius:50%;box-shadow:0 0 0 32px rgba(255,255,255,.025),0 0 0 68px rgba(255,255,255,.018)}
+.ps-club-brand-main{display:flex;align-items:center;gap:27px;min-width:0;position:relative;z-index:2}
+.ps-club-brand-logo-wrap{flex:0 0 auto;display:flex;align-items:center;justify-content:center;min-width:170px;max-width:220px;padding:12px 15px;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.ps-club-logo{width:190px!important;max-width:100%!important;height:72px!important;object-fit:contain!important;margin:0!important;filter:drop-shadow(0 5px 9px rgba(0,0,0,.12))!important}
+.ps-club-brand-text{font-size:27px!important;font-weight:800!important;letter-spacing:-.04em;color:#fff!important}
+.ps-club-brand-copy{min-width:0}
+.ps-club-eyebrow{padding:7px 11px!important;border-radius:999px!important;background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.22)!important;color:#dcecff!important;font-size:9px!important;letter-spacing:.15em!important}
+.ps-club-brand-title{margin:12px 0 0;font-size:clamp(28px,3.5vw,42px);font-weight:800;letter-spacing:-.035em;line-height:1.04;color:#fff}
+.ps-club-brand-subtitle{max-width:590px;margin:9px 0 0;color:#c5dcf1;font-size:12px;font-weight:500;line-height:1.65}
+.ps-club-brand-side{position:relative;z-index:2;display:flex;align-items:center;gap:14px;min-width:235px;padding:15px 18px;border-left:1px solid rgba(255,255,255,.18)}
+.ps-club-brand-side-icon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;flex:0 0 52px;border-radius:17px;background:linear-gradient(135deg,#f7a928,#f28b28);box-shadow:0 10px 23px rgba(242,139,40,.22);font-size:23px;color:#fff}
+.ps-club-brand-side span{display:block;font-size:8px;letter-spacing:.13em;font-weight:800;color:#a9c9e7}
+.ps-club-brand-side strong{display:block;margin-top:5px;font-size:15px;line-height:1.25;font-weight:700;color:#fff}
+.ps-club-brand-orbit{position:absolute;pointer-events:none;border-radius:50%;background:rgba(255,255,255,.045);z-index:0}
+.ps-club-orbit-one{width:185px;height:185px;right:-28px;bottom:-95px}
+.ps-club-orbit-two{width:95px;height:95px;right:90px;bottom:-56px;background:rgba(242,139,40,.10)}
+.ps-club-hero{grid-template-columns:minmax(0,1.03fr) minmax(340px,.97fr)!important;gap:22px!important;align-items:stretch!important}
+.ps-club-search-card,.ps-club-balance-card,.ps-club-reward-panel{border-radius:24px!important;box-shadow:0 9px 28px rgba(15,42,72,.055)!important;border:1px solid #e0e7ef!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.ps-club-search-card{padding:30px!important;background:#fff!important;position:relative;overflow:hidden}
+.ps-club-search-card:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#0a4076 0%,#0a5aab 72%,#f28b28 72%,#f28b28 100%)}
+.ps-club-search-card .ps-club-label{color:#0a5aab!important}
+.ps-club-search-title{font-size:clamp(24px,2.4vw,32px)!important;font-weight:700!important;letter-spacing:-.035em!important;line-height:1.13!important;color:#0a2f56!important;max-width:570px}
+.ps-club-search-sub{font-size:12px!important;color:#667b8d!important;line-height:1.8!important;max-width:580px}
+.ps-club-search-wrap{margin-top:23px!important}
+.ps-club-search-wrap i{color:#0a5aab!important}
+.ps-club-search-input{border-color:#d6e1eb!important;background:#f7fafc!important;border-radius:15px!important;font-family:'Poppins',sans-serif!important;font-size:16px!important;letter-spacing:.12em!important;padding-top:17px!important;padding-bottom:17px!important}
+.ps-club-search-input:focus{border-color:#0a5aab!important;box-shadow:0 0 0 4px rgba(10,90,171,.10)!important;background:#fff!important}
+.ps-club-search-btn{background:linear-gradient(135deg,#0a5aab,#073b78)!important;border-radius:12px!important;box-shadow:0 8px 18px rgba(7,59,120,.18)!important;letter-spacing:.02em}
+.ps-club-mini-note{color:#7b8b9a!important;font-size:9px!important;line-height:1.65!important}
+.ps-club-mini-note i{color:#f28b28!important}
+.ps-club-status{border-radius:12px!important;font-size:10px!important}
+.ps-club-balance-card{background:linear-gradient(135deg,#0a4076 0%,#073260 57%,#062649 100%)!important;border:0!important;color:#fff!important;padding:28px!important;min-height:278px!important;position:relative!important}
+.ps-club-balance-card:before{inset:auto -65px -115px auto!important;width:285px!important;height:285px!important;background:transparent!important;border:38px solid rgba(255,255,255,.055);box-shadow:0 0 0 30px rgba(255,255,255,.025);}
+.ps-club-balance-card:after{content:"🐾";position:absolute;right:22px;top:50px;font-size:105px;line-height:1;opacity:.045;transform:rotate(-18deg);pointer-events:none}
+.ps-club-balance-card .ps-club-label{color:#9fc4e6!important}
+.ps-club-balance-card .ps-club-customer{color:#fff!important;font-size:20px!important;font-weight:700!important}
+.ps-club-balance-card .ps-club-balance-top>div:last-child{background:rgba(255,255,255,.11)!important;color:#fff!important;border:1px solid rgba(255,255,255,.14)}
+.ps-club-points-number{color:#fff!important;font-size:clamp(58px,6vw,76px)!important;font-weight:700!important;letter-spacing:-.055em!important;font-variant-numeric:tabular-nums}
+.ps-club-points-word{color:#b6d3ed!important;font-size:12px!important;letter-spacing:.08em}
+.ps-club-level{background:rgba(255,255,255,.095)!important;border:1px solid rgba(255,255,255,.15)!important;border-radius:16px!important;backdrop-filter:blur(8px)}
+.ps-club-level-row{color:#f1f7fd!important;font-size:10px!important}
+.ps-club-progress{background:rgba(255,255,255,.16)!important;height:9px!important}
+.ps-club-progress>span{background:linear-gradient(90deg,#f28b28,#ffc45c)!important}
+.ps-club-progress-text{color:#c4d9ec!important;font-size:10px!important}
+.ps-club-balance-card .ps-club-login-empty{color:#c0d6eb!important}
+.ps-club-balance-card .ps-club-login-empty .icon{background:rgba(255,255,255,.12)!important;color:#fff!important;border:1px solid rgba(255,255,255,.15)}
+.ps-club-balance-card .ps-club-login-empty .text-slate-700{color:#fff!important}
+.ps-club-reward-panel{margin-top:24px!important;padding:28px!important;background:#f9fbfd!important}
+.ps-club-section-head{padding-bottom:18px!important;margin-bottom:23px!important;border-bottom:1px solid #e1e8ef;align-items:center!important}
+.ps-club-section-head .ps-club-label{color:#0a5aab!important}
+.ps-club-section-title{font-size:clamp(22px,2vw,27px)!important;font-weight:700!important;letter-spacing:-.025em!important;color:#0a2f56!important}
+.ps-club-section-sub{font-size:11px!important;line-height:1.6!important;color:#718294!important}
+.ps-club-section-head>div:last-child{background:#edf5fd!important;border:1px solid #d9e9f8!important;color:#0a4076!important;border-radius:12px!important;padding:11px 14px!important;white-space:nowrap}
+.ps-club-reward-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:22px!important;align-items:stretch!important}
+.ps-club-reward-card{position:relative!important;display:flex!important;flex-direction:column!important;min-width:0!important;overflow:hidden!important;border:1px solid #dfe7ef!important;border-radius:22px!important;background:#fff!important;padding:14px!important;box-shadow:0 5px 18px rgba(7,59,120,.045)!important;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease!important;isolation:isolate}
+.ps-club-reward-card:before{content:"";position:absolute;z-index:-1;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#0a4076,#0a5aab);opacity:.72}
+.ps-club-reward-card:hover{transform:translateY(-5px)!important;border-color:#c5d9eb!important;box-shadow:0 17px 34px rgba(7,59,120,.12)!important}
+.ps-club-reward-card.is-eligible{border-color:#f0bd67!important;box-shadow:0 12px 31px rgba(242,139,40,.13)!important}
+.ps-club-reward-card.is-eligible:before{background:linear-gradient(90deg,#f28b28,#ffd06b);opacity:1}
+.ps-club-reward-topline{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:26px;padding:1px 1px 11px}
+.ps-club-reward-type{display:inline-flex;align-items:center;gap:6px;color:#0a4076;font-size:8px;font-weight:800;letter-spacing:.075em;line-height:1.3}
+.ps-club-reward-type i{font-size:10px;color:#f28b28}
+.ps-club-reward-stock{display:inline-flex;align-items:center;gap:5px;padding:5px 7px;border-radius:999px;background:#edf5fd;color:#0a5aab;border:1px solid #deebf8;font-size:7px;font-weight:800;letter-spacing:.04em;white-space:nowrap}
+.ps-club-reward-stock.unlocked{background:#fff5e5;color:#95510a;border-color:#ffe1aa}
+.ps-club-reward-image{aspect-ratio:1/0.88!important;min-height:205px!important;border-radius:15px!important;background:linear-gradient(135deg,#f6f9fc 0%,#edf3f8 100%)!important;border:1px solid #e8eef4!important;overflow:hidden!important;position:relative!important}
+.ps-club-reward-image:after{content:"";position:absolute;inset:12px;border:1px solid rgba(10,64,118,.055);border-radius:10px;pointer-events:none}
+.ps-club-reward-image img{width:100%!important;height:100%!important;object-fit:contain!important;padding:22px!important;transition:transform .35s ease!important;position:relative;z-index:1}
+.ps-club-reward-card:hover .ps-club-reward-image img{transform:scale(1.045)}
+.ps-club-reward-placeholder{font-size:40px!important;color:#a8bacb!important}
+.ps-club-reward-content{display:flex;flex-direction:column;flex:1;min-width:0;padding:0 4px 4px}
+.ps-club-reward-name{font-size:17px!important;line-height:1.3!important;font-weight:700!important;letter-spacing:-.015em!important;color:#173b5e!important;margin-top:16px!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:44px}
+.ps-club-reward-desc{font-size:10px!important;line-height:1.65!important;color:#6d7f90!important;margin-top:6px!important;min-height:34px!important}
+.ps-club-reward-meta-line{display:flex;gap:6px;align-items:flex-start;margin-top:11px;color:#60788b;font-size:9px;font-weight:600;line-height:1.5}
+.ps-club-reward-meta-line i{color:#0a7b76;margin-top:1px;flex:0 0 auto}
+.ps-club-reward-cost-row{display:flex;align-items:center;gap:10px;margin-top:15px;padding:12px;border-radius:14px;background:#f6f9fc;border:1px solid #e7edf3}
+.ps-club-cost-icon{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:#edf5fd;color:#0a5aab;font-size:13px}
+.ps-club-reward-card.is-eligible .ps-club-cost-icon{background:#fff0d8;color:#bd6c10}
+.ps-club-cost-copy strong{display:block;font-size:23px;line-height:1;font-weight:800;letter-spacing:-.04em;color:#0a4076;font-variant-numeric:tabular-nums}
+.ps-club-reward-card.is-eligible .ps-club-cost-copy strong{color:#b7650d}
+.ps-club-cost-copy span{display:block;margin-top:4px;font-size:7px;letter-spacing:.11em;font-weight:800;color:#7e8d9b}
+.ps-club-missing{font-size:9px!important;color:#a06476!important;font-weight:700!important;line-height:1.45!important;margin:10px 0 12px!important;min-height:26px!important}
+.ps-club-missing.is-ready{color:#b7650d!important}
+.ps-club-redeem-btn{width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;position:relative!important;border:1px solid #dfe6ed!important;border-radius:13px!important;padding:13px 14px!important;background:#edf2f6!important;color:#8a98a6!important;font-family:'Poppins',sans-serif!important;font-size:10px!important;font-weight:800!important;letter-spacing:.025em!important;cursor:not-allowed!important;white-space:nowrap!important;transition:transform .2s ease,box-shadow .2s ease,background .2s ease!important;margin-top:auto!important}
+.ps-club-redeem-arrow{position:absolute;right:14px;opacity:.35}
+.ps-club-redeem-btn.ready{background:linear-gradient(110deg,#0a4076 0%,#0a5aab 68%,#0b6a9e 100%)!important;color:#fff!important;cursor:pointer!important;border-color:#0a5aab!important;box-shadow:0 9px 19px rgba(7,59,120,.18)!important}
+.ps-club-redeem-btn.ready:hover{transform:translateY(-2px)!important;box-shadow:0 13px 23px rgba(7,59,120,.25)!important}
+.ps-club-redeem-btn.ready .ps-club-redeem-arrow{opacity:1}
+.ps-club-image-unlocked{position:absolute;left:12px;bottom:12px;z-index:2;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid #f6d49d;color:#9a570d;font-size:8px;font-weight:800;box-shadow:0 4px 12px rgba(15,23,42,.06)}
+.ps-club-stars{z-index:5!important;inset:0!important}
+.ps-club-stars span{font-size:16px!important;text-shadow:0 2px 7px rgba(255,255,255,.9)}
+.ps-club-login-empty{color:#718294!important}
+.ps-club-login-empty .icon{background:#edf5fd!important;color:#0a5aab!important;border:1px solid #dbeaf7}
+.ps-club-history{margin-top:28px!important;padding-top:22px!important;border-top:1px solid #e1e8ef!important}
+.ps-club-history .ps-club-label{color:#0a5aab!important}
+.ps-club-history-list{gap:9px!important}
+.ps-club-history-row{padding:13px 15px!important;border-radius:13px!important;background:#fff!important;border:1px solid #e5ebf1!important}
+.ps-club-history-row .label{font-size:10px!important;color:#294b68!important}
+.ps-club-history-row .date{font-size:9px!important}
+.ps-club-footer{padding-top:20px!important;color:#8091a0!important;font-size:10px!important;letter-spacing:.025em}
+.ps-club-modal-card{border-radius:22px!important;border:1px solid #dbe5ee!important;box-shadow:0 28px 80px rgba(6,38,73,.28)!important;font-family:'Poppins',sans-serif!important}
+.ps-club-modal-title{color:#0a2f56!important;font-weight:800!important}
+.ps-club-modal-points{color:#0a5aab!important}
+.ps-club-btn-confirm{background:linear-gradient(135deg,#0a5aab,#062649)!important}
+.ps-club-code{color:#0a4076!important}
+/* Panel administrativo con la misma identidad que el catálogo */
+.ps-club-admin-container{border-color:#d7e4ef!important;border-radius:24px!important;box-shadow:0 12px 35px rgba(7,59,120,.07)!important}
+.ps-club-admin-hero{background:linear-gradient(118deg,#0a4076 0%,#073260 58%,#062649 100%)!important;box-shadow:0 10px 24px rgba(7,59,120,.12)!important}
+.ps-club-admin-hero:after{content:"";position:absolute;width:260px;height:260px;right:-92px;top:-142px;border:38px solid rgba(255,255,255,.065);border-radius:50%;pointer-events:none}
+.ps-club-admin-eyebrow{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.18);color:#d6e8f7!important;position:relative;z-index:1}
+.ps-club-admin-hero h2,.ps-club-admin-hero p,.ps-club-admin-hero .relative{position:relative;z-index:1}
+.ps-club-admin-hero p{color:#c4d8ea!important;line-height:1.7!important}
+.ps-club-admin-link-btn{background:rgba(255,255,255,.11)!important;color:#fff!important;border:1px solid rgba(255,255,255,.2)!important;transition:.2s}
+.ps-club-admin-link-btn:hover{background:rgba(255,255,255,.2)!important;transform:translateY(-1px)}
+.ps-club-admin-sync-btn{background:#fff!important;color:#0a4076!important;border:1px solid rgba(255,255,255,.6)!important;transition:.2s}
+.ps-club-admin-sync-btn:hover{background:#edf5fd!important;transform:translateY(-1px)}
+.ps-club-admin-root .ps-club-kpi{background:#f4f7f9!important;border:1px solid #e0e8ef!important;border-radius:16px!important;padding:17px!important}
+.ps-club-admin-root .ps-club-kpi .k{color:#72879a!important;letter-spacing:.1em!important}
+.ps-club-admin-root .ps-club-kpi .v{color:#0a4076!important;font-weight:800!important}
+.ps-club-admin-root .ps-club-kpi .v.text-indigo-600{color:#f28b28!important}
+.ps-club-admin-grid{grid-template-columns:minmax(310px,365px) minmax(0,1fr)!important;gap:20px!important}
+.ps-club-admin-card{border-color:#dfe7ef!important;border-radius:20px!important;padding:22px!important;box-shadow:0 5px 20px rgba(7,59,120,.04)!important;background:#fff!important}
+.ps-club-admin-card h3{color:#0a2f56!important;font-size:15px!important;letter-spacing:-.015em}
+.ps-club-admin-label{color:#6e8498!important;letter-spacing:.10em!important}
+.ps-club-admin-input{border-color:#d6e1eb!important;background:#f8fafc!important;border-radius:12px!important;font-family:'Poppins',sans-serif!important}
+.ps-club-admin-input:focus{border-color:#0a5aab!important;box-shadow:0 0 0 3px rgba(10,90,171,.10)!important;background:#fff!important}
+.ps-club-admin-btn{border-radius:10px!important;padding:10px 12px!important;transition:transform .18s ease,box-shadow .18s ease!important}
+.ps-club-admin-btn:hover{transform:translateY(-1px)}
+.ps-club-admin-btn.primary{background:linear-gradient(135deg,#0a5aab,#073b78)!important;color:#fff!important;box-shadow:0 7px 15px rgba(7,59,120,.13)}
+.ps-club-admin-btn.secondary{background:#edf5fd!important;color:#0a4076!important;border:1px solid #dbe9f6!important}
+.ps-club-admin-btn.danger{background:#fff4f2!important;color:#b54736!important;border:1px solid #f6d5ce!important}
+.ps-club-admin-btn.green{background:#e8f7f1!important;color:#08775e!important;border:1px solid #c8eadf!important}
+.ps-club-admin-reward-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.ps-club-admin-reward{grid-template-columns:104px minmax(0,1fr)!important;align-items:center!important;gap:14px!important;padding:14px!important;border-color:#dfe7ef!important;border-radius:17px!important;background:#fff!important;box-shadow:0 4px 14px rgba(7,59,120,.035)!important;transition:transform .2s ease,box-shadow .2s ease!important}
+.ps-club-admin-reward:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(7,59,120,.08)!important}
+.ps-club-admin-reward img,.ps-club-admin-reward>div:first-child>div{width:104px!important;height:104px!important;border-radius:13px!important;object-fit:contain!important;background:#f4f7f9!important;border:1px solid #e8eef4!important}
+.ps-club-admin-reward-name{font-size:12px!important;color:#0a2f56!important;font-weight:800!important}
+.ps-club-admin-reward-meta{font-size:9px!important;color:#728395!important;line-height:1.65!important}
+.ps-club-admin-table{border-color:#dfe7ef!important;border-radius:15px!important}
+.ps-club-admin-table th{background:#0a4076!important;padding:13px 12px!important;letter-spacing:.07em!important}
+.ps-club-admin-table td{padding:13px 12px!important;border-top-color:#eaf0f5!important;color:#617587!important}
+.ps-club-admin-table td strong{color:#0a2f56!important}
+@media(max-width:1050px){.ps-club-brand-side{display:none}.ps-club-reward-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.ps-club-admin-grid{grid-template-columns:1fr!important}.ps-club-admin-reward-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:700px){.ps-club-shell{padding:12px 12px 34px!important}.ps-club-brand{padding:23px 20px!important;min-height:0!important;border-radius:0 0 24px 24px!important;margin-bottom:16px!important}.ps-club-brand-main{gap:15px!important;align-items:flex-start!important;flex-direction:column!important}.ps-club-brand-logo-wrap{min-width:0!important;max-width:170px!important;padding:7px 10px!important;border-radius:14px!important}.ps-club-logo{width:145px!important;height:52px!important}.ps-club-brand-title{font-size:30px!important;margin-top:10px!important}.ps-club-brand-subtitle{font-size:10px!important;margin-top:6px!important}.ps-club-hero{grid-template-columns:minmax(0,1fr)!important;gap:13px!important}.ps-club-search-card{padding:22px!important}.ps-club-balance-card{min-height:235px!important;padding:22px!important}.ps-club-search-title{font-size:25px!important}.ps-club-search-input{padding-left:42px!important;padding-right:105px!important;font-size:15px!important}.ps-club-search-btn{font-size:10px!important;padding:0 11px!important}.ps-club-reward-panel{padding:18px 13px!important;margin-top:15px!important}.ps-club-section-head{display:block!important;margin-bottom:15px!important;padding-bottom:14px!important}.ps-club-section-head>div:last-child{display:inline-flex;margin-top:12px}.ps-club-reward-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}.ps-club-reward-card{padding:9px!important;border-radius:16px!important}.ps-club-reward-topline{display:block!important;min-height:0!important;padding:1px 0 8px!important}.ps-club-reward-type{font-size:7px!important;letter-spacing:.015em!important}.ps-club-reward-stock{margin-top:6px;font-size:6px!important;padding:4px 6px!important}.ps-club-reward-image{min-height:0!important;aspect-ratio:1/1!important;border-radius:11px!important}.ps-club-reward-image img{padding:12px!important}.ps-club-reward-name{font-size:13px!important;min-height:34px!important;margin-top:12px!important}.ps-club-reward-desc{font-size:9px!important;min-height:38px!important}.ps-club-reward-meta-line{font-size:8px!important}.ps-club-reward-cost-row{padding:9px!important;gap:7px!important;margin-top:11px!important}.ps-club-cost-icon{width:27px!important;height:27px!important;flex-basis:27px!important;border-radius:8px!important;font-size:10px!important}.ps-club-cost-copy strong{font-size:19px!important}.ps-club-cost-copy span{font-size:6px!important}.ps-club-missing{font-size:8px!important;margin:8px 0 10px!important;min-height:32px!important}.ps-club-redeem-btn{font-size:8px!important;padding:11px 8px!important}.ps-club-redeem-arrow{display:none!important}.ps-club-admin-reward-grid{grid-template-columns:1fr!important}.ps-club-admin-reward{grid-template-columns:86px minmax(0,1fr)!important}.ps-club-admin-reward img,.ps-club-admin-reward>div:first-child>div{width:86px!important;height:86px!important}.ps-club-admin-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:390px){.ps-club-reward-grid{grid-template-columns:1fr!important}.ps-club-reward-image{aspect-ratio:1/0.78!important}.ps-club-reward-topline{display:flex!important;align-items:center!important}.ps-club-reward-stock{margin-top:0!important}.ps-club-reward-name{font-size:16px!important;min-height:0!important}.ps-club-reward-desc{min-height:0!important}}
+@media(prefers-reduced-motion:reduce){.ps-club-public *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+
 </head>
-<body :class="[darkMode ? 'dark bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-800', modoSeguimientoCliente ? 'tracking-only' : '']" class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 font-sans transition-colors duration-300" x-data="inventarioApp()"><div x-show="modoSeguimientoCliente" x-cloak class="ps-track-v2" :class="{'is-destination': seguimientoClienteData?.estado==='En destino'}">
+<body :class="[darkMode ? 'dark bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-800', modoSeguimientoCliente ? 'tracking-only' : '', modoClubPublico ? 'club-only' : '']" class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 font-sans transition-colors duration-300" x-data="inventarioApp()"><div x-show="modoSeguimientoCliente" x-cloak class="ps-track-v2" :class="{'is-destination': seguimientoClienteData?.estado==='En destino', 'is-photo': seguimientoClienteData?.estado==='Fotografía'}">
   <div class="ps-track-wrap">
     <div class="ps-track-paw-bg" aria-hidden="true"></div>
     <div class="text-center mb-8">
@@ -854,19 +1178,19 @@ body.dark{background:#070d19!important}
         <div class="ps-track-progress">
           <div class="relative pt-1">
             <div class="ps-track-line"></div>
-            <div class="ps-track-line-fill" :style="'width: '+(Math.max(0,Math.min(100,(seguimientoEstados.indexOf(seguimientoClienteData?.estado||'Solicitud Recibida')/4)*84)))+'%'" ></div>
-            <div class="ps-track-truck" :class="[seguimientoAnimando?'moving':'', seguimientoClienteData?.estado==='Entregado'?'is-delivered':'']" :style="'left: '+(8+(Math.max(0,Math.min(100,(seguimientoEstados.indexOf(seguimientoClienteData?.estado||'Solicitud Recibida')/4)*84))))+'%'" title="Estado actual"><i :class="seguimientoClienteData?.estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-truck-fast'"></i></div>
+            <div class="ps-track-line-fill" :style="'width: '+((indiceEtapaVisualSeguimiento()/6)*85.7)+'%'"></div>
+            <div class="ps-track-truck" :class="[seguimientoAnimando?'moving':'', seguimientoClienteData?.estado==='Entregado'?'is-delivered':'', ['Enviado','En camino'].includes(seguimientoClienteData?.estado)?'is-enroute':'', seguimientoClienteData?.estado==='Fotografía'?'is-photo':'']" :style="'left: '+(7.15+(indiceEtapaVisualSeguimiento()/6)*85.7)+'%'" title="Estado actual del pedido"><i :class="seguimientoClienteData?.estado==='Fotografía'?'fa-solid fa-camera':(seguimientoClienteData?.estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-truck-fast')"></i></div>
             <div class="ps-track-stages">
-              <template x-for="(estado,index) in seguimientoEstados" :key="'v2-stage-'+estado">
-                <div class="ps-track-stage" :class="{'done':seguimientoEstados.indexOf(seguimientoClienteData?.estado||'Solicitud Recibida')>=index,'current':(seguimientoClienteData?.estado||'Solicitud Recibida')===estado}">
-                  <div class="ps-track-dot"><i :class="index===0?'fa-solid fa-inbox':index===1?'fa-solid fa-box-open':index===2?'fa-solid fa-truck-fast':index===3?'fa-solid fa-location-dot':'fa-solid fa-box-open'"></i></div>
-                  <span x-text="estado"></span>
+              <template x-for="(etapa,index) in seguimientoEtapasPublicas" :key="'v3-stage-'+etapa.key">
+                <div class="ps-track-stage" :class="{'done':index<indiceEtapaVisualSeguimiento() && etapa.key!=='estrellas','current':index===indiceEtapaVisualSeguimiento(),'midpoint':etapa.key==='en-camino','photo-stage':etapa.key==='estrellas','photo-ready':etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía','photo-locked':etapa.key==='estrellas' && seguimientoClienteData?.estado!=='Fotografía'}" :title="etapa.key==='estrellas' ? (seguimientoClienteData?.estado==='Fotografía' ? 'Estrellas de PetSmart — Comparte una foto de tu engreído disfrutando de su pedido. Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.' : 'Cuando el seguimiento llegue a Fotografía, podrás compartir una foto de tu mascota.') : (etapa.key==='en-camino' ? 'Tu pedido está avanzando hacia el destino.' : etapa.label)" :role="etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía' ? 'button' : null" :tabindex="etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía' ? 0 : null" :aria-label="etapa.key==='estrellas' ? 'Estrellas de PetSmart. Comparte una foto de tu mascota cuando el estado sea Fotografía.' : etapa.label" @click="if(etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía') document.getElementById('psTrackPhotoCard')?.scrollIntoView({behavior:'smooth',block:'center'})" @keydown.enter.prevent="if(etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía') document.getElementById('psTrackPhotoCard')?.scrollIntoView({behavior:'smooth',block:'center'})">
+                  <div class="ps-track-dot"><i :class="etapa.icon"></i></div>
+                  <span x-text="etapa.label"></span>
                 </div>
               </template>
             </div>
           </div>
         </div>
-        <div class="ps-track-meta ps-track-meta-three">
+        <div class="ps-track-meta ps-track-meta-three" x-show="seguimientoClienteData?.estado!=='Fotografía'" x-transition>
           <div class="ps-track-meta-box"><div class="ps-track-meta-label">Distrito</div><div class="ps-track-meta-value" x-text="seguimientoClienteData?.distrito||'Por confirmar'"></div></div>
           <div class="ps-track-meta-box"><div class="ps-track-meta-label">Dirección exacta</div><div class="ps-track-meta-value" x-text="seguimientoClienteData?.direccion||'Por confirmar'"></div></div>
           <div class="ps-track-meta-box"><div class="ps-track-meta-label">Fecha de entrega</div><div class="ps-track-meta-value" x-text="seguimientoClienteData?.fechaEntrega||'Por confirmar'"></div></div><div class="ps-track-meta-box"><div class="ps-track-meta-label">Horario de entrega</div><div class="ps-track-meta-value" x-text="seguimientoClienteData?.horarioEntrega||'Por confirmar'"></div></div>
@@ -874,17 +1198,129 @@ body.dark{background:#070d19!important}
       </div>
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Solicitud Recibida'" x-transition><div class="ps-track-context-title">Solicitud recibida</div><div class="ps-track-context-text">Hemos recibido correctamente tu pedido y estamos listos para comenzar.</div></div>
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Preparando'" x-transition><div class="ps-track-context-title">📦 Estamos preparando tu pedido</div><div class="ps-track-context-text">Lo estamos preparando con mucho cuidado para que llegue en las mejores condiciones.</div></div>
-      <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Enviado'" x-transition><div class="ps-track-context-title">🚚 Tu pedido ya está en camino</div><div class="ps-track-context-text">Tu pedido ha sido despachado y continúa su recorrido hacia tu dirección.</div></div>
+      <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Enviado'" x-transition><div class="ps-track-context-title">📦 Tu pedido ya fue enviado</div><div class="ps-track-context-text">Tu pedido fue despachado. En cuanto avance en su recorrido, actualizaremos su estado.</div></div>
+      <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='En camino'" x-transition><div class="ps-track-context-title">🚚 ¡Tu pedido está avanzando!</div><div class="ps-track-context-text">Tu pedido ya está en camino hacia el destino. Seguiremos actualizando su avance.</div></div>
       <div class="ps-track-context destination" x-show="seguimientoClienteData?.estado==='En destino'" x-transition><div class="ps-track-context-title">📍 ¡Tu pedido ya llegó a destino! 😊</div><div class="ps-track-context-text">Nuestro equipo ya se encuentra en el punto de entrega. ¡Prepárate para recibir tu pedido!</div></div>
-      <div x-show="seguimientoClienteData?.estado==='Entregado'" x-transition class="ps-track-thanks delivered"><i class="fa-solid fa-heart"></i><span>¡Muchas gracias por tu compra!</span><i class="fa-solid fa-paw"></i></div>
-      <div x-show="seguimientoClienteData?.estado==='Entregado'" x-transition class="ps-track-photo-card">
-        <div class="ps-track-photo-copy"><div class="ps-track-photo-title">🐾 ¡Ayúdanos a crecer!</div><div class="ps-track-photo-text">Comparte una foto de tu engreído disfrutando de su pedido. 📸✨<br>Queremos conocer a las estrellas de PetSmart. 🐶🐱</div><div class="ps-track-photo-hint">Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.</div></div>
+      <div x-show="seguimientoClienteData?.estado==='Fotografía'" x-transition class="ps-track-thanks delivered"><i class="fa-solid fa-heart"></i><span x-text="(seguimientoClienteData?.clienteNombre ? seguimientoClienteData.clienteNombre + ', ' : '') + '¡Muchas gracias por tu compra!'"></span><i class="fa-solid fa-paw"></i></div>
+      <div id="psTrackPhotoCard" x-show="seguimientoClienteData?.estado==='Fotografía'" x-transition class="ps-track-photo-card">
+        <div class="ps-track-photo-copy"><div class="ps-track-photo-title"><i class="fa-solid fa-star mr-1" aria-hidden="true"></i> Estrellas de PetSmart</div><div class="ps-track-photo-text">Comparte una foto de tu engreído disfrutando de su pedido. 📸✨<br>Queremos conocer a las estrellas de PetSmart. 🐶🐱</div><div class="ps-track-photo-hint">Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.</div></div>
         <input id="psTrackPhotoInput" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" @change="seleccionarFotoCliente($event)">
         <label for="psTrackPhotoInput" class="ps-track-photo-button" title="Seleccionar foto"><i class="fa-solid fa-camera"></i><span>Compartir foto</span></label>
         <div x-show="fotoClientePreview" x-transition class="ps-track-photo-preview-wrap"><img :src="fotoClientePreview" class="ps-track-photo-preview" alt="Vista previa de la foto seleccionada"><div class="ps-track-photo-actions"><button type="button" @click="subirFotoClienteCloudinary()" :disabled="fotoClienteSubiendo" class="ps-track-photo-upload"><i :class="fotoClienteSubiendo?'fa-solid fa-spinner fa-spin':'fa-solid fa-cloud-arrow-up'"></i><span x-text="fotoClienteSubiendo?'Subiendo foto…':'Subir foto'"></span></button><button type="button" @click="cancelarFotoCliente()" class="ps-track-photo-cancel" :disabled="fotoClienteSubiendo">Cambiar</button></div></div>
         <div x-show="fotoClienteSubida" x-transition class="ps-track-photo-success"><i class="fa-solid fa-circle-check"></i><span>¡Gracias! Recibimos tu foto y nos ayudas a seguir creciendo. 🐾</span></div>
       </div>
-      <div x-show="seguimientoClienteData?.estado!=='En destino' && seguimientoClienteData?.estado!=='Entregado'" class="text-center text-[11px] text-blue-100 mt-5">PetSmart · Te mantendremos informado del avance de tu pedido.</div>
+      <div x-show="seguimientoClienteData?.estado!=='En destino' && seguimientoClienteData?.estado!=='Entregado' && seguimientoClienteData?.estado!=='Fotografía'" class="text-center text-[11px] text-blue-100 mt-5">PetSmart · Te mantendremos informado del avance de tu pedido.</div>
+    </div>
+  </div>
+</div>
+
+
+<div x-show="modoClubPublico" x-cloak class="ps-club-public">
+  <div class="ps-club-shell">
+    <header class="ps-club-brand">
+      <div class="ps-club-brand-main">
+        <div class="ps-club-brand-logo-wrap">
+          <template x-if="clubLogoUrlPublico"><img :src="clubLogoUrlPublico" class="ps-club-logo" alt="PetSmart"></template>
+          <template x-if="!clubLogoUrlPublico"><div class="ps-club-brand-text">PETSMART</div></template>
+        </div>
+        <div class="ps-club-brand-copy">
+          <div class="ps-club-eyebrow"><i class="fa-solid fa-star"></i> Programa de fidelización</div>
+          <h1 class="ps-club-brand-title">PetSmart Club</h1>
+          <p class="ps-club-brand-subtitle">Tus compras te premian. Más puntos, más momentos felices para tu mascota.</p>
+        </div>
+      </div>
+      <div class="ps-club-brand-side" aria-hidden="true">
+        <div class="ps-club-brand-side-icon"><i class="fa-solid fa-paw"></i></div>
+        <div><span>UNA HUELLA DE BENEFICIOS</span><strong>Premios para ellos.<br>Ventajas para ti.</strong></div>
+      </div>
+      <div class="ps-club-brand-orbit ps-club-orbit-one" aria-hidden="true"></div>
+      <div class="ps-club-brand-orbit ps-club-orbit-two" aria-hidden="true"></div>
+    </header>
+
+    <div class="ps-club-hero">
+      <section class="ps-club-search-card">
+        <div class="ps-club-label">Consulta exclusiva</div>
+        <div class="ps-club-search-title mt-2">Descubre tus puntos y canjea tus recompensas.</div>
+        <div class="ps-club-search-sub">Ingresa únicamente tu DNI. Aquí solo podrás consultar tu saldo y acceder a las recompensas disponibles en PetSmart Club.</div>
+        <div class="ps-club-search-wrap">
+          <i class="fa-solid fa-id-card"></i>
+          <input x-model="clubPublicDni" @input="clubPublicDni=normalizarDniClub(clubPublicDni)" @keydown.enter="clubConsultarDni()" maxlength="8" inputmode="numeric" autocomplete="off" class="ps-club-search-input" placeholder="DNI · 8 dígitos" aria-label="DNI">
+          <button @click="clubConsultarDni()" class="ps-club-search-btn" :disabled="clubPublicCargando"><span x-show="!clubPublicCargando"><i class="fa-solid fa-magnifying-glass mr-1"></i> Consultar</span><span x-show="clubPublicCargando"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Consultando…</span></button>
+        </div>
+        <div class="ps-club-mini-note"><i class="fa-solid fa-shield-halved"></i><span>Esta página está dedicada exclusivamente a PetSmart Club. No muestra inventario, ventas, clientes, finanzas, comprobantes ni ninguna otra sección administrativa.</span></div>
+        <div x-show="clubPublicError" x-transition class="ps-club-status error"><i class="fa-solid fa-circle-exclamation mr-1"></i><span x-text="clubPublicError"></span></div>
+        <div x-show="clubPublicStatus" x-transition class="ps-club-status ok"><i class="fa-solid fa-circle-check mr-1"></i><span x-text="clubPublicStatus"></span></div>
+      </section>
+
+      <section class="ps-club-balance-card">
+        <div x-show="!clubPublicCliente" class="ps-club-login-empty">
+          <div class="icon"><i class="fa-solid fa-paw"></i></div>
+          <div class="font-black text-lg text-slate-700">Tu Club comienza aquí</div>
+          <div class="text-[11px] mt-1">Consulta con tu DNI para ver tu saldo y desbloquear recompensas.</div>
+        </div>
+        <template x-if="clubPublicCliente">
+          <div class="h-full flex flex-col justify-between">
+            <div class="ps-club-balance-top"><div><div class="ps-club-label">Cliente</div><div class="ps-club-customer" x-text="clubPublicCliente.nombre"></div></div><div class="w-11 h-11 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center"><i class="fa-solid fa-star"></i></div></div>
+            <div class="ps-club-points"><div class="ps-club-points-number" x-text="clubFormatearPuntos(clubPublicCliente.puntos)"></div><div class="ps-club-points-word">PUNTOS</div></div>
+            <div class="ps-club-level">
+              <div class="ps-club-level-row"><span x-show="clubProximaMeta()">Próxima recompensa</span><span x-show="clubProximaMeta()" x-text="clubProximaMeta()+' puntos'"></span><span x-show="!clubProximaMeta()">🎉 Recompensas desbloqueadas</span></div>
+              <div x-show="clubProximaMeta()" class="ps-club-progress"><span :style="`width:${clubPorcentajeMeta()}%`"></span></div>
+              <div class="ps-club-progress-text" x-show="clubProximaMeta()" x-text="`Te faltan ${Math.max(0,clubProximaMeta()-(Number(clubPublicCliente.puntos)||0))} puntos.`"></div>
+              <div class="ps-club-progress-text" x-show="!clubProximaMeta()">Tienes puntos suficientes para las recompensas disponibles.</div>
+            </div>
+          </div>
+        </template>
+      </section>
+    </div>
+
+    <section class="ps-club-reward-panel">
+      <div class="ps-club-section-head"><div><div class="ps-club-label">Recompensas</div><div class="ps-club-section-title mt-1">🎁 Canjea tus puntos</div><div class="ps-club-section-sub">Los productos y beneficios se muestran en tarjetas independientes y se desbloquean según tu saldo.</div></div><div x-show="clubPublicCliente" class="px-3 py-2 rounded-xl bg-violet-50 text-violet-700 text-[10px] font-black"><i class="fa-solid fa-star mr-1"></i><span x-text="clubFormatearPuntos(clubPublicCliente?.puntos||0)"></span> puntos disponibles</div></div>
+      <div x-show="clubRecompensasCargando" class="py-16 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin text-2xl"></i><div class="font-black mt-2">Cargando recompensas…</div></div>
+      <div x-show="!clubRecompensasCargando && clubPublicCliente && clubRecompensasData.length" class="ps-club-reward-grid">
+        <template x-for="r in clubRecompensasData" :key="'club-public-r-'+r.id">
+          <article class="ps-club-reward-card" :class="clubPuedeCanjear(r)?'is-eligible':''">
+            <div x-show="clubPuedeCanjear(r)" class="ps-club-stars"><span>★</span><span>✦</span><span>★</span><span>✦</span><span>★</span></div>
+            <div class="ps-club-reward-topline">
+              <span class="ps-club-reward-type"><i class="fa-solid" :class="r.tipo==='descuento'?'fa-tags':'fa-gift'"></i><span x-text="r.tipo==='descuento'?'BENEFICIO EXCLUSIVO':'PREMIO PARA TU MASCOTA'"></span></span>
+              <span class="ps-club-reward-stock" :class="clubPuedeCanjear(r)?'unlocked':''"><i class="fa-solid" :class="clubPuedeCanjear(r)?'fa-unlock':'fa-star'"></i><span x-text="clubPuedeCanjear(r)?'DESBLOQUEADO':'PETSMART CLUB'"></span></span>
+            </div>
+            <div class="ps-club-reward-image">
+              <template x-if="r.imagenUrl"><img :src="r.imagenUrl" :alt="r.nombre" loading="lazy"></template>
+              <template x-if="!r.imagenUrl"><div class="ps-club-reward-placeholder"><i class="fa-solid fa-gift"></i></div></template>
+              <div x-show="clubPuedeCanjear(r)" class="ps-club-image-unlocked"><i class="fa-solid fa-sparkles"></i> Ya puedes canjearlo</div>
+            </div>
+            <div class="ps-club-reward-content">
+              <div class="ps-club-reward-name" x-text="r.nombre"></div>
+              <div class="ps-club-reward-desc" x-text="r.descripcion || clubBeneficioRecompensa(r)"></div>
+              <div class="ps-club-reward-meta-line"><i class="fa-solid fa-check-circle"></i><span x-text="clubBeneficioRecompensa(r)"></span></div>
+              <div class="ps-club-reward-cost-row">
+                <div class="ps-club-cost-icon"><i class="fa-solid fa-star"></i></div>
+                <div class="ps-club-cost-copy"><strong x-text="Math.max(25,Number(r.puntos)||0)"></strong><span>PUNTOS PARA CANJEAR</span></div>
+              </div>
+              <div class="ps-club-missing" :class="clubPuedeCanjear(r)?'is-ready':''" x-text="clubPuedeCanjear(r)?'¡Premio desbloqueado! Tus puntos te alcanzan.':(clubPuntosFaltantes(r)>0?'Te faltan '+clubPuntosFaltantes(r)+' puntos para este premio.':'Premio no disponible por ahora.')"></div>
+              <button @click="clubAbrirCanje(r)" class="ps-club-redeem-btn" :class="clubPuedeCanjear(r)?'ready':''" :disabled="!clubPuedeCanjear(r)"><span x-show="clubPuedeCanjear(r)"><i class="fa-solid fa-gift mr-2"></i> Canjear recompensa</span><span x-show="!clubPuedeCanjear(r)"><i class="fa-solid fa-lock mr-2"></i> Canjear recompensa</span><i class="fa-solid fa-arrow-right ps-club-redeem-arrow"></i></button>
+            </div>
+          </article>
+        </template>
+      </div>
+      <div x-show="!clubPublicCliente && !clubRecompensasCargando" class="ps-club-login-empty"><div class="icon"><i class="fa-solid fa-lock"></i></div><div class="font-black text-slate-700">Consulta tu DNI para ver las recompensas</div><div class="text-[11px] mt-1">Así mostramos únicamente lo necesario para tu cuenta de PetSmart Club.</div></div>
+      <div x-show="clubPublicCliente && !clubRecompensasCargando && !clubRecompensasData.length" class="ps-club-login-empty"><div class="icon"><i class="fa-solid fa-gift"></i></div><div class="font-black text-slate-700">No hay recompensas disponibles en este momento</div><div class="text-[11px] mt-1">Vuelve a consultar más adelante.</div></div>
+
+      <template x-if="clubUltimoCanje"><div class="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><div class="font-black text-emerald-800">🎉 ¡Canje realizado!</div><div class="text-[11px] text-emerald-700 mt-1"><b x-text="clubUltimoCanje.nombre"></b> · <span x-text="clubUltimoCanje.puntos"></span> puntos utilizados · saldo <b x-text="clubUltimoCanje.saldoPosterior"></b></div><div class="mt-3 flex flex-wrap items-center gap-2"><div class="px-3 py-2 rounded-xl bg-white border border-emerald-200 font-black text-xs code">Código: <span class="ps-club-code" x-text="clubUltimoCanje.codigo"></span></div><button @click="clubCompartirUltimoCanjeWhatsApp()" class="px-4 py-2.5 rounded-xl bg-green-600 text-white text-xs font-black"><i class="fa-brands fa-whatsapp mr-1"></i> Compartir por WhatsApp</button></div></div></template>
+
+      <div x-show="clubPublicCliente && clubPublicCliente.movimientos?.length" class="ps-club-history"><div class="ps-club-label">Historial reciente</div><div class="ps-club-history-list"><template x-for="m in clubPublicCliente.movimientos" :key="'club-history-'+m.id"><div class="ps-club-history-row"><div><div class="label" x-text="m.tipo==='canje' ? ('Canje · '+(m.recompensaNombre||'Recompensa')) : (m.descripcion||'Compra registrada')"></div><span class="date" x-text="m.fecha ? new Date(m.fecha).toLocaleString('es-PE') : '—'"></span></div><div class="pts" :class="Number(m.puntos||0)>=0?'plus':'minus'" x-text="(Number(m.puntos||0)>=0?'+':'')+m.puntos+' pts'"></div></div></template></div></div>
+    </section>
+
+    <div class="ps-club-footer">PetSmart Club · Tus compras te premian. 🐾<br>Consulta, canjea y comparte tus recompensas.</div>
+  </div>
+
+  <div x-show="clubCanjeModal" x-transition.opacity class="ps-club-modal" @keydown.escape.window="clubCerrarCanje()">
+    <div class="ps-club-modal-card" @click.outside="clubCerrarCanje()">
+      <div class="ps-club-modal-head"><div><div class="ps-club-modal-title">Confirmar canje</div><div class="ps-club-modal-sub">Los puntos se descontarán de tu saldo y la recompensa quedará reservada con un código único.</div></div><button @click="clubCerrarCanje()" class="ps-club-modal-close"><i class="fa-solid fa-xmark"></i></button></div>
+      <template x-if="clubCanjeSeleccionado">
+        <div class="ps-club-modal-reward"><template x-if="clubCanjeSeleccionado.imagenUrl"><img :src="clubCanjeSeleccionado.imagenUrl" alt="Recompensa"></template><div><div class="font-black text-slate-800" x-text="clubCanjeSeleccionado.nombre"></div><div class="text-[10px] text-slate-400 mt-1" x-text="clubBeneficioRecompensa(clubCanjeSeleccionado)"></div><div class="ps-club-modal-points mt-2" x-text="Math.max(25,Number(clubCanjeSeleccionado.puntos)||0)+' puntos'"></div></div></div>
+      </template>
+      <div class="ps-club-modal-actions"><button @click="clubProcesarCanje()" class="ps-club-btn-confirm" :disabled="clubCanjeProcesando"><span x-show="!clubCanjeProcesando">🎁 Confirmar canje</span><span x-show="clubCanjeProcesando"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Procesando…</span></button><button @click="clubCerrarCanje()" class="ps-club-btn-muted" :disabled="clubCanjeProcesando">Cancelar</button></div>
     </div>
   </div>
 </div>
@@ -1316,6 +1752,21 @@ body.dark{background:#070d19!important}
 <div x-show="!ventaForm.modoSeller" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-clock text-blue-500 mr-1"></i>Horario de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="text" placeholder="11:30 am - 1:30 pm" x-model="ventaForm.horarioEntrega"/></div>
 </div>
 
+<div class="rounded-2xl border border-sky-200 dark:border-sky-800 bg-sky-50/70 dark:bg-sky-950/20 p-4">
+  <label class="flex items-center justify-between gap-4 cursor-pointer">
+    <span>
+      <span class="block text-[10px] uppercase tracking-[.14em] font-black text-sky-700 dark:text-sky-300"><i class="fa-solid fa-bag-shopping mr-1"></i> Bolsa para llevar</span>
+      <span class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mt-1">Marca si al cliente se le entregó bolsa Notex.</span>
+    </span>
+    <span class="relative inline-flex items-center shrink-0">
+      <input type="checkbox" x-model="ventaForm.conBolsa" class="sr-only peer">
+      <span class="w-14 h-8 rounded-full bg-slate-300 dark:bg-slate-700 peer-checked:bg-sky-600 transition"></span>
+      <span class="absolute left-1 top-1 w-6 h-6 rounded-full bg-white shadow transition-transform peer-checked:translate-x-6"></span>
+    </span>
+  </label>
+  <div class="mt-2 text-[10px] font-black" :class="ventaForm.conBolsa ? 'text-sky-700 dark:text-sky-300' : 'text-slate-400'" x-text="ventaForm.conBolsa ? '✓ Con bolsa' : 'Sin bolsa'"></div>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-truck text-amber-500 mr-1"></i>Envío <span class="font-normal text-slate-400">(informativo)</span></label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" placeholder="Ej: S/ 10 · Motorizado" type="text" x-model="ventaForm.envio"/><div class="text-[10px] text-slate-400 mt-1">No suma, resta ni participa en ningún cálculo.</div></div>
 <template x-if="ventaForm.modoSeller"><div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/30 space-y-3 md:col-span-2"><div class="text-xs font-black text-purple-700 dark:text-purple-300"><i class="fa-solid fa-store mr-1"></i> Cálculo de operación Seller</div><div class="grid grid-cols-1 md:grid-cols-3 gap-3"><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Total cobrado por Seller (S/)</label><input class="w-full bg-white dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-3 text-base font-black" min="0" step="0.01" type="number" x-model.number="ventaForm.sellerTotalVenta" placeholder="Ej: 35.90"/></div><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Comisión Seller (S/)</label><input class="w-full bg-white dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-3 text-sm font-bold" min="0" step="0.01" type="number" x-model.number="ventaForm.comision" placeholder="0.00"/></div><div><label class="block text-[11px] font-bold text-purple-600 dark:text-purple-400 mb-1">Conf. Logístico (S/)</label><input class="w-full bg-white dark:bg-slate-900 border border-purple-300 rounded-lg px-3 py-3 text-sm font-bold" min="0" step="0.01" type="number" x-model.number="ventaForm.confLogistico" placeholder="0.00"/></div></div><div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-[11px]"><div class="rounded-xl bg-white/70 dark:bg-slate-900/50 border border-purple-200 dark:border-purple-800 p-3"><div class="text-slate-400">Neto que paga Seller</div><div class="text-base font-black text-purple-700 dark:text-purple-300 mt-1">S/ <span x-text="formatMonto(netoSellerCalculado)"></span></div></div><div class="rounded-xl bg-white/70 dark:bg-slate-900/50 border border-purple-200 dark:border-purple-800 p-3"><div class="text-slate-400">Costo productos</div><div class="text-base font-black text-amber-700 dark:text-amber-300 mt-1">S/ <span x-text="formatMonto(costoTotalVentaSeleccionada)"></span></div></div><div class="rounded-xl bg-white/70 dark:bg-slate-900/50 border border-purple-200 dark:border-purple-800 p-3"><div class="text-slate-400">Ganancia real</div><div class="text-base font-black text-emerald-700 dark:text-emerald-300 mt-1">S/ <span x-text="formatMonto(gananciaSellerCalculada)"></span></div></div></div></div></template>
@@ -1435,6 +1886,20 @@ body.dark{background:#070d19!important}
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black mb-1.5"><i class="fa-solid fa-truck text-amber-500 mr-1"></i>Envío <span class="font-normal text-slate-400">(informativo)</span></label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" type="text" x-model="ventaEditando.envio"/><div class="text-[10px] text-slate-400 mt-1">No suma, resta ni participa en ningún cálculo.</div></div>
 <div><label class="block text-xs font-black mb-1.5"><i class="fa-solid fa-calendar-check text-emerald-500 mr-1"></i>Fecha de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="date" x-model="ventaEditando.fechaEntrega"/></div>
+</div>
+<div class="rounded-2xl border border-sky-200 dark:border-sky-800 bg-sky-50/70 dark:bg-sky-950/20 p-4">
+  <label class="flex items-center justify-between gap-4 cursor-pointer">
+    <span>
+      <span class="block text-[10px] uppercase tracking-[.14em] font-black text-sky-700 dark:text-sky-300"><i class="fa-solid fa-bag-shopping mr-1"></i> Bolsa para llevar</span>
+      <span class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mt-1">Corrige si al cliente se le entregó bolsa Notex.</span>
+    </span>
+    <span class="relative inline-flex items-center shrink-0">
+      <input type="checkbox" x-model="ventaEditando.conBolsa" class="sr-only peer">
+      <span class="w-14 h-8 rounded-full bg-slate-300 dark:bg-slate-700 peer-checked:bg-sky-600 transition"></span>
+      <span class="absolute left-1 top-1 w-6 h-6 rounded-full bg-white shadow transition-transform peer-checked:translate-x-6"></span>
+    </span>
+  </label>
+  <div class="mt-2 text-[10px] font-black" :class="ventaEditando?.conBolsa ? 'text-sky-700 dark:text-sky-300' : 'text-slate-400'" x-text="ventaEditando?.conBolsa ? '✓ Con bolsa Notex' : 'Sin bolsa Notex'"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black mb-1.5">Canal de venta *</label><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" required="" x-model="ventaEditando.canalVenta"><option value="WhatsApp">WhatsApp</option><option value="Facebook">Facebook</option><option value="Rappi">Rappi</option><option value="Falabella">Seller Falabella</option></select></div>
@@ -1807,12 +2272,41 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 accesoAutorizado: false,
                 accesoIntentos: 0,
                 modoSeguimientoCliente: false,
+                modoClubPublico: false,
+                clubPublicDni: '',
+                clubPublicCliente: null,
+                clubPublicCargando: false,
+                clubPublicError: '',
+                clubPublicStatus: '',
+                clubRecompensasData: [],
+                clubRecompensasCargando: false,
+                clubCanjeProcesando: '',
+                clubCanjeModal: false,
+                clubCanjeSeleccionado: null,
+                clubUltimoCanje: null,
+                clubLogoUrlPublico: '',
+                clubWhatsAppNumero: '51984464009',
+                clubPuntosPorCadaSoles: 10,
+                clubAdminCanjesData: [],
+                clubFormRecompensa: { id:'', nombre:'', descripcion:'', tipo:'producto', puntos:25, stock:1, imagenUrl:'', valorDescuento:0, modalidadDescuento:'soles', activo:true },
+                clubRecompensaSubiendo: false,
+                clubEditandoRecompensa: false,
                 seguimientoToken: '',
                 seguimientoClienteData: null,
                 seguimientoCargando: false,
                 seguimientoAnimando: false,
                 seguimientoListener: null,
-                seguimientoEstados: ['Solicitud Recibida','Preparando','Enviado','En destino','Entregado'],
+                seguimientoEstados: ['Solicitud Recibida','Preparando','Enviado','En camino','En destino','Entregado','Fotografía'],
+                // Etapas públicas de seguimiento. Cada etapa corresponde a un estado seleccionable manualmente en administración.
+                seguimientoEtapasPublicas: [
+                    { key: 'recibida', label: 'Solicitud Recibida', icon: 'fa-solid fa-inbox' },
+                    { key: 'preparando', label: 'Preparando', icon: 'fa-solid fa-box-open' },
+                    { key: 'enviado', label: 'Enviado', icon: 'fa-solid fa-truck-fast' },
+                    { key: 'en-camino', label: 'En camino', icon: 'fa-solid fa-route' },
+                    { key: 'destino', label: 'En destino', icon: 'fa-solid fa-location-dot' },
+                    { key: 'entregado', label: 'Entregado', icon: 'fa-solid fa-box-open' },
+                    { key: 'estrellas', label: 'Estrellas', icon: 'fa-solid fa-camera' }
+                ],
                 modalSeguimientoPedido: false,
                 seguimientoAdmin: null,
                 fotoClienteSeleccionada: null,
@@ -2167,7 +2661,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 ventaForm: {
                     clienteNombre: '', clienteTelefono: '', distrito: '', canalVenta: 'WhatsApp', perfilFacebook: '', tipoMascota: '',
                     medioPago: 'Yape', precioVenta: 0, fechaVenta: fechaPeruActual(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '',
-                    comision: 0, confLogistico: 0, observacion: '', direccionEntrega: '', latitud: '', longitud: '', valeCodigo: '', generarVale: false, sellerPagoStandby: true
+                    comision: 0, confLogistico: 0, observacion: '', direccionEntrega: '', latitud: '', longitud: '', valeCodigo: '', generarVale: false, sellerPagoStandby: true, conBolsa: false
                 },
                 productos: [],
                 // =================================================
@@ -2180,6 +2674,16 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     const skuURL = params.get('sku');
                     const seguimiento = params.get('seguimiento');
                     if (skuURL) this.busqueda = skuURL.trim();
+                    const club = params.get('club');
+                    if (club) {
+                        this.modoClubPublico = true;
+                        this.darkMode = false;
+                        this.clubPublicDni = '';
+                        setTimeout(async () => {
+                            await this.inicializarFirebaseClubPublico();
+                        }, 80);
+                        return;
+                    }
                     if (seguimiento) {
                         this.modoSeguimientoCliente = true;
                         this.seguimientoToken = String(seguimiento).trim();
@@ -3348,6 +3852,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                             montoTotal: Number(datosVenta.precioVenta) || 0,
                             fechaEntrega: datosVenta.fechaEntrega || '',
                             envio: datosVenta.envio || '',
+                            conBolsa: !!datosVenta.conBolsa,
                             tipoComprobante: datosVenta.tipoComprobante || '',
                             tipoDocumento: datosVenta.tipoDocumento || '',
                             numeroDocumento: datosVenta.numeroDocumento || '',
@@ -3452,24 +3957,58 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     const nombre=`PetSmart_${this.comprobantePetSmart.tipo||'Comprobante'}_${this.comprobantePetSmart.serie||'SN'}-${this.comprobantePetSmart.numero||'SN'}.pdf`.replace(/[^a-zA-Z0-9_.-]+/g,'_');
                     const A4_W=210, A4_H=297;
                     const esperarFrame=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+                    const prepararClonSeguro=async()=>{
+                        const clon=original.cloneNode(true);
+                        clon.id='comprobantePetSmartPdfClone';
+                        clon.style.position='fixed'; clon.style.left='-100000px'; clon.style.top='0'; clon.style.visibility='visible';
+                        clon.style.width=`${Math.max(794,original.getBoundingClientRect().width)}px`;
+                        clon.style.height=`${Math.max(1123,original.getBoundingClientRect().height)}px`;
+                        clon.style.maxWidth='none'; clon.style.maxHeight='none';
+                        clon.style.overflow='visible'; clon.style.background='#fff';
+                        document.body.appendChild(clon);
+                        const canvases=Array.from(clon.querySelectorAll('canvas'));
+                        canvases.forEach(cv=>{
+                            if(!cv.width || !cv.height){
+                                cv.width=2; cv.height=2;
+                                cv.style.width='2px'; cv.style.height='2px';
+                            }
+                        });
+                        const imgs=Array.from(clon.querySelectorAll('img'));
+                        await Promise.all(imgs.map(async img=>{
+                            try{img.crossOrigin='anonymous';}catch(_){ }
+                            if(!img.complete){await new Promise(resolve=>{const done=()=>{img.removeEventListener('load',done);img.removeEventListener('error',done);resolve();};img.addEventListener('load',done,{once:true});img.addEventListener('error',done,{once:true});});}
+                            if(img.decode){try{await img.decode();}catch(_){}}
+                        }));
+                        await esperarFrame();
+                        return clon;
+                    };
                     const capturar=async()=>{
                         const rect=original.getBoundingClientRect();
                         if(rect.width<100 || rect.height<100) throw new Error('La previsualización del comprobante no está visible para capturarla.');
-                        return await window.html2canvas(original,{
-                            scale:2.5,
-                            useCORS:true,
-                            allowTaint:false,
-                            backgroundColor:'#ffffff',
-                            logging:false,
-                            imageTimeout:20000,
-                            scrollX:0,
-                            scrollY:-window.scrollY,
-                            width:Math.round(rect.width),
-                            height:Math.round(rect.height),
-                            windowWidth:document.documentElement.clientWidth,
-                            windowHeight:document.documentElement.clientHeight,
-                            letterRendering:true
-                        });
+                        let clon=null;
+                        try{
+                            clon=await prepararClonSeguro();
+                            const cloneRect=clon.getBoundingClientRect();
+                            if(cloneRect.width<100 || cloneRect.height<100) throw new Error('La copia de compatibilidad del comprobante no tiene dimensiones válidas.');
+                            return await window.html2canvas(clon,{
+                                scale:2.5,
+                                useCORS:true,
+                                allowTaint:false,
+                                backgroundColor:'#ffffff',
+                                logging:false,
+                                imageTimeout:20000,
+                                scrollX:0,
+                                scrollY:0,
+                                width:Math.round(cloneRect.width),
+                                height:Math.round(cloneRect.height),
+                                windowWidth:Math.max(document.documentElement.clientWidth,Math.round(cloneRect.width)),
+                                windowHeight:Math.max(document.documentElement.clientHeight,Math.round(cloneRect.height)),
+                                letterRendering:true,
+                                foreignObjectRendering:false
+                            });
+                        } finally {
+                            if(clon)clon.remove();
+                        }
                     };
                     const crearPdf=canvas=>{
                         const {jsPDF}=window.jspdf;
@@ -3579,6 +4118,11 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 urlSeguimientoCliente(token,data={}) {
                     const base = window.location.href.split('?')[0];
                     return `${base}?seguimiento=${encodeURIComponent(token)}`;
+                },
+                indiceEtapaVisualSeguimiento() {
+                    const estado=String(this.seguimientoClienteData?.estado||'Solicitud Recibida').replace(/^Recibido$/,'Solicitud Recibida');
+                    const indices={'Solicitud Recibida':0,'Preparando':1,'Enviado':2,'En camino':3,'En destino':4,'Entregado':5,'Fotografía':6};
+                    return Object.prototype.hasOwnProperty.call(indices,estado) ? indices[estado] : 0;
                 },
                 async cargarSeguimientoPublico(token) {
                     this.seguimientoCargando=true; this.seguimientoClienteData=null;
@@ -4675,6 +5219,356 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     }
                 },
                 // =================================================
+                // PETSMART CLUB · PUNTOS, RECOMPENSAS Y CANJES
+                // =================================================
+                normalizarDniClub(valor) {
+                    return String(valor || '').replace(/\D/g,'').slice(0,8);
+                },
+                clubCalcularPuntos(monto) {
+                    const total = Number(monto) || 0;
+                    return Math.max(0, Math.floor((total + 0.000001) / Math.max(1, Number(this.clubPuntosPorCadaSoles || 10))));
+                },
+                clubFormatearPuntos(valor) {
+                    return Math.max(0, Number(valor) || 0).toLocaleString('es-PE');
+                },
+                clubBeneficioRecompensa(recompensa) {
+                    if (!recompensa) return '';
+                    if (String(recompensa.tipo || 'producto') === 'descuento') {
+                        const valor = Number(recompensa.valorDescuento) || 0;
+                        return `${recompensa.modalidadDescuento === 'porcentaje' ? valor + '%' : 'S/ ' + this.formatMonto(valor)} de descuento`;
+                    }
+                    return 'Producto gratis';
+                },
+                clubPuedeCanjear(recompensa) {
+                    const puntos = Number(this.clubPublicCliente?.puntos) || 0;
+                    const necesarios = Math.max(25, Number(recompensa?.puntos) || 0);
+                    return !!recompensa && recompensa.activo !== false && Number(recompensa.stock ?? 0) > 0 && puntos >= necesarios;
+                },
+                clubPuntosFaltantes(recompensa) {
+                    const puntos = Number(this.clubPublicCliente?.puntos) || 0;
+                    const necesarios = Math.max(25, Number(recompensa?.puntos) || 0);
+                    return Math.max(0, necesarios - puntos);
+                },
+                clubProximaMeta() {
+                    const puntos = Number(this.clubPublicCliente?.puntos) || 0;
+                    const metas = (this.clubRecompensasData || []).filter(r => r?.activo !== false && Number(r.stock ?? 0) > 0).map(r => Math.max(25, Number(r.puntos) || 0)).filter(p => p > puntos).sort((a,b)=>a-b);
+                    return metas[0] || null;
+                },
+                clubPorcentajeMeta() {
+                    const puntos = Number(this.clubPublicCliente?.puntos) || 0;
+                    const meta = this.clubProximaMeta();
+                    if (!meta) return 100;
+                    return Math.max(0, Math.min(100, (puntos / meta) * 100));
+                },
+                clubDniValido(dni) {
+                    return /^\d{8}$/.test(this.normalizarDniClub(dni));
+                },
+                async inicializarFirebaseClubPublico() {
+                    try {
+                        let intentos = 0;
+                        while ((!window.db || !window.fb) && intentos < 100) {
+                            await new Promise(r => setTimeout(r,100));
+                            intentos++;
+                        }
+                        if (!window.db || !window.fb) {
+                            this.clubPublicError = 'No se pudo conectar con PetSmart Club. Inténtalo nuevamente.';
+                            return;
+                        }
+                        // MODO PÚBLICO ESTRICTO: no se llaman listeners de productos, ventas,
+                        // clientes, finanzas ni configuración administrativa.
+                        try {
+                            const logoSnap = await window.fb.get(window.fb.ref(window.db,'configuracion/negocio/logoUrl'));
+                            this.clubLogoUrlPublico = logoSnap.exists() ? String(logoSnap.val() || '') : '';
+                        } catch (_) { this.clubLogoUrlPublico = ''; }
+                        await this.cargarRecompensasClub();
+                    } catch (error) {
+                        console.error('PetSmart Club público:', error);
+                        this.clubPublicError = 'No se pudo cargar PetSmart Club.';
+                    }
+                },
+                async cargarRecompensasClub() {
+                    this.clubRecompensasCargando = true;
+                    try {
+                        const snap = await window.fb.get(window.fb.ref(window.db,'petSmartClub/recompensas'));
+                        const data = snap.exists() ? (snap.val() || {}) : {};
+                        this.clubRecompensasData = Object.entries(data).map(([id,r]) => ({ id, ...(r || {}) })).filter(r => r.activo !== false && Number(r.stock ?? 0) > 0).sort((a,b)=>Number(a.puntos||0)-Number(b.puntos||0));
+                    } catch (error) {
+                        console.error('No se pudieron cargar las recompensas:', error);
+                        this.clubRecompensasData = [];
+                        this.clubPublicError = 'No se pudieron cargar las recompensas disponibles.';
+                    } finally {
+                        this.clubRecompensasCargando = false;
+                    }
+                },
+                async clubConsultarDni() {
+                    const dni = this.normalizarDniClub(this.clubPublicDni);
+                    this.clubPublicDni = dni;
+                    this.clubPublicError = '';
+                    this.clubPublicStatus = '';
+                    this.clubUltimoCanje = null;
+                    if (!this.clubDniValido(dni)) {
+                        this.clubPublicCliente = null;
+                        this.clubPublicError = 'Ingresa un DNI válido de 8 dígitos.';
+                        return;
+                    }
+                    this.clubPublicCargando = true;
+                    try {
+                        const ref = window.fb.ref(window.db,`petSmartClub/clientes/${dni}`);
+                        const snap = await window.fb.get(ref);
+                        if (!snap.exists()) {
+                            this.clubPublicCliente = null;
+                            this.clubPublicError = 'No encontramos puntos asociados a este DNI.';
+                            return;
+                        }
+                        const data = snap.val() || {};
+                        const movimientos = Object.entries(data.movimientos || {}).map(([id,m])=>({ id, tipo:m?.tipo||'ganancia', puntos:Number(m?.puntos)||0, descripcion:m?.descripcion||'', recompensaNombre:m?.recompensaNombre||'', fecha:m?.fecha||'' })).sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||''))).slice(0,8);
+                        this.clubPublicCliente = { dni, nombre: String(data.nombre || 'Cliente'), puntos: Math.max(0,Number(data.puntos)||0), movimientos };
+                        await this.cargarRecompensasClub();
+                    } catch (error) {
+                        console.error('Consulta PetSmart Club:', error);
+                        this.clubPublicCliente = null;
+                        this.clubPublicError = 'No pudimos consultar tus puntos. Inténtalo nuevamente.';
+                    } finally {
+                        this.clubPublicCargando = false;
+                    }
+                },
+                clubAbrirCanje(recompensa) {
+                    if (!recompensa || !this.clubPublicCliente) return;
+                    if (!this.clubPuedeCanjear(recompensa)) return;
+                    this.clubCanjeSeleccionado = recompensa;
+                    this.clubCanjeModal = true;
+                },
+                clubCerrarCanje() {
+                    if (this.clubCanjeProcesando) return;
+                    this.clubCanjeModal = false;
+                    this.clubCanjeSeleccionado = null;
+                },
+                clubGenerarCodigoCanje() {
+                    const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+                    let code='PSC-';
+                    for(let i=0;i<8;i++) code += chars[Math.floor(Math.random()*chars.length)];
+                    return code;
+                },
+                async clubProcesarCanje() {
+                    const recompensa = this.clubCanjeSeleccionado;
+                    const dni = this.clubPublicCliente?.dni;
+                    if (!recompensa || !this.clubDniValido(dni)) return;
+                    if (!this.clubPuedeCanjear(recompensa)) return;
+                    const puntosNecesarios = Math.max(25, Number(recompensa.puntos)||0);
+                    const canjeRef = window.fb.push(window.fb.ref(window.db,'petSmartClub/canjes'));
+                    const canjeId = canjeRef.key;
+                    const codigo = this.clubGenerarCodigoCanje();
+                    const ahora = new Date().toISOString();
+                    this.clubCanjeProcesando = recompensa.id;
+                    let stockComprometido = false;
+                    let puntosAplicados = false;
+                    const rewardRef = window.fb.ref(window.db,`petSmartClub/recompensas/${recompensa.id}`);
+                    try {
+                        await window.fb.set(canjeRef,{ codigo, estado:'Procesando', dni, clienteNombre:this.clubPublicCliente.nombre || 'Cliente', recompensaId:recompensa.id, recompensaNombre:recompensa.nombre || 'Recompensa', tipo:recompensa.tipo || 'producto', puntos:puntosNecesarios, valorDescuento:Number(recompensa.valorDescuento)||0, modalidadDescuento:recompensa.modalidadDescuento||'soles', creadoEn:ahora });
+
+                        const rewardTxn = await window.fb.runTransaction(rewardRef, actual => {
+                            if (!actual || actual.activo === false) return;
+                            const stock = Number(actual.stock || 0);
+                            if (stock <= 0) return;
+                            return {...actual, stock:stock-1, actualizadoEn:ahora};
+                        });
+                        if (!rewardTxn.committed) throw new Error('La recompensa ya no está disponible.');
+                        stockComprometido = true;
+
+                        const clientRef = window.fb.ref(window.db,`petSmartClub/clientes/${dni}`);
+                        const movimientoId = window.fb.push(window.fb.ref(window.db,`petSmartClub/clientes/${dni}/movimientos`)).key;
+                        const clientTxn = await window.fb.runTransaction(clientRef, actual => {
+                            if (!actual) return;
+                            const saldo = Math.max(0,Number(actual.puntos)||0);
+                            if (saldo < puntosNecesarios) return;
+                            const nuevoSaldo = saldo - puntosNecesarios;
+                            const movimientos = {...(actual.movimientos || {})};
+                            movimientos[movimientoId] = { tipo:'canje', puntos:-puntosNecesarios, recompensaId:recompensa.id, recompensaNombre:recompensa.nombre || 'Recompensa', canjeId, codigo, fecha:ahora, saldoAnterior:saldo, saldoNuevo:nuevoSaldo };
+                            return {...actual, puntos:nuevoSaldo, actualizadoEn:ahora, movimientos};
+                        });
+                        if (!clientTxn.committed) throw new Error('Tus puntos disponibles cambiaron. Vuelve a consultar e inténtalo nuevamente.');
+                        puntosAplicados = true;
+                        const saldoNuevo = Math.max(0,Number(clientTxn.snapshot?.val()?.puntos)||0);
+                        try {
+                            await window.fb.update(canjeRef,{ estado:'Reservado', confirmadoEn:new Date().toISOString(), saldoPosterior:saldoNuevo, movimientoId });
+                        } catch (statusError) {
+                            console.warn('El canje quedó aplicado, pero no se pudo actualizar su estado informativo:', statusError);
+                        }
+
+                        this.clubPublicCliente.puntos = saldoNuevo;
+                        this.clubPublicCliente.movimientos = [{id:movimientoId,tipo:'canje',puntos:-puntosNecesarios,recompensaNombre:recompensa.nombre||'Recompensa',canjeId,codigo,fecha:ahora,saldoNuevo},...(this.clubPublicCliente.movimientos||[])].slice(0,8);
+                        this.clubUltimoCanje = { codigo, nombre:recompensa.nombre || 'Recompensa', puntos:puntosNecesarios, tipo:recompensa.tipo || 'producto', valorDescuento:Number(recompensa.valorDescuento)||0, modalidadDescuento:recompensa.modalidadDescuento||'soles', saldoPosterior:saldoNuevo };
+                        this.clubPublicStatus = '¡Canje realizado correctamente!';
+                        this.clubCanjeModal = false;
+                        await this.cargarRecompensasClub();
+                    } catch (error) {
+                        console.error('Canje PetSmart Club:', error);
+                        if (!puntosAplicados && stockComprometido) {
+                            try { await window.fb.runTransaction(rewardRef, actual => actual ? {...actual, stock:Number(actual.stock||0)+1, actualizadoEn:new Date().toISOString()} : actual); } catch (_) {}
+                        }
+                        try { await window.fb.update(canjeRef,{estado:'Error',error:String(error?.message||error),actualizadoEn:new Date().toISOString()}); } catch (_) {}
+                        this.clubPublicError = error?.message || 'No se pudo completar el canje.';
+                    } finally {
+                        this.clubCanjeProcesando = '';
+                    }
+                },
+                clubCompartirUltimoCanjeWhatsApp() {
+                    const c=this.clubUltimoCanje;
+                    if(!c)return;
+                    const beneficio = c.tipo==='descuento' ? `${c.modalidadDescuento==='porcentaje'?c.valorDescuento+'%':'S/ '+this.formatMonto(c.valorDescuento)} de descuento` : c.nombre;
+                    const texto=encodeURIComponent(`🐾 ¡Hola PetSmart! Acabo de canjear mis puntos por ${beneficio} 🎁\nCódigo de canje: ${c.codigo}\nPuntos utilizados: ${c.puntos}\nPuntos restantes: ${c.saldoPosterior}\n\n¡Gracias PetSmart Club!`);
+                    window.open(`https://wa.me/${this.clubWhatsAppNumero}?text=${texto}`,'_blank','noopener');
+                },
+                clubUrlPublico() {
+                    const base=window.location.href.split('?')[0];
+                    return `${base}?club=1`;
+                },
+                copiarLinkPetSmartClub() {
+                    const url=this.clubUrlPublico();
+                    if(navigator.clipboard){ navigator.clipboard.writeText(url).then(()=>this.notificarToast('success','Link público de PetSmart Club copiado')).catch(()=>this.notificarToast('warning','No se pudo copiar automáticamente.')); }
+                    else this.notificarToast('warning','Copia manualmente el link: '+url);
+                },
+                async clubSubirImagenRecompensa(event) {
+                    const file=event?.target?.files?.[0];
+                    if(!file)return;
+                    if(!/^image\/(jpeg|png|webp)$/.test(file.type)){ event.target.value=''; Swal.fire('Formato no válido','Usa JPG, PNG o WEBP.','warning'); return; }
+                    if(file.size>4*1024*1024){ event.target.value=''; Swal.fire('Imagen demasiado pesada','El máximo es 4 MB.','warning'); return; }
+                    this.clubRecompensaSubiendo=true;
+                    try{
+                        const fd=new FormData(); fd.append('file',file); fd.append('upload_preset',this.cloudinaryPreset); fd.append('folder','PetSmart2026/PetSmartClub'); fd.append('tags','petsmart_club,recompensa');
+                        const url=`https://api.cloudinary.com/v1_1/${this.cloudinaryCloudName}/image/upload`;
+                        const response=await fetch(url,{method:'POST',body:fd}); const data=await response.json();
+                        if(!response.ok || !data.secure_url) throw new Error(data?.error?.message || 'Cloudinary no devolvió una imagen válida.');
+                        this.clubFormRecompensa.imagenUrl=data.secure_url;
+                        this.notificarToast('success','Imagen de recompensa cargada');
+                    }catch(error){ console.error('Cloudinary recompensa:',error); Swal.fire('No se pudo subir la imagen',error?.message||'Error desconocido','error'); }
+                    finally{ this.clubRecompensaSubiendo=false; event.target.value=''; }
+                },
+                limpiarFormularioRecompensaClub(){ this.clubFormRecompensa={id:'',nombre:'',descripcion:'',tipo:'producto',puntos:25,stock:1,imagenUrl:'',valorDescuento:0,modalidadDescuento:'soles',activo:true}; this.clubEditandoRecompensa=false; },
+                editarRecompensaClub(recompensa){ this.clubFormRecompensa={id:recompensa.id,nombre:recompensa.nombre||'',descripcion:recompensa.descripcion||'',tipo:recompensa.tipo||'producto',puntos:Math.max(25,Number(recompensa.puntos)||25),stock:Number(recompensa.stock)||0,imagenUrl:recompensa.imagenUrl||'',valorDescuento:Number(recompensa.valorDescuento)||0,modalidadDescuento:recompensa.modalidadDescuento||'soles',activo:recompensa.activo!==false}; this.clubEditandoRecompensa=true; window.scrollTo({top:0,behavior:'smooth'}); },
+                async guardarRecompensaClub(){
+                    const f=this.clubFormRecompensa;
+                    const nombre=String(f.nombre||'').trim();
+                    const puntos=Math.max(25,Number(f.puntos)||0);
+                    const stock=Math.max(0,Math.floor(Number(f.stock)||0));
+                    if(!nombre){Swal.fire('Completa los datos','Ingresa el nombre de la recompensa.','warning');return;}
+                    if(puntos<25){Swal.fire('Puntos insuficientes','La recompensa mínima es de 25 puntos.','warning');return;}
+                    if(f.tipo==='producto' && !f.imagenUrl){Swal.fire('Falta la imagen','Agrega una imagen para el producto de regalo.','warning');return;}
+                    try{
+                        const payload={nombre,descripcion:String(f.descripcion||'').trim(),tipo:f.tipo==='descuento'?'descuento':'producto',puntos,stock,imagenUrl:String(f.imagenUrl||''),valorDescuento:f.tipo==='descuento'?Math.max(0,Number(f.valorDescuento)||0):0,modalidadDescuento:f.modalidadDescuento==='porcentaje'?'porcentaje':'soles',activo:f.activo!==false,actualizadoEn:new Date().toISOString()};
+                        const ref=f.id?window.fb.ref(window.db,`petSmartClub/recompensas/${f.id}`):window.fb.push(window.fb.ref(window.db,'petSmartClub/recompensas'));
+                        if(!f.id) payload.creadoEn=new Date().toISOString();
+                        await window.fb.set(ref,payload);
+                        await this.cargarRecompensasClubAdmin();
+                        this.limpiarFormularioRecompensaClub();
+                        this.notificarToast('success',f.id?'Recompensa actualizada':'Recompensa creada');
+                    }catch(error){console.error('Guardar recompensa:',error);Swal.fire('No se pudo guardar',error?.message||'Error desconocido','error');}
+                },
+                async cargarRecompensasClubAdmin(){
+                    try{
+                        const snap=await window.fb.get(window.fb.ref(window.db,'petSmartClub/recompensas'));
+                        const data=snap.exists()?(snap.val()||{}):{};
+                        this.clubRecompensasData=Object.entries(data).map(([id,r])=>({id,...(r||{})})).sort((a,b)=>Number(a.puntos||0)-Number(b.puntos||0));
+                    }catch(error){console.error('Recompensas admin:',error);this.clubRecompensasData=[];}
+                },
+                async eliminarRecompensaClub(recompensa){
+                    if(!recompensa?.id)return;
+                    const ok=await Swal.fire({title:'¿Eliminar recompensa?',html:`Se eliminará <b>${this.escapeHtml(recompensa.nombre||'Recompensa')}</b> del catálogo. Los canjes históricos conservarán su registro.`,icon:'warning',showCancelButton:true,confirmButtonColor:'#e11d48',cancelButtonText:'Cancelar',confirmButtonText:'Eliminar'});
+                    if(!ok.isConfirmed)return;
+                    if(!(await this.confirmarEliminacionConPassword()))return;
+                    try{await window.fb.set(window.fb.ref(window.db,`petSmartClub/recompensas/${recompensa.id}`),null);await this.cargarRecompensasClubAdmin();this.notificarToast('success','Recompensa eliminada');}catch(error){Swal.fire('No se pudo eliminar',error?.message||'Error desconocido','error');}
+                },
+                async toggleRecompensaClub(recompensa){
+                    if(!recompensa?.id)return;
+                    try{await window.fb.update(window.fb.ref(window.db,`petSmartClub/recompensas/${recompensa.id}`),{activo:recompensa.activo!==false?false:true,actualizadoEn:new Date().toISOString()});await this.cargarRecompensasClubAdmin();this.notificarToast('success',recompensa.activo!==false?'Recompensa desactivada':'Recompensa activada');}catch(error){Swal.fire('No se pudo actualizar',error?.message||'Error desconocido','error');}
+                },
+                async cargarCanjesClubAdmin(){
+                    try{
+                        const snap=await window.fb.get(window.fb.ref(window.db,'petSmartClub/canjes'));
+                        const data=snap.exists()?(snap.val()||{}):{};
+                        this.clubAdminCanjesData=Object.entries(data).map(([id,c])=>({id,...(c||{})})).sort((a,b)=>String(b.creadoEn||'').localeCompare(String(a.creadoEn||'')));
+                    }catch(error){console.error('Canjes admin:',error);this.clubAdminCanjesData=[];}
+                },
+                async cambiarEstadoCanjeClub(canje,estado){
+                    if(!canje?.id)return;
+                    try{await window.fb.update(window.fb.ref(window.db,`petSmartClub/canjes/${canje.id}`),{estado,actualizadoEn:new Date().toISOString()});await this.cargarCanjesClubAdmin();this.notificarToast('success','Estado del canje actualizado');}catch(error){Swal.fire('No se pudo actualizar',error?.message||'Error desconocido','error');}
+                },
+                async aplicarPuntosPorVenta({dni,clienteNombre,total,puntos,ventaGrupoId,ventaId,fechaVenta}) {
+                    const documento=this.normalizarDniClub(dni);
+                    const puntosAplicar=Math.max(0,Number(puntos)||0);
+                    if(!this.clubDniValido(documento) || puntosAplicar<=0 || !ventaGrupoId) return false;
+                    const ventaRef=window.fb.ref(window.db,`petSmartClub/ventas/${ventaGrupoId}`);
+                    const claimTxn=await window.fb.runTransaction(ventaRef,actual=>{
+                        if(actual) return;
+                        return {dni:documento,clienteNombre:String(clienteNombre||'').trim(),importe:Number(total)||0,puntos:puntosAplicar,ventaId:ventaId||'',fechaVenta:fechaVenta||this.fechaPeru(),estado:'pendiente',creadoEn:new Date().toISOString()};
+                    });
+                    if(!claimTxn.committed)return true;
+                    const clientRef=window.fb.ref(window.db,`petSmartClub/clientes/${documento}`);
+                    const movimientoId=window.fb.push(window.fb.ref(window.db,`petSmartClub/clientes/${documento}/movimientos`)).key;
+                    const clientTxn=await window.fb.runTransaction(clientRef,actual=>{
+                        const base=actual||{}; const saldo=Math.max(0,Number(base.puntos)||0); const nuevoSaldo=saldo+puntosAplicar; const movimientos={...(base.movimientos||{})};
+                        movimientos[movimientoId]={tipo:'ganancia',puntos:puntosAplicar,descripcion:`Compra ${ventaGrupoId}`,ventaGrupoId,ventaId:ventaId||'',importe:Number(total)||0,fecha:new Date().toISOString(),saldoAnterior:saldo,saldoNuevo:nuevoSaldo};
+                        return {...base,nombre:String(clienteNombre||base.nombre||'Cliente'),dni:documento,puntos:nuevoSaldo,actualizadoEn:new Date().toISOString(),movimientos};
+                    });
+                    if(!clientTxn.committed){ await window.fb.update(ventaRef,{estado:'error',error:'No se pudo actualizar el saldo del cliente',actualizadoEn:new Date().toISOString()}); throw new Error('No se pudo actualizar el saldo de puntos del cliente.'); }
+                    const saldoNuevo=Math.max(0,Number(clientTxn.snapshot?.val()?.puntos)||0);
+                    await window.fb.update(ventaRef,{estado:'aplicado',saldoPosterior:saldoNuevo,movimientoId,aplicadoEn:new Date().toISOString()});
+                    return true;
+                },
+                async obtenerClubVentaRegistro(ventaGrupoId,relacionadas=[]) {
+                    const grupo=String(ventaGrupoId||'').trim();
+                    if(grupo){try{const snap=await window.fb.get(window.fb.ref(window.db,`petSmartClub/ventas/${grupo}`));if(snap.exists())return {group:grupo,...(snap.val()||{})};}catch(_){} }
+                    const base=(relacionadas||[]).find(p=>Number(p.clubPuntosGenerados||0)>0) || (relacionadas||[])[0] || {};
+                    const puntos=Math.max(0,Number(base.clubPuntosGenerados)||0);
+                    const dni=this.normalizarDniClub(base.clubPuntosDni||base.numeroDocumento||'');
+                    return puntos>0?{group:grupo||String(base.id||''),dni,puntos,importe:Number(base.clubPuntosImporte||base.precioVenta||0),estado:'aplicado'}:null;
+                },
+                async verificarSaldoParaReversionClub(registro){
+                    if(!registro?.dni || !(Number(registro.puntos)>0))return true;
+                    try{const snap=await window.fb.get(window.fb.ref(window.db,`petSmartClub/clientes/${registro.dni}`));const saldo=Math.max(0,Number(snap.val()?.puntos)||0);if(saldo<Number(registro.puntos)){await Swal.fire({icon:'warning',title:'No se puede eliminar la venta todavía',html:`Esta venta generó <b>${registro.puntos} puntos</b> y el cliente actualmente tiene <b>${saldo} puntos</b>. Primero deben corregirse los puntos utilizados mediante una gestión de PetSmart Club.`,confirmButtonColor:'#4f46e5'});return false;}return true;}catch(error){await Swal.fire('PetSmart Club',`No se pudo verificar el saldo de puntos: ${this.escapeHtml(error?.message||'Error desconocido')}`,'error');return false;}
+                },
+                async revertirPuntosVentaGrupo(registro){
+                    if(!registro?.dni || !(Number(registro.puntos)>0))return false;
+                    const clientRef=window.fb.ref(window.db,`petSmartClub/clientes/${registro.dni}`);
+                    const movimientoId=window.fb.push(window.fb.ref(window.db,`petSmartClub/clientes/${registro.dni}/movimientos`)).key;
+                    const puntos=Math.max(0,Number(registro.puntos)||0);
+                    const txn=await window.fb.runTransaction(clientRef,actual=>{
+                        if(!actual)return actual;
+                        const saldo=Math.max(0,Number(actual.puntos)||0); if(saldo<puntos)return;
+                        const nuevoSaldo=saldo-puntos; const movimientos={...(actual.movimientos||{})}; movimientos[movimientoId]={tipo:'reversion',puntos:-puntos,descripcion:`Reversión de venta ${registro.group||''}`,ventaGrupoId:registro.group||'',fecha:new Date().toISOString(),saldoAnterior:saldo,saldoNuevo:nuevoSaldo};
+                        return {...actual,puntos:nuevoSaldo,actualizadoEn:new Date().toISOString(),movimientos};
+                    });
+                    if(!txn.committed)throw new Error('El saldo de puntos ya no permite revertir esta venta.');
+                    if(registro.group)await window.fb.update(window.fb.ref(window.db,`petSmartClub/ventas/${registro.group}`),{estado:'revertido',revertidoEn:new Date().toISOString(),movimientoReversionId:movimientoId});
+                    return true;
+                },
+                async sincronizarPuntosVentasHistoricasClub(){
+                    const ventas=(this.productos||[]).filter(p=>p.estado==='vendido'); const grupos=new Set(); const candidatos=[];
+                    ventas.forEach(p=>{const g=String(p.ventaGrupoId||p.id||'');if(!grupos.has(g)){grupos.add(g);candidatos.push(p);}});
+                    if(!candidatos.length){Swal.fire('PetSmart Club','No hay ventas históricas para sincronizar.','info');return;}
+                    const confirm=await Swal.fire({icon:'question',title:'¿Sincronizar puntos históricos?',html:`Se revisarán <b>${candidatos.length}</b> operaciones vendidas. Solo se otorgarán puntos a ventas con DNI válido y que todavía no tengan un registro de puntos Club.`,showCancelButton:true,confirmButtonColor:'#4f46e5',confirmButtonText:'Sí, sincronizar',cancelButtonText:'Cancelar'});
+                    if(!confirm.isConfirmed)return;
+                    let aplicadas=0,omitidas=0;
+                    Swal.fire({title:'Sincronizando PetSmart Club...',text:'Revisando ventas históricas',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
+                    try{
+                        for(const p of candidatos){
+                            const grupo=String(p.ventaGrupoId||p.id||'');
+                            const existente=await window.fb.get(window.fb.ref(window.db,`petSmartClub/ventas/${grupo}`));
+                            if(existente.exists()){omitidas++;continue;}
+                            const relacionadas=this.productos.filter(x=>x.estado==='vendido' && String(x.ventaGrupoId||x.id||'')===grupo);
+                            const base=relacionadas[0]||p; const dni=this.normalizarDniClub(base.numeroDocumento||'');
+                            if(base.tipoDocumento!=='DNI' || !this.clubDniValido(dni)){omitidas++;continue;}
+                            const total=String(base.canalVenta||'')==='Falabella' ? Number(base.sellerTotalVenta||base.precioVenta||0) : relacionadas.reduce((sum,x)=>sum+(Number(x.precioVenta)||0),0);
+                            const puntos=this.clubCalcularPuntos(total); if(puntos<=0){omitidas++;continue;}
+                            await this.aplicarPuntosPorVenta({dni,clienteNombre:base.clienteNombre||'Cliente',total,puntos,ventaGrupoId:grupo,ventaId:base.id||'',fechaVenta:base.fechaVenta||this.fechaPeru()});
+                            aplicadas++;
+                        }
+                        Swal.close();
+                        await this.cargarRecompensasClubAdmin();
+                        Swal.fire({icon:'success',title:'Sincronización completada',html:`<b>${aplicadas}</b> venta(s) generaron puntos.<br><span class="text-xs">${omitidas} operación(es) quedaron sin cambios.</span>`,confirmButtonColor:'#4f46e5'});
+                    }catch(error){Swal.close();Swal.fire('Sincronización incompleta',error?.message||'Ocurrió un error durante el proceso.','warning');}
+                },
+                // =================================================
                 // MODO DE VENTA
                 // =================================================
                 activarModoVenta(esSeller = false) {
@@ -4710,7 +5604,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                 registrarVenta(item = null) {
                     this.productoVenta = item || null;
                     this.ventaItems = [{ sku: '', producto: null, error: '' }];
-                    this.ventaForm = { clienteNombre: '', clienteTelefono: '', distrito: '', direccionEntrega: '', latitud: '', longitud: '', canalVenta: 'WhatsApp', modoSeller: false, perfilFacebook: '' , tipoMascota: '', medioPago: 'Yape', fechaVenta: this.fechaPeru(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '', comision: 0, confLogistico: 0, sellerTotalVenta: 0, observacion: '' , valeCodigo: '', generarVale: false, usarVale: false, sellerPagoStandby: true }
+                    this.ventaForm = { clienteNombre: '', clienteTelefono: '', distrito: '', direccionEntrega: '', latitud: '', longitud: '', canalVenta: 'WhatsApp', modoSeller: false, perfilFacebook: '' , tipoMascota: '', medioPago: 'Yape', fechaVenta: this.fechaPeru(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '', comision: 0, confLogistico: 0, sellerTotalVenta: 0, observacion: '' , valeCodigo: '', generarVale: false, usarVale: false, sellerPagoStandby: true, conBolsa: false }
                     this.valeValidado = null;
                     this.valeReservado = false;
                     this.valeGeneradoUltimaVenta = null;
@@ -4891,6 +5785,8 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         const tipoComprobante = this.ventaForm.tipoComprobante || 'Boleta';
                         const tipoDocumento = tipoComprobante === 'Boleta' ? this.ventaForm.tipoDocumento : '';
                         const numeroDocumento = tipoComprobante === 'Boleta' ? String(this.ventaForm.numeroDocumento || '').replace(/\D/g, '') : '';
+                        const montoElegibleClub = canalVenta === 'Falabella' ? totalSeller : this.totalVentaSeleccionada;
+                        const puntosClubVenta = (tipoDocumento === 'DNI' && /^\d{8}$/.test(numeroDocumento)) ? this.clubCalcularPuntos(montoElegibleClub) : 0;
                         const ruc = tipoComprobante === 'Factura' ? String(this.ventaForm.ruc || '').replace(/\D/g, '') : '';
                         const razonSocial = tipoComprobante === 'Factura' ? String(this.ventaForm.razonSocial || '').trim() : '';
                         ventaGrupoId = window.fb.push(window.fb.ref(window.db, 'ventas')).key;
@@ -4940,6 +5836,9 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                                 sellerNetoRecibido: canalVenta === 'Falabella' ? Number((totalSeller - comisionTotal - logisticaTotal).toFixed(2)) : 0,
                                 sellerComisionTotal: canalVenta === 'Falabella' ? comisionTotal : 0,
                                 sellerLogisticaTotal: canalVenta === 'Falabella' ? logisticaTotal : 0,
+                                conBolsa: !!this.ventaForm.conBolsa,
+                                clubPuntosGenerados: index === 0 ? puntosClubVenta : 0,
+                                clubPuntosDni: index === 0 ? numeroDocumento : '',
                                 observacion: String(this.ventaForm.observacion || '').trim(),
                                 tipoComprobante,
                                 tipoDocumento,
@@ -4978,6 +5877,10 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                                     totalVenta: canalVenta === 'Falabella' ? totalSeller : this.totalVentaSeleccionada,
                                     sellerTotalVenta: canalVenta === 'Falabella' ? totalSeller : 0,
                                     sellerNetoRecibido: canalVenta === 'Falabella' ? Number((totalSeller - comisionTotal - logisticaTotal).toFixed(2)) : 0,
+                                    conBolsa: !!this.ventaForm.conBolsa,
+                                    clubPuntosGenerados: index === 0 ? puntosClubVenta : 0,
+                                    clubPuntosDni: index === 0 ? numeroDocumento : '',
+                                    clubPuntosImporte: index === 0 ? montoElegibleClub : 0,
                                     cantidadProductos: seleccionados.length,
                                     fechaEntrega: String(this.ventaForm.fechaEntrega || ''),
                                     horarioEntrega: String(this.ventaForm.horarioEntrega || '').trim(),
@@ -5021,6 +5924,16 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 
                         // 3) El cliente ya fue creado/actualizado de forma única antes de marcar los productos.
 
+                        let avisoClubPuntos = '';
+                        if (puntosClubVenta > 0 && numeroDocumento) {
+                            try {
+                                await this.aplicarPuntosPorVenta({ dni: numeroDocumento, clienteNombre, total: montoElegibleClub, puntos: puntosClubVenta, ventaGrupoId, ventaId: seleccionados[0]?.id || '', fechaVenta });
+                                avisoClubPuntos = ` · +${puntosClubVenta} puntos PetSmart Club`;
+                            } catch (e) {
+                                console.warn('No se pudieron aplicar puntos PetSmart Club:', e);
+                                avisoClubPuntos = ' · ⚠️ puntos Club pendientes de aplicar';
+                            }
+                        }
                         if (codigoValeUsar) await this.finalizarValePromocional(codigoValeUsar, ventaGrupoId, this.totalVentaSeleccionada);
                         Swal.close();
                         this.modalVenta = false;
@@ -5030,7 +5943,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                             this.notificarToast('warning', `${seleccionados.length} producto(s) vendidos. Inventario actualizado, pero Firebase bloqueó: ${fallosSecundarios.join(', ')}`);
                             Swal.fire({ icon: 'warning', title: 'Venta registrada en inventario', html: `<div class="text-left text-sm">Los productos fueron marcados como <b>vendidos</b>, pero Firebase no permitió guardar algunos registros adicionales.<br><br><b>Rutas bloqueadas:</b><br>${fallosSecundarios.join('<br>')}<br><br>Esto confirma que las reglas de Firebase necesitan permisos para esas rutas.</div>` });
                         } else {
-                            this.notificarToast('success', `${seleccionados.length} producto(s) vendidos correctamente`);
+                            this.notificarToast('success', `${seleccionados.length} producto(s) vendidos correctamente${avisoClubPuntos}`);
                             if (this.ventaForm.generarVale) {
                                 try {
                                     const vale = await this.generarValePromocionalParaVenta({clienteId, clienteNombre, clienteTelefono, distrito, direccionEntrega: this.ventaForm.direccionEntrega, numeroDocumento: this.ventaForm.numeroDocumento, ventaGrupoId});
@@ -5082,6 +5995,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     this.ventaEditando.tipoMascota = this.ventaEditando.tipoMascota || '';
                     this.ventaEditando.fechaVenta = this.ventaEditando.fechaVenta || this.fechaPeru();
                     this.ventaEditando.fechaEntrega = this.ventaEditando.fechaEntrega || '';
+                    this.ventaEditando.conBolsa = !!this.ventaEditando.conBolsa;
                     this.ventaEditando.envio = this.ventaEditando.envio || '';
                     this.ventaEditando.tipoComprobante = this.ventaEditando.tipoComprobante || 'Boleta';
                     this.ventaEditando.tipoDocumento = this.ventaEditando.tipoDocumento || 'DNI';
@@ -5106,15 +6020,40 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         Swal.fire('Documento incompleto', `El ${venta.tipoDocumento || 'documento'} debe tener exactamente ${this.maxDigitosDocumento(venta.tipoDocumento)} dígitos.`, 'warning'); return;
                     }
                     try {
+                        let clubRegistroEditar = null;
+                        const grupoEditar = String(venta.ventaGrupoId || '').trim();
+                        if (grupoEditar) {
+                            try { const snapClub=await window.fb.get(window.fb.ref(window.db,`petSmartClub/ventas/${grupoEditar}`)); if(snapClub.exists()) clubRegistroEditar={group:grupoEditar,...(snapClub.val()||{})}; } catch(_) {}
+                        }
+                        if (!clubRegistroEditar) {
+                            const relacionadasEditar = grupoEditar ? this.productos.filter(p=>p.estado==='vendido' && String(p.ventaGrupoId||'')===grupoEditar) : [venta];
+                            clubRegistroEditar = await this.obtenerClubVentaRegistro(grupoEditar, relacionadasEditar);
+                        }
+                        const nuevoDniClub = venta.tipoComprobante === 'Boleta' && venta.tipoDocumento === 'DNI' ? this.normalizarDniClub(venta.numeroDocumento||'') : '';
+                        if (clubRegistroEditar?.puntos>0 && String(clubRegistroEditar.dni||'') !== nuevoDniClub) {
+                            Swal.fire('PetSmart Club','Esta venta ya generó puntos para un DNI. Para proteger el saldo de fidelización, no se puede cambiar el DNI de una venta que ya otorgó puntos.','warning');
+                            return;
+                        }
                         Swal.fire({ title: 'Guardando cambios...', text: 'Actualizando el registro de venta.', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
                         const precio = Number(venta.precioVenta) || 0;
                         const comision = venta.canalVenta === 'Falabella' ? Number(venta.comision) || 0 : 0;
                         const confLogistico = venta.canalVenta === 'Falabella' ? Number(venta.confLogistico) || 0 : 0;
                         const perfilFacebook = venta.canalVenta === 'Facebook' ? String(venta.perfilFacebook || '') : '';
                         const sellerPagoEstado = venta.canalVenta === 'Falabella' ? (venta.sellerPagoEstado === 'pendiente' ? 'pendiente' : 'aplicado') : '';
-                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', sellerPagoEstado };
+                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, conBolsa: !!venta.conBolsa, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', ventaGrupoId: String(venta.ventaGrupoId || ''), sellerPagoEstado };
                         await window.fb.update(window.fb.ref(window.db, `productos/${venta.id}`), datos);
                         await this.guardarRegistroVentaAdicional(venta, datos);
+                        // La bolsa corresponde al pedido completo: si una venta tiene varios productos,
+                        // conserva el mismo estado en todos los renglones relacionados.
+                        const idsBolsaRelacionados = grupoEditar
+                            ? (this.productos || []).filter(p => p.estado === 'vendido' && String(p.ventaGrupoId || '') === grupoEditar).map(p => String(p.id))
+                            : [String(venta.id)];
+                        const updatesBolsa = {};
+                        idsBolsaRelacionados.forEach(id => {
+                            updatesBolsa[`productos/${id}/conBolsa`] = !!venta.conBolsa;
+                            updatesBolsa[`ventas/${id}/conBolsa`] = !!venta.conBolsa;
+                        });
+                        if (Object.keys(updatesBolsa).length) await window.fb.update(window.fb.ref(window.db), updatesBolsa);
                         Swal.close();
                         this.modalEditarVenta = false;
                         this.ventaEditando = null;
@@ -5265,6 +6204,8 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     });
                     if (!confirmacion.isConfirmed) return;
                     if (!(await this.confirmarEliminacionConPassword())) return;
+                    const clubRegistroVenta = await this.obtenerClubVentaRegistro(grupo, relacionadas);
+                    if (!(await this.verificarSaldoParaReversionClub(clubRegistroVenta))) return;
                     try {
                         Swal.fire({ title:'Eliminando venta...', text:'Restaurando inventario y depurando cliente.', allowOutsideClick:false, didOpen:()=>Swal.showLoading() });
                         const updates = {};
@@ -5275,6 +6216,9 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                             updates[`ventas/${p.id}`] = null;
                         });
                         await window.fb.update(window.fb.ref(window.db), updates);
+                        if (clubRegistroVenta) {
+                            try { await this.revertirPuntosVentaGrupo(clubRegistroVenta); } catch (clubErr) { console.error('ERROR REVERTIENDO PUNTOS CLUB:', clubErr); }
+                        }
                         if (grupo) await this.eliminarValesDeVentaGrupo(grupo);
                         await this.limpiarClientesHuerfanos();
                         Swal.close();
@@ -5763,6 +6707,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 <button :class="activeTab === 'finanzas' ? 'bg-slate-900 text-white shadow-lg dark:bg-yellow-400 dark:text-slate-950' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'finanzas'" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
 <i class="fa-solid fa-landmark"></i> Finanzas
             </button>
+<button :class="activeTab === 'club' ? 'bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white shadow-lg ring-2 ring-violet-300/60' : 'text-slate-600 dark:text-slate-300 hover:bg-violet-50 dark:hover:bg-slate-700'" @click="activeTab = 'club'; cargarRecompensasClubAdmin(); cargarCanjesClubAdmin()" class="flex-1 min-w-[170px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2"><i class="fa-solid fa-gift"></i> PetSmart Club</button>
 </div></aside><main class="inventory-main"><div x-show="activeTab === 'inventario'" x-transition="">
 <!-- =====================================================
              FILTRO FINANCIERO
@@ -6636,8 +7581,86 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 </div>
 </div>
 </div><div x-show="activeTab === 'vales'" x-transition x-init="setTimeout(() => cargarValesPromocionales(), 0)" class="inventory-section"><div class="rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-900/50 bg-white dark:bg-slate-900 shadow-xl"><div class="p-6 md:p-7 bg-gradient-to-br from-blue-800 to-blue-600 text-white relative overflow-hidden"><div class="absolute -right-8 -top-8 text-[130px] opacity-10">🐾</div><div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5"><div><div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-black uppercase tracking-widest"><i class="fa-solid fa-ticket"></i> Centro de vales</div><h2 class="text-3xl font-black mt-3">Vales promocionales</h2><p class="text-sm text-blue-100 mt-1 max-w-2xl">Administra aquí todos los vales emitidos. Admin ya no contiene el historial de vales.</p></div><div class="flex flex-wrap gap-2"><button @click="cargarValesPromocionales()" class="px-4 py-3 rounded-xl bg-white/15 font-black text-xs"><i class="fa-solid fa-rotate"></i> Actualizar</button><button @click="exportarValesCSV()" class="px-4 py-3 rounded-xl bg-white text-blue-800 font-black text-xs"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button></div></div></div><div class="p-5 md:p-7"><div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6"><div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800"><div class="text-[10px] uppercase font-black text-slate-400">Total</div><div class="text-2xl font-black" x-text="valesPromocionalesData.length"></div></div><div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20"><div class="text-[10px] uppercase font-black text-emerald-600">Disponibles</div><div class="text-2xl font-black text-emerald-600" x-text="contarValesEstado('Disponible')"></div></div><div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/20"><div class="text-[10px] uppercase font-black text-blue-600">Usados</div><div class="text-2xl font-black text-blue-600" x-text="contarValesEstado('Usado')"></div></div><div class="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/20"><div class="text-[10px] uppercase font-black text-rose-600">Vencidos</div><div class="text-2xl font-black text-rose-600" x-text="contarValesEstado('Vencido')"></div></div><div class="p-4 rounded-2xl bg-violet-50 dark:bg-violet-950/20"><div class="text-[10px] uppercase font-black text-violet-600">Encontrados</div><div class="text-2xl font-black text-violet-600" x-text="valesFiltrados().length"></div></div></div><div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 mb-6"><div class="flex items-center gap-2 mb-4 font-black"><i class="fa-solid fa-magnifying-glass text-orange-500"></i> Buscador profesional</div><div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3"><div class="relative xl:col-span-2"><i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="filtroValesTexto" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm" placeholder="Buscar por código, DNI, cliente, teléfono o distrito..."></div><div class="relative"><i class="fa-solid fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="filtroValesDni" @input="filtroValesDni=normalizarDniVale(filtroValesDni)" inputmode="numeric" maxlength="12" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm" placeholder="Filtrar por DNI..."></div><select x-model="filtroValesEstado" class="px-3 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm"><option value="todos">Todos los estados</option><option value="disponible">Disponibles</option><option value="usado">Usados</option><option value="vencido">Vencidos</option><option value="reservado">Reservados</option></select><select x-model="filtroValesDistrito" class="px-3 py-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 font-bold text-sm"><option value="todos">Todos los distritos</option><template x-for="d in distritosValesDisponibles()" :key="d"><option :value="d" x-text="d"></option></template></select></div><div class="flex flex-wrap gap-2 mt-3"><select x-model="filtroValesFecha" class="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs font-bold"><option value="todos">Cualquier vencimiento</option><option value="7">Vencen en 7 días</option><option value="30">Vencen en 30 días</option><option value="vencidos">Ya vencidos</option></select><button @click="filtroValesTexto='';filtroValesDni='';filtroValesEstado='todos';filtroValesDistrito='todos';filtroValesFecha='todos'" class="px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-xs font-black"><i class="fa-solid fa-eraser"></i> Limpiar filtros</button></div></div><div class="mb-6 p-5 rounded-2xl border border-violet-200 dark:border-violet-900/60 bg-violet-50/70 dark:bg-violet-950/20"><div class="flex items-start gap-3"><div class="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-link"></i></div><div class="min-w-0"><div class="font-black text-sm">Vincular un vale existente a una venta</div><div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Si eliminaste por error el registro de un vale, puedes volver a crearlo usando exactamente el mismo código y asociarlo al pedido original.</div></div></div><div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_auto] gap-3 mt-4 items-end"><div><label class="block text-[10px] uppercase tracking-wider font-black mb-1">Código original</label><input x-model="valeReponerCodigo" @input="valeReponerCodigo=normalizarCodigoVale(valeReponerCodigo)" maxlength="20" placeholder="PS-26-XXXXXXX" class="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-violet-200 dark:border-violet-800 font-mono font-black uppercase"></div><div><label class="block text-[10px] uppercase tracking-wider font-black mb-1">Venta / pedido</label><select x-model="valeReponerVentaGrupoId" class="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-violet-200 dark:border-violet-800 font-bold"><option value="">Selecciona la venta</option><template x-for="v in ventasRegistradas.filter(x => x.ventaGrupoId && x.clienteNombre).filter((v,i,a)=>a.findIndex(z=>String(z.ventaGrupoId)===String(v.ventaGrupoId))===i)" :key="'vale-link-'+v.ventaGrupoId"><option :value="v.ventaGrupoId" x-text="'#'+(v.comprobanteNumero||'—')+' · '+(v.clienteNombre||'Cliente')+' · '+(v.distrito||'')"></option></template></select></div><button @click="vincularValeExistente()" type="button" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-black text-xs"><i class="fa-solid fa-link mr-1"></i>Vincular vale</button></div></div><div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700"><table class="w-full text-left text-xs"><thead class="bg-slate-900 text-white"><tr><th class="px-4 py-4">Vale</th><th class="px-4 py-4">Cliente</th><th class="px-4 py-4">DNI</th><th class="px-4 py-4">Contacto</th><th class="px-4 py-4">Distrito</th><th class="px-4 py-4">Vence</th><th class="px-4 py-4">Estado</th><th class="px-4 py-4 text-right">Acciones</th></tr></thead><tbody><template x-for="vale in valesFiltrados()" :key="vale.codigo"><tr class="border-t border-slate-100 dark:border-slate-800"><td class="px-4 py-4"><div class="font-mono font-black text-yellow-600" x-text="vale.codigo"></div><div class="text-[9px] text-slate-400" x-text="vale.creadoEn ? new Date(vale.creadoEn).toLocaleString('es-PE') : '—'"></div></td><td class="px-4 py-4 font-black" x-text="vale.clienteNombre || '—'"></td><td class="px-4 py-4 font-mono font-bold" x-text="vale.numeroDocumento || vale.dni || '—'"></td><td class="px-4 py-4 font-bold" x-text="vale.clienteTelefono || '—'"></td><td class="px-4 py-4" x-text="vale.distrito || '—'"></td><td class="px-4 py-4 font-bold" x-text="vale.fechaVencimiento || '—'"></td><td class="px-4 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-black" :class="estadoValeVisual(vale)==='Disponible'?'bg-emerald-100 text-emerald-700':estadoValeVisual(vale)==='Usado'?'bg-blue-100 text-blue-700':estadoValeVisual(vale)==='Reservado'?'bg-violet-100 text-violet-700':'bg-rose-100 text-rose-700'" x-text="estadoValeVisual(vale)"></span></td><td class="px-4 py-4"><div class="flex justify-end gap-2"><button @click="copiarCodigoValeDesdeRegistro(vale.codigo)" class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-700" title="Copiar código"><i class="fa-solid fa-copy"></i></button><button @click="verValeDesdeRegistro(vale)" class="w-9 h-9 rounded-lg bg-blue-700 text-white" title="Ver y descargar vale"><i class="fa-solid fa-image"></i></button><button @click="imprimirValeDesdeRegistro(vale)" class="w-9 h-9 rounded-lg bg-orange-500 text-white" title="Imprimir vale"><i class="fa-solid fa-print"></i></button><button @click="eliminarValePromocional(vale.codigo)" class="w-9 h-9 rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-500 hover:text-white" title="Eliminar vale"><i class="fa-solid fa-trash"></i></button></div></td></tr></template><tr x-show="!valesFiltrados().length"><td colspan="8" class="px-6 py-14 text-center"><div class="text-4xl">🐾</div><div class="font-black text-lg mt-2">No encontramos vales</div></td></tr></tbody></table></div><div class="mt-6 p-4 rounded-2xl border border-orange-200 bg-orange-50 dark:bg-orange-950/20 text-xs"><b>Almacenamiento:</b> los vales se guardan en <code>valesPromocionales</code> de Firebase y se gestionan desde esta pestaña, no desde Admin.</div></div></div></div>
+
+<div class="ps-club-admin-root" style="display:none;" x-show="activeTab === 'club'" x-transition>
+  <div class="space-y-5">
+    <div class="ps-club-admin-container rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-900/50 bg-white dark:bg-slate-900 shadow-xl">
+      <div class="ps-club-admin-hero p-6 md:p-7 text-white relative overflow-hidden">
+        <div class="absolute -right-6 -top-10 text-[150px] opacity-10">⭐</div>
+        <div class="relative flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5">
+          <div>
+            <div class="ps-club-admin-eyebrow inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"><i class="fa-solid fa-gift"></i> Fidelización PetSmart</div>
+            <h2 class="text-3xl font-black mt-3">PetSmart Club</h2>
+            <p class="text-sm mt-1 max-w-2xl">1 punto por cada S/10 de compra asociada a un DNI. Tus clientes consultan y canjean desde un enlace exclusivo.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button @click="copiarLinkPetSmartClub()" class="ps-club-admin-link-btn px-4 py-3 rounded-xl font-black text-xs"><i class="fa-solid fa-link mr-1"></i> Copiar link público</button>
+            <button @click="sincronizarPuntosVentasHistoricasClub()" class="ps-club-admin-sync-btn px-4 py-3 rounded-xl font-black text-xs shadow-lg"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Sincronizar ventas anteriores</button>
+          </div>
+        </div>
+      </div>
+      <div class="p-5 md:p-7">
+        <div class="ps-club-admin-kpis">
+          <div class="ps-club-kpi"><div class="k">Recompensas</div><div class="v" x-text="clubRecompensasData.length"></div></div>
+          <div class="ps-club-kpi"><div class="k">Activas</div><div class="v" x-text="clubRecompensasData.filter(r=>r.activo!==false).length"></div></div>
+          <div class="ps-club-kpi"><div class="k">Canjes</div><div class="v" x-text="clubAdminCanjesData.length"></div></div>
+          <div class="ps-club-kpi"><div class="k">Regla</div><div class="v text-indigo-600">1 / S/10</div></div>
+        </div>
+        <div class="ps-club-admin-grid">
+          <div class="ps-club-admin-card">
+            <div class="flex items-start justify-between gap-3">
+              <div><h3 x-text="clubEditandoRecompensa ? 'Editar recompensa' : 'Nueva recompensa'"></h3><div class="text-[10px] text-slate-400 mt-1">Mínimo de canje: 25 puntos.</div></div>
+              <div class="w-10 h-10 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center"><i class="fa-solid fa-gift"></i></div>
+            </div>
+            <label class="ps-club-admin-label">Tipo</label>
+            <select x-model="clubFormRecompensa.tipo" class="ps-club-admin-input"><option value="producto">Producto gratis</option><option value="descuento">Descuento</option></select>
+            <label class="ps-club-admin-label">Nombre</label><input x-model="clubFormRecompensa.nombre" class="ps-club-admin-input" placeholder="Ej: Juguete interactivo">
+            <label class="ps-club-admin-label">Descripción</label><textarea x-model="clubFormRecompensa.descripcion" rows="3" class="ps-club-admin-input resize-none" placeholder="Detalle corto del premio..."></textarea>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="ps-club-admin-label">Puntos</label><input x-model.number="clubFormRecompensa.puntos" min="25" step="1" type="number" class="ps-club-admin-input"></div>
+              <div><label class="ps-club-admin-label">Stock</label><input x-model.number="clubFormRecompensa.stock" min="0" step="1" type="number" class="ps-club-admin-input"></div>
+            </div>
+            <div x-show="clubFormRecompensa.tipo === 'descuento'" class="grid grid-cols-2 gap-3">
+              <div><label class="ps-club-admin-label">Valor</label><input x-model.number="clubFormRecompensa.valorDescuento" min="0" step="0.01" type="number" class="ps-club-admin-input"></div>
+              <div><label class="ps-club-admin-label">Modalidad</label><select x-model="clubFormRecompensa.modalidadDescuento" class="ps-club-admin-input"><option value="soles">S/</option><option value="porcentaje">%</option></select></div>
+            </div>
+            <label class="ps-club-admin-label">Imagen</label>
+            <input @change="clubSubirImagenRecompensa($event)" accept="image/jpeg,image/png,image/webp" type="file" class="w-full text-[10px] text-slate-500">
+            <div x-show="clubFormRecompensa.imagenUrl" class="mt-3 flex items-center gap-3"><img :src="clubFormRecompensa.imagenUrl" class="w-16 h-16 rounded-xl object-contain bg-slate-100" alt="Vista previa"><span class="text-[10px] font-bold text-emerald-600">Imagen cargada correctamente</span></div>
+            <label class="mt-3 flex items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer"><span><span class="block text-[10px] uppercase font-black tracking-wider text-slate-500">Publicar recompensa</span><span class="block text-[10px] text-slate-400 mt-0.5">Si está apagado, el cliente no la verá.</span></span><span class="relative inline-flex items-center"><input type="checkbox" x-model="clubFormRecompensa.activo" class="sr-only peer"><span class="w-12 h-7 rounded-full bg-slate-300 peer-checked:bg-emerald-500 transition"></span><span class="absolute left-1 top-1 w-5 h-5 rounded-full bg-white shadow transition peer-checked:translate-x-5"></span></span></label>
+            <div class="ps-club-admin-actions"><button @click="guardarRecompensaClub()" type="button" class="ps-club-admin-btn primary"><i class="fa-solid fa-floppy-disk mr-1"></i><span x-text="clubEditandoRecompensa?'Guardar cambios':'Crear recompensa'"></span></button><button @click="limpiarFormularioRecompensaClub()" type="button" class="ps-club-admin-btn secondary">Limpiar</button></div>
+          </div>
+          <div class="space-y-4">
+            <div class="ps-club-admin-card">
+              <div class="flex items-center justify-between gap-3 mb-3"><div><h3>Recompensas configuradas</h3><div class="text-[10px] text-slate-400 mt-1">Estas son las tarjetas que verá el cliente en PetSmart Club.</div></div><button @click="cargarRecompensasClubAdmin()" class="ps-club-admin-btn secondary"><i class="fa-solid fa-rotate"></i></button></div>
+              <div class="ps-club-admin-reward-grid">
+                <template x-for="r in clubRecompensasData" :key="'club-admin-r-'+r.id">
+                  <div class="ps-club-admin-reward">
+                    <div><template x-if="r.imagenUrl"><img :src="r.imagenUrl" alt="Recompensa"></template><template x-if="!r.imagenUrl"><div class="w-[86px] h-[86px] rounded-[14px] bg-slate-100 flex items-center justify-center text-2xl">🎁</div></template></div>
+                    <div class="min-w-0">
+                      <div class="ps-club-admin-reward-name truncate" x-text="r.nombre"></div>
+                      <div class="ps-club-admin-reward-meta" x-text="clubBeneficioRecompensa(r)+' · '+r.puntos+' puntos · Stock '+r.stock"></div>
+                      <div class="ps-club-admin-actions mt-2"><button @click="editarRecompensaClub(r)" class="ps-club-admin-btn secondary">Editar</button><button @click="toggleRecompensaClub(r)" :class="r.activo!==false?'ps-club-admin-btn danger':'ps-club-admin-btn green'" x-text="r.activo!==false?'Desactivar':'Activar'"></button><button @click="eliminarRecompensaClub(r)" class="ps-club-admin-btn danger">Eliminar</button></div>
+                    </div>
+                  </div>
+                </template>
+                <div x-show="!clubRecompensasData.length" class="col-span-full p-10 text-center text-slate-400"><div class="text-4xl">🎁</div><div class="font-black mt-2">Todavía no tienes recompensas</div><div class="text-[10px] mt-1">Crea la primera tarjeta de canje.</div></div>
+              </div>
+            </div>
+            <div class="ps-club-admin-card">
+              <div class="flex items-center justify-between gap-3 mb-3"><div><h3>Canjes recientes</h3><div class="text-[10px] text-slate-400 mt-1">Código, cliente, premio y estado.</div></div><button @click="cargarCanjesClubAdmin()" class="ps-club-admin-btn secondary"><i class="fa-solid fa-rotate"></i></button></div>
+              <div class="overflow-x-auto"><table class="ps-club-admin-table"><thead><tr><th>Código</th><th>Cliente</th><th>Recompensa</th><th>Puntos</th><th>Estado</th><th></th></tr></thead><tbody><template x-for="c in clubAdminCanjesData.slice(0,20)" :key="'club-canje-'+c.id"><tr><td><strong class="font-mono" x-text="c.codigo"></strong><div class="text-[9px] text-slate-400" x-text="c.creadoEn ? new Date(c.creadoEn).toLocaleString('es-PE') : '—'"></div></td><td><strong x-text="c.clienteNombre||'Cliente'"></strong><div class="text-[9px] font-mono" x-text="c.dni"></div></td><td x-text="c.recompensaNombre||'—'"></td><td class="font-black text-violet-600" x-text="c.puntos"></td><td><span class="px-2 py-1 rounded-full bg-slate-100 text-slate-700 font-black text-[9px]" x-text="c.estado||'—'"></span></td><td><div class="flex gap-1" x-show="c.estado==='Reservado'"><button @click="cambiarEstadoCanjeClub(c,'Entregado')" class="ps-club-admin-btn green">Entregado</button></div></td></tr></template><tr x-show="!clubAdminCanjesData.length"><td colspan="6" class="text-center text-slate-400 py-8">Aún no hay canjes.</td></tr></tbody></table></div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5 p-4 rounded-2xl border border-indigo-200 bg-indigo-50 text-[10px] text-indigo-800"><b>Regla del programa:</b> 1 punto por cada S/10 de compra elegible asociada a DNI. Las ventas sin DNI no generan puntos. La recompensa mínima es de 25 puntos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main></div></div>
-<div class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 z-[96]" style="display:none;" x-cloak x-show="modalSeguimientoPedido" x-transition.opacity>
+<div class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-start sm:items-center justify-center overflow-y-auto p-2 sm:p-5 z-[96] ps-admin-track-modal" style="display:none;" x-cloak x-show="modalSeguimientoPedido" x-transition.opacity>
   <div class="w-full max-w-3xl ps-admin-track">
     <div class="ps-admin-track-head flex items-start justify-between gap-4">
       <div><div class="ps-admin-track-status"><i class="fa-solid fa-route mr-1"></i> Centro logístico</div><div class="ps-admin-track-title">Seguimiento del pedido</div><div class="ps-admin-track-order" x-text="seguimientoAdmin ? ('Pedido #'+(seguimientoAdmin.item?.comprobanteNumero||'—')+' · '+(seguimientoAdmin.item?.clienteNombre||'Cliente')) : ''"></div></div>
@@ -6648,14 +7671,14 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
         <button @click="alternarVistaClienteSeguimiento()" type="button" class="ps-admin-action bg-white text-blue-800 hover:bg-blue-50"><i class="fa-solid fa-display mr-1"></i><span x-text="mostrarVistaClienteSeguimiento ? 'Ocultar vista del cliente' : 'Ver vista del cliente'"></span></button>
         <button @click="abrirSeguimientoEnNuevaVentana()" type="button" class="ps-admin-action bg-white/10 text-white border border-white/15 hover:bg-white/15"><i class="fa-solid fa-up-right-from-square mr-1"></i>Abrir enlace</button>
       </div>
+      <div class="rounded-2xl bg-white/10 border border-white/10 p-5">
+        <div class="flex items-center justify-between gap-3 mb-4"><div><div class="text-[10px] uppercase tracking-[.2em] text-blue-100 font-black">Estado actual</div><div class="text-xl font-black mt-1" x-text="seguimientoAdmin?.estado||'Recibido'"></div></div><div class="w-14 h-14 rounded-2xl bg-white text-blue-700 flex items-center justify-center shadow-xl"><i class="fa-solid fa-truck-fast text-2xl"></i></div></div>
+        <div class="ps-admin-status-grid"><template x-for="estado in seguimientoEstados" :key="'admin-v2-'+estado"><button @click="actualizarEstadoSeguimiento(estado)" type="button" class="ps-admin-status" :class="{'active':(seguimientoAdmin?.estado||'Recibido')===estado}"><i class="mr-1" :class="estado==='Solicitud Recibida'?'fa-solid fa-inbox':estado==='Preparando'?'fa-solid fa-box-open':estado==='Enviado'?'fa-solid fa-truck-fast':estado==='En camino'?'fa-solid fa-route':estado==='En destino'?'fa-solid fa-location-dot':estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-camera'"></i><span x-text="estado"></span></button></template></div>
+        <div class="mt-4 text-[11px] text-blue-100"><i class="fa-solid fa-bolt mr-1"></i> Un clic cambia el estado y actualiza el seguimiento del cliente.</div>
+      </div>
       <div x-show="mostrarVistaClienteSeguimiento" x-transition class="rounded-2xl bg-white/10 border border-white/10 p-3">
         <div class="flex items-center justify-between gap-3 mb-2"><div class="text-[10px] uppercase tracking-[.18em] text-blue-100 font-black"><i class="fa-solid fa-eye mr-1"></i>Vista exacta del cliente</div><button @click="mostrarVistaClienteSeguimiento=false" type="button" class="px-3 py-1.5 rounded-lg bg-white/15 hover:bg-rose-500 text-white text-xs font-black border border-white/15"><i class="fa-solid fa-xmark mr-1"></i>Cerrar vista del cliente</button></div>
         <div class="rounded-xl overflow-hidden bg-white" style="height:min(720px,72vh)"><iframe :src="mostrarVistaClienteSeguimiento ? seguimientoAdmin?.url : 'about:blank'" title="Vista del seguimiento del cliente" style="width:100%;height:100%;border:0;display:block"></iframe></div>
-      </div>
-      <div class="rounded-2xl bg-white/10 border border-white/10 p-5">
-        <div class="flex items-center justify-between gap-3 mb-4"><div><div class="text-[10px] uppercase tracking-[.2em] text-blue-100 font-black">Estado actual</div><div class="text-xl font-black mt-1" x-text="seguimientoAdmin?.estado||'Recibido'"></div></div><div class="w-14 h-14 rounded-2xl bg-white text-blue-700 flex items-center justify-center shadow-xl"><i class="fa-solid fa-truck-fast text-2xl"></i></div></div>
-        <div class="ps-admin-status-grid"><template x-for="estado in seguimientoEstados" :key="'admin-v2-'+estado"><button @click="actualizarEstadoSeguimiento(estado)" type="button" class="ps-admin-status" :class="{'active':(seguimientoAdmin?.estado||'Recibido')===estado}"><i class="mr-1" :class="estado==='Solicitud Recibida'?'fa-solid fa-inbox':estado==='Preparando'?'fa-solid fa-box-open':estado==='Enviado'?'fa-solid fa-truck-fast':estado==='En destino'?'fa-solid fa-location-dot':'fa-solid fa-circle-check'"></i><span x-text="estado"></span></button></template></div>
-        <div class="mt-4 text-[11px] text-blue-100"><i class="fa-solid fa-bolt mr-1"></i> Un clic cambia el estado y actualiza el seguimiento del cliente.</div>
       </div>
       <div class="ps-admin-link"><div class="flex items-center justify-between gap-3"><div class="text-[10px] uppercase tracking-[.18em] text-blue-100 font-black">Enlace corto para el cliente</div><span class="px-2.5 py-1 rounded-full bg-emerald-400/15 border border-emerald-300/20 text-emerald-100 text-[9px] font-black"><i class="fa-solid fa-satellite-dish mr-1"></i> ACTUALIZACIÓN EN VIVO</span></div><code x-text="seguimientoAdmin?.url||'Generando…'"></code><div class="flex flex-wrap gap-2 mt-4"><button @click="copiarEnlaceSeguimiento()" type="button" class="ps-admin-action bg-white text-blue-800"><i class="fa-solid fa-copy mr-1"></i> Copiar enlace</button><button @click="abrirSeguimientoEnNuevaVentana()" type="button" class="ps-admin-action bg-cyan-500 text-white"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Abrir seguimiento</button></div></div>
     </div>
