@@ -669,15 +669,28 @@ body.dark{background:#070d19!important}
 .ps-track-truck i{transition:transform .35s ease;color:#0056b3 !important;font-size:1em !important;z-index:10}
 .ps-track-truck.moving{animation:psTruckBounce .65s ease-in-out}
 .ps-track-truck.moving i{transform:translateX(4px) rotate(-1deg)}
+/* EN DESTINO: recuperar las estrellas de colores que acompañan la llegada. */
 .ps-track-v2.is-destination .ps-track-truck:before,
 .ps-track-v2.is-destination .ps-track-truck:after{
-  content:'✦';position:absolute;color:#f59b22;font-size:17px;animation:psSpark 1s ease-in-out infinite
+  content:'✦';position:absolute;color:#f59b22;font-size:17px;line-height:1;
+  animation:psSpark 1s ease-in-out infinite;pointer-events:none
 }
-.ps-track-v2.is-destination .ps-track-truck:before{left:-14px;top:-10px;color:#fb7185}
-.ps-track-v2.is-destination .ps-track-truck:after{right:-13px;bottom:-10px;color:#22d3ee;animation-delay:.25s}
+.ps-track-v2.is-destination .ps-track-truck:before{left:-14px;top:-10px;color:#fb7185;text-shadow:7px 6px 0 rgba(245,155,34,.85)}
+.ps-track-v2.is-destination .ps-track-truck:after{right:-13px;bottom:-10px;color:#22d3ee;animation-delay:.25s;text-shadow:-7px -5px 0 rgba(167,139,250,.9)}
 .ps-track-v2.is-destination .ps-track-truck{filter:drop-shadow(0 7px 12px rgba(0,86,179,.34));animation:psTruckArrival .9s ease-in-out infinite}
 .ps-track-v2.is-destination .ps-track-truck i{color:#0056b3 !important}
 @keyframes psTruckArrival{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}50%{transform:translateX(-50%) translateY(-4px) scale(1.06)}}
+
+/* EN RUTA: el halo naranja pulsante pasa a este estado, como latidos. */
+.ps-track-v2.is-enroute .ps-track-truck:before,
+.ps-track-v2.is-enroute .ps-track-truck:after{
+  content:'';position:absolute;inset:5px;border:2px solid rgba(245,155,34,.92);border-radius:50%;
+  pointer-events:none;animation:psRouteHeartbeat 1.55s ease-out infinite
+}
+.ps-track-v2.is-enroute .ps-track-truck:after{animation-delay:.78s}
+.ps-track-v2.is-enroute .ps-track-truck{filter:drop-shadow(0 5px 13px rgba(245,155,34,.48))}
+.ps-track-v2.is-enroute .ps-track-truck i{color:#0a4076!important}
+@keyframes psRouteHeartbeat{0%{opacity:.92;transform:scale(.72)}100%{opacity:0;transform:scale(1.9)}}
 @keyframes psTruckBounce{0%,100%{transform:translateX(-50%) translateY(0)}45%{transform:translateX(-50%) translateY(-5px) rotate(-1deg)}70%{transform:translateX(-50%) translateY(0) rotate(1deg)}}
 @keyframes psSpark{0%,100%{opacity:.25;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.35) rotate(25deg)}}
 
@@ -828,9 +841,9 @@ body.dark{background:#070d19!important}
 
 
 /* Hitos adicionales de seguimiento: punto medio en ruta y llamada a compartir foto. */
-.ps-track-line,.ps-track-line-fill{left:7.15%;right:7.15%}
+.ps-track-line,.ps-track-line-fill{left:8.333333%;right:8.333333%}
 .ps-track-line-fill{right:auto}
-.ps-track-stages{grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.ps-track-stages{grid-template-columns:repeat(6,minmax(0,1fr));gap:2px}
 .ps-track-stage{min-width:0}
 .ps-track-stage span{font-size:10px;line-height:1.2;overflow-wrap:anywhere}
 .ps-track-stage.midpoint.current .ps-track-dot{background:linear-gradient(135deg,#0b72cf,#f59b22);color:#fff;box-shadow:0 0 0 6px rgba(11,114,207,.12),0 10px 24px rgba(11,114,207,.28)}
@@ -861,6 +874,15 @@ body.dark{background:#070d19!important}
   .ps-track-line,.ps-track-line-fill{top:17px}
   .ps-track-truck{top:-3px;width:36px;height:36px;font-size:20px!important}
   .ps-track-stage span{font-size:7px}
+}
+@media(prefers-reduced-motion:reduce){
+  .ps-track-v2.is-destination .ps-track-truck,
+  .ps-track-v2.is-destination .ps-track-truck:before,
+  .ps-track-v2.is-destination .ps-track-truck:after,
+  .ps-track-v2.is-enroute .ps-track-truck,
+  .ps-track-v2.is-enroute .ps-track-truck:before,
+  .ps-track-v2.is-enroute .ps-track-truck:after,
+  .ps-track-v2.is-enroute .ps-track-truck i{animation:none!important}
 }
 
 /* AJUSTE FUNCIONAL DE SEGUIMIENTO · pasos manuales y accesibilidad móvil */
@@ -1175,7 +1197,7 @@ body.dark{background:#070d19!important}
 </style>
 
 </head>
-<body :class="[darkMode ? 'dark bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-800', modoSeguimientoCliente ? 'tracking-only' : '', modoClubPublico ? 'club-only' : '']" class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 font-sans transition-colors duration-300" x-data="inventarioApp()"><div x-show="modoSeguimientoCliente" x-cloak class="ps-track-v2" :class="{'is-destination': seguimientoClienteData?.estado==='En destino', 'is-photo': seguimientoClienteData?.estado==='Fotografía'}">
+<body :class="[darkMode ? 'dark bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-800', modoSeguimientoCliente ? 'tracking-only' : '', modoClubPublico ? 'club-only' : '']" class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 font-sans transition-colors duration-300" x-data="inventarioApp()"><div x-show="modoSeguimientoCliente" x-cloak class="ps-track-v2" :class="{'is-destination': seguimientoClienteData?.estado==='En destino', 'is-enroute': seguimientoClienteData?.estado==='En ruta', 'is-photo': seguimientoClienteData?.estado==='Fotografía'}">
   <div class="ps-track-wrap">
     <div class="ps-track-paw-bg" aria-hidden="true"></div>
     <div class="text-center mb-8" x-show="seguimientoCargando || !seguimientoClienteData || seguimientoClienteData?.error || seguimientoClienteData?.estado!=='Fotografía'" x-transition>
@@ -1196,8 +1218,8 @@ body.dark{background:#070d19!important}
         <div class="ps-track-progress">
           <div class="relative pt-1">
             <div class="ps-track-line"></div>
-            <div class="ps-track-line-fill" :style="'width: '+((indiceEtapaVisualSeguimiento()/5)*85.7)+'%'"></div>
-            <div class="ps-track-truck" :class="[seguimientoAnimando?'moving':'', seguimientoClienteData?.estado==='Entregado'?'is-delivered':'', ['Enviado','En camino'].includes(seguimientoClienteData?.estado)?'is-enroute':'', seguimientoClienteData?.estado==='Fotografía'?'is-photo':'']" :style="'left: '+(7.15+(indiceEtapaVisualSeguimiento()/5)*85.7)+'%'" title="Estado actual del pedido"><i :class="seguimientoClienteData?.estado==='Fotografía'?'fa-solid fa-camera':(seguimientoClienteData?.estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-truck-fast')"></i></div>
+            <div class="ps-track-line-fill" :style="'width: '+((indiceEtapaVisualSeguimiento()/5)*83.333334)+'%'"></div>
+            <div class="ps-track-truck" :class="[seguimientoAnimando?'moving':'', seguimientoClienteData?.estado==='Entregado'?'is-delivered':'', ['Enviado','En ruta','En camino'].includes(seguimientoClienteData?.estado)?'is-enroute':'', seguimientoClienteData?.estado==='Fotografía'?'is-photo':'']" :style="'left: '+(8.333333+(indiceEtapaVisualSeguimiento()/5)*83.333334)+'%'" title="Estado actual del pedido"><i :class="seguimientoClienteData?.estado==='Fotografía'?'fa-solid fa-camera':(seguimientoClienteData?.estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-truck-fast')"></i></div>
             <div class="ps-track-stages">
               <template x-for="(etapa,index) in seguimientoEtapasPublicas" :key="'v3-stage-'+etapa.key">
                 <div class="ps-track-stage" :class="{'done':index<indiceEtapaVisualSeguimiento() && etapa.key!=='estrellas','current':index===indiceEtapaVisualSeguimiento(),'midpoint':etapa.key==='en-camino','photo-stage':etapa.key==='estrellas','photo-ready':etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía','photo-locked':etapa.key==='estrellas' && seguimientoClienteData?.estado!=='Fotografía'}" :title="etapa.key==='estrellas' ? (seguimientoClienteData?.estado==='Fotografía' ? 'Estrellas de PetSmart — Comparte una foto de tu engreído disfrutando de su pedido. Tómale una foto disfrutando o luciendo su nuevo producto y compártela con nosotros.' : 'Cuando el seguimiento llegue a Fotografía, podrás compartir una foto de tu mascota.') : (etapa.key==='en-camino' ? 'Tu pedido está avanzando hacia el destino.' : etapa.label)" :role="etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía' ? 'button' : null" :tabindex="etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía' ? 0 : null" :aria-label="etapa.key==='estrellas' ? 'Estrellas de PetSmart. Comparte una foto de tu mascota cuando el estado sea Fotografía.' : etapa.label" @click="if(etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía') document.getElementById('psTrackPhotoCard')?.scrollIntoView({behavior:'smooth',block:'center'})" @keydown.enter.prevent="if(etapa.key==='estrellas' && seguimientoClienteData?.estado==='Fotografía') document.getElementById('psTrackPhotoCard')?.scrollIntoView({behavior:'smooth',block:'center'})">
@@ -1217,7 +1239,7 @@ body.dark{background:#070d19!important}
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Solicitud Recibida'" x-transition><div class="ps-track-context-title">Solicitud recibida</div><div class="ps-track-context-text">Hemos recibido correctamente tu pedido y estamos listos para comenzar.</div></div>
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Preparando'" x-transition><div class="ps-track-context-title">📦 Estamos preparando tu pedido</div><div class="ps-track-context-text">Lo estamos preparando con mucho cuidado para que llegue en las mejores condiciones.</div></div>
       <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='Enviado'" x-transition><div class="ps-track-context-title">📦 Tu pedido ya fue enviado</div><div class="ps-track-context-text">Tu pedido fue despachado. En cuanto avance en su recorrido, actualizaremos su estado.</div></div>
-      <div class="ps-track-context" x-show="seguimientoClienteData?.estado==='En camino'" x-transition><div class="ps-track-context-title">🚚 ¡Tu pedido está avanzando!</div><div class="ps-track-context-text">Tu pedido ya está en camino hacia el destino. Seguiremos actualizando su avance.</div></div>
+      <div class="ps-track-context" x-show="['En ruta','En camino'].includes(seguimientoClienteData?.estado)" x-transition><div class="ps-track-context-title">🚚 ¡Tu pedido está avanzando!</div><div class="ps-track-context-text">Tu pedido está en ruta hacia el destino. Seguiremos actualizando su avance.</div></div>
       <div class="ps-track-context destination" x-show="seguimientoClienteData?.estado==='En destino'" x-transition><div class="ps-track-context-title">📍 ¡Tu pedido ya llegó a destino! 😊</div><div class="ps-track-context-text">Nuestro equipo ya se encuentra en el punto de entrega. ¡Prepárate para recibir tu pedido!</div></div>
       <div x-show="seguimientoClienteData?.estado!=='En destino' && seguimientoClienteData?.estado!=='Entregado' && seguimientoClienteData?.estado!=='Fotografía'" class="text-center text-[11px] text-blue-100 mt-5">PetSmart · Te mantendremos informado del avance de tu pedido.</div>
       </div><!-- /ps-track-normal-mode -->
@@ -2320,13 +2342,13 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 seguimientoCargando: false,
                 seguimientoAnimando: false,
                 seguimientoListener: null,
-                seguimientoEstados: ['Solicitud Recibida','Preparando','Enviado','En camino','En destino','Entregado','Fotografía'],
+                seguimientoEstados: ['Solicitud Recibida','Preparando','Enviado','En ruta','En destino','Entregado','Fotografía'],
                 // Etapas públicas de seguimiento. Cada etapa corresponde a un estado seleccionable manualmente en administración.
                 seguimientoEtapasPublicas: [
                     { key: 'recibida', label: 'Solicitud Recibida', icon: 'fa-solid fa-inbox' },
                     { key: 'preparando', label: 'Preparando', icon: 'fa-solid fa-box-open' },
                     { key: 'enviado', label: 'Enviado', icon: 'fa-solid fa-truck-fast' },
-                    { key: 'en-camino', label: 'En camino', icon: 'fa-solid fa-route' },
+                    { key: 'en-camino', label: 'En ruta', icon: 'fa-solid fa-truck-fast' },
                     { key: 'destino', label: 'En destino', icon: 'fa-solid fa-location-dot' },
                     { key: 'entregado', label: 'Entregado', icon: 'fa-solid fa-box-open' }
                 ],
@@ -4121,7 +4143,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 indiceEtapaVisualSeguimiento() {
                     const estado = String(this.seguimientoClienteData?.estado || 'Solicitud Recibida').replace(/^Recibido$/, 'Solicitud Recibida');
                     // La línea pública termina en Entregado. Fotografía abre una pantalla aparte.
-                    const indices = {'Solicitud Recibida':0,'Preparando':1,'Enviado':2,'En camino':3,'En destino':4,'Entregado':5,'Fotografía':5};
+                    const indices = {'Solicitud Recibida':0,'Preparando':1,'Enviado':2,'En ruta':3,'En camino':3,'En destino':4,'Entregado':5,'Fotografía':5};
                     return Object.prototype.hasOwnProperty.call(indices, estado) ? indices[estado] : 0;
                 },
                 async cargarSeguimientoPublico(token) {
@@ -4135,7 +4157,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                             const data=snap.exists()?snap.val():null;
                             if(!data) { this.seguimientoClienteData={error:'No encontramos este pedido o el enlace no es válido.'}; this.seguimientoCargando=false; return; }
                             const anterior=this.seguimientoClienteData?.estado;
-                            const estadoNormalizado=String(data.estado||'Solicitud Recibida').replace(/^Recibido$/,'Solicitud Recibida');
+                            const estadoNormalizado=String(data.estado||'Solicitud Recibida').replace(/^Recibido$/,'Solicitud Recibida').replace(/^En camino$/,'En ruta');
                             this.seguimientoClienteData={token,...data,estado:estadoNormalizado};
                             this.seguimientoCargando=false;
                             if(anterior && anterior!==data.estado){ this.seguimientoAnimando=true; setTimeout(()=>this.seguimientoAnimando=false,1000); }
@@ -4153,7 +4175,9 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 crearSnapshotSeguimientoDesdeItem(item,grupo,token) {
                     const grupoItems=this.productos.filter(p=>p.estado==='vendido'&&String(p.ventaGrupoId||'')===String(grupo));
                     const primero=grupoItems[0]||item||{};
-                    return {token,ventaGrupoId:String(grupo||''),pedidoNumero:String(primero.comprobanteNumero||''),clienteNombre:String(primero.clienteNombre||''),clienteTelefono:String(primero.clienteTelefono||''),direccion:String(primero.direccionEntrega||''),distrito:String(primero.distrito||''),fechaEntrega:String(primero.fechaEntrega||''),horarioEntrega:String(primero.horarioEntrega||''),estado:String(primero.estadoEnvio||'Solicitud Recibida').replace(/^Recibido$/,'Solicitud Recibida'),creadoEn:primero.fechaVenta||new Date().toISOString(),actualizadoEn:new Date().toISOString(),historial:[{estado:String(primero.estadoEnvio||'Recibido'),fecha:primero.fechaVenta||new Date().toISOString()}],items:grupoItems.map(p=>({nombre:p.nombre||'',cantidad:1,imagenUrl:p.imagenUrl||''}))};
+                    const fechaInicio=primero.fechaVenta||new Date().toISOString();
+                    const estadoInicial='Solicitud Recibida';
+                    return {token,ventaGrupoId:String(grupo||''),pedidoNumero:String(primero.comprobanteNumero||''),clienteNombre:String(primero.clienteNombre||''),clienteTelefono:String(primero.clienteTelefono||''),direccion:String(primero.direccionEntrega||''),distrito:String(primero.distrito||''),fechaEntrega:String(primero.fechaEntrega||''),horarioEntrega:String(primero.horarioEntrega||''),estado:estadoInicial,creadoEn:fechaInicio,actualizadoEn:new Date().toISOString(),historial:[{estado:estadoInicial,fecha:fechaInicio}],items:grupoItems.map(p=>({nombre:p.nombre||'',cantidad:1,imagenUrl:p.imagenUrl||''}))};
                 },
                 async crearSeguimientoPedido({ventaGrupoId,pedidoNumero,clienteNombre,clienteTelefono,direccion,distrito,fechaEntrega,horarioEntrega,items}) {
                     if(!ventaGrupoId) return null;
@@ -4172,6 +4196,14 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         if(token){
                             try { const snap=await window.fb.get(window.fb.ref(window.db,`ventas/_seguimientoPublico/${token}`)); if(snap.exists()) snapshot=snap.val(); } catch(_){}
                         }
+                        // Nunca reutilizar un seguimiento que pertenezca a otra venta.
+                        // Esto puede ocurrir si el producto ya se vendió antes y conservó un token antiguo.
+                        if(snapshot && String(snapshot.ventaGrupoId||'') !== grupo){
+                            token='';
+                            snapshot=null;
+                        }
+                        if(!snapshot) token='';
+                        if(snapshot?.estado==='En camino') snapshot={...snapshot,estado:'En ruta'};
                         if(!token || !snapshot){
                             const grupoItems=this.productos.filter(p=>p.estado==='vendido'&&String(p.ventaGrupoId||'')===grupo);
                             const primero=grupoItems[0]||item;
@@ -4181,7 +4213,7 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         }
                         if(!token) throw new Error('No se pudo generar el enlace corto. Firebase no permitió guardar el seguimiento.');
                         const url=this.urlSeguimientoCliente(token,snapshot);
-                        this.seguimientoAdmin={token,url,item,snapshot};
+                        this.seguimientoAdmin={token,url,item,snapshot,estado:snapshot?.estado||'Solicitud Recibida'};
                         this.mostrarVistaClienteSeguimiento=false;
                         this.modalSeguimientoPedido=true;
                     } catch(e){ Swal.fire('Seguimiento','No se pudo preparar el seguimiento: '+(e?.message||e),'error'); }
@@ -5862,7 +5894,12 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                                 razonSocial,
                                 comprobanteNumero,
                                 ventaGrupoId,
-                                sellerPagoEstado
+                                sellerPagoEstado,
+                                // Cada venta nueva debe iniciar un seguimiento limpio.
+                                // Evita reutilizar un token de un pedido anterior del mismo producto.
+                                seguimientoEstado: 'Solicitud Recibida',
+                                estadoEnvio: 'Solicitud Recibida',
+                                seguimientoToken: ''
                             };
 
                             // MUY IMPORTANTE: conservamos nombre, SKU, costo, categoria, talla,
@@ -7697,8 +7734,8 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
         <button @click="abrirSeguimientoEnNuevaVentana()" type="button" class="ps-admin-action bg-white/10 text-white border border-white/15 hover:bg-white/15"><i class="fa-solid fa-up-right-from-square mr-1"></i>Abrir enlace</button>
       </div>
       <div class="rounded-2xl bg-white/10 border border-white/10 p-5">
-        <div class="flex items-center justify-between gap-3 mb-4"><div><div class="text-[10px] uppercase tracking-[.2em] text-blue-100 font-black">Estado actual</div><div class="text-xl font-black mt-1" x-text="seguimientoAdmin?.estado||'Recibido'"></div></div><div class="w-14 h-14 rounded-2xl bg-white text-blue-700 flex items-center justify-center shadow-xl"><i class="fa-solid fa-truck-fast text-2xl"></i></div></div>
-        <div class="ps-admin-status-grid"><template x-for="estado in seguimientoEstados" :key="'admin-v2-'+estado"><button @click="actualizarEstadoSeguimiento(estado)" type="button" class="ps-admin-status" :class="{'active':(seguimientoAdmin?.estado||'Recibido')===estado}"><i class="mr-1" :class="estado==='Solicitud Recibida'?'fa-solid fa-inbox':estado==='Preparando'?'fa-solid fa-box-open':estado==='Enviado'?'fa-solid fa-truck-fast':estado==='En camino'?'fa-solid fa-route':estado==='En destino'?'fa-solid fa-location-dot':estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-camera'"></i><span x-text="estado"></span></button></template></div>
+        <div class="flex items-center justify-between gap-3 mb-4"><div><div class="text-[10px] uppercase tracking-[.2em] text-blue-100 font-black">Estado actual</div><div class="text-xl font-black mt-1" x-text="seguimientoAdmin?.estado||'Solicitud Recibida'"></div></div><div class="w-14 h-14 rounded-2xl bg-white text-blue-700 flex items-center justify-center shadow-xl"><i class="fa-solid fa-truck-fast text-2xl"></i></div></div>
+        <div class="ps-admin-status-grid"><template x-for="estado in seguimientoEstados" :key="'admin-v2-'+estado"><button @click="actualizarEstadoSeguimiento(estado)" type="button" class="ps-admin-status" :class="{'active':(seguimientoAdmin?.estado||'Solicitud Recibida')===estado}"><i class="mr-1" :class="estado==='Solicitud Recibida'?'fa-solid fa-inbox':estado==='Preparando'?'fa-solid fa-box-open':estado==='Enviado'?'fa-solid fa-truck-fast':estado==='En ruta'?'fa-solid fa-truck-fast':estado==='En destino'?'fa-solid fa-location-dot':estado==='Entregado'?'fa-solid fa-box-open':'fa-solid fa-camera'"></i><span x-text="estado"></span></button></template></div>
         <div class="mt-4 text-[11px] text-blue-100"><i class="fa-solid fa-bolt mr-1"></i> Un clic cambia el estado y actualiza el seguimiento del cliente.</div>
       </div>
       <div x-show="mostrarVistaClienteSeguimiento" x-transition class="rounded-2xl bg-white/10 border border-white/10 p-3">
