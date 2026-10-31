@@ -388,7 +388,8 @@ input:focus,select:focus{border-color:rgba(245,158,11,.75)!important;box-shadow:
         }
         from
             "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        const firebaseConfig = {
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+                const firebaseConfig = {
             apiKey:
                 "AiZaSyDBB2yeDGTYzbqX5p6sY411g6Qsw8JEgu0",
             authDomain:
@@ -410,6 +411,8 @@ input:focus,select:focus{border-color:rgba(245,158,11,.75)!important;box-shadow:
             getDatabase(app);
         window.db =
             database;
+        window.deliveryAuth = getAuth(app);
+        window.deliveryEvidenceSdk = { signInWithEmailAndPassword, signOut, onAuthStateChanged };
         window.fb = {
             ref,
             onValue,
@@ -1798,6 +1801,14 @@ body.dark{background:#070d19!important}
 <div x-show="!ventaForm.modoSeller" x-transition><label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5"><i class="fa-solid fa-clock text-blue-500 mr-1"></i>Horario de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="text" placeholder="11:30 am - 1:30 pm" x-model="ventaForm.horarioEntrega"/></div>
 </div>
 
+<div x-show="!ventaForm.modoSeller" x-transition class="rounded-2xl border border-orange-200 dark:border-orange-900/60 bg-orange-50/70 dark:bg-orange-950/20 p-4 space-y-2">
+  <label class="block text-xs font-black uppercase tracking-wider text-orange-800 dark:text-orange-300" for="venta-repartidor"><i class="fa-solid fa-truck-fast mr-1"></i> Asignación de repartidor</label>
+  <select id="venta-repartidor" x-model="ventaForm.repartidorAsignado" class="w-full bg-white dark:bg-slate-900 border border-orange-200 dark:border-orange-800 rounded-xl px-3 py-3 text-sm font-bold">
+    <option value="">Sin asignar (pendiente)</option><option value="Chavalillo">Chavalillo</option><option value="Chavalilla">Chavalilla</option>
+  </select>
+  <p class="text-[10px] leading-relaxed text-slate-500 dark:text-slate-400">Se guarda con la venta existente cuando hay dirección, envío o programación de entrega. Puedes asignar o cambiar el repartidor después desde la pestaña Entregas.</p>
+</div>
+
 <div class="rounded-2xl border border-sky-200 dark:border-sky-800 bg-sky-50/70 dark:bg-sky-950/20 p-4">
   <label class="flex items-center justify-between gap-4 cursor-pointer">
     <span>
@@ -1932,6 +1943,13 @@ body.dark{background:#070d19!important}
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black mb-1.5"><i class="fa-solid fa-truck text-amber-500 mr-1"></i>Envío <span class="font-normal text-slate-400">(informativo)</span></label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" type="text" x-model="ventaEditando.envio"/><div class="text-[10px] text-slate-400 mt-1">No suma, resta ni participa en ningún cálculo.</div></div>
 <div><label class="block text-xs font-black mb-1.5"><i class="fa-solid fa-calendar-check text-emerald-500 mr-1"></i>Fecha de entrega</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-3 text-sm" type="date" x-model="ventaEditando.fechaEntrega"/></div>
+</div>
+<div class="rounded-2xl border border-orange-200 dark:border-orange-900/60 bg-orange-50/70 dark:bg-orange-950/20 p-4 space-y-2">
+  <label class="block text-xs font-black uppercase tracking-wider text-orange-800 dark:text-orange-300" for="editar-venta-repartidor"><i class="fa-solid fa-truck-fast mr-1"></i> Repartidor asignado</label>
+  <select id="editar-venta-repartidor" x-model="ventaEditando.repartidorAsignado" class="w-full bg-white dark:bg-slate-900 border border-orange-200 dark:border-orange-800 rounded-xl px-3 py-3 text-sm font-bold">
+    <option value="">Sin asignar (pendiente)</option><option value="Chavalillo">Chavalillo</option><option value="Chavalilla">Chavalilla</option>
+  </select>
+  <p class="text-[10px] leading-relaxed text-slate-500 dark:text-slate-400">Al guardar se actualiza la asignación de todas las líneas de este pedido, manteniendo el estado, las fotos y el historial de entrega.</p>
 </div>
 <div class="rounded-2xl border border-sky-200 dark:border-sky-800 bg-sky-50/70 dark:bg-sky-950/20 p-4">
   <label class="flex items-center justify-between gap-4 cursor-pointer">
@@ -2681,10 +2699,25 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                 // =================================================
                 ventaForm: {
                     clienteNombre: '', clienteTelefono: '', distrito: '', canalVenta: 'WhatsApp', perfilFacebook: '', tipoMascota: '',
-                    medioPago: 'Yape', precioVenta: 0, fechaVenta: fechaPeruActual(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '',
+                    medioPago: 'Yape', precioVenta: 0, fechaVenta: fechaPeruActual(), fechaEntrega: '', horarioEntrega: '', envio: '', repartidorAsignado: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '',
                     comision: 0, confLogistico: 0, observacion: '', direccionEntrega: '', latitud: '', longitud: '', valeCodigo: '', generarVale: false, sellerPagoStandby: true, conBolsa: false
                 },
                 productos: [],
+                // =================================================
+                // MINIAPP DE ENTREGAS · ESTADO AISLADO DE LA NUEVA PESTAÑA
+                // =================================================
+                entregasBusqueda: '',
+                entregasFiltroEstado: 'Todas',
+                entregasFiltroRepartidor: 'Todas',
+                entregasInicializando: false,
+                entregasGuardando: '',
+                entregasAdminEmail: '',
+                entregasAdminPassword: '',
+                entregasAdminSesion: false,
+                entregasAdminUsuario: '',
+                entregasEvidencias: {},
+                entregasEvidenciasCargando: false,
+                entregasEstados: ['Pendiente', 'Preparando', 'En camino', 'En destino', 'Entregado', 'Incidencia'],
                 // =================================================
                 // INIT
                 // =================================================
@@ -5651,7 +5684,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                 registrarVenta(item = null) {
                     this.productoVenta = item || null;
                     this.ventaItems = [{ sku: '', producto: null, error: '' }];
-                    this.ventaForm = { clienteNombre: '', clienteTelefono: '', distrito: '', direccionEntrega: '', latitud: '', longitud: '', canalVenta: 'WhatsApp', modoSeller: false, perfilFacebook: '' , tipoMascota: '', medioPago: 'Yape', fechaVenta: this.fechaPeru(), fechaEntrega: '', horarioEntrega: '', envio: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '', comision: 0, confLogistico: 0, sellerTotalVenta: 0, observacion: '' , valeCodigo: '', generarVale: false, usarVale: false, sellerPagoStandby: true, conBolsa: false }
+                    this.ventaForm = { clienteNombre: '', clienteTelefono: '', distrito: '', direccionEntrega: '', latitud: '', longitud: '', canalVenta: 'WhatsApp', modoSeller: false, perfilFacebook: '' , tipoMascota: '', medioPago: 'Yape', fechaVenta: this.fechaPeru(), fechaEntrega: '', horarioEntrega: '', envio: '', repartidorAsignado: '', tipoComprobante: 'Boleta', tipoDocumento: 'DNI', numeroDocumento: '', ruc: '', razonSocial: '', comision: 0, confLogistico: 0, sellerTotalVenta: 0, observacion: '' , valeCodigo: '', generarVale: false, usarVale: false, sellerPagoStandby: true, conBolsa: false }
                     this.valeValidado = null;
                     this.valeReservado = false;
                     this.valeGeneradoUltimaVenta = null;
@@ -5829,6 +5862,16 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         const clienteNombre = this.ventaForm.clienteNombre.trim();
                         const clienteTelefono = this.ventaForm.clienteTelefono;
                         const distrito = String(this.ventaForm.distrito || '').trim();
+                        const direccionEntregaVenta = String(this.ventaForm.direccionEntrega || '').trim();
+                        const envioVenta = String(this.ventaForm.envio || '').trim();
+                        const fechaEntregaVenta = String(this.ventaForm.fechaEntrega || '').trim();
+                        const horarioEntregaVenta = String(this.ventaForm.horarioEntrega || '').trim();
+                        const requiereEntrega = canalVenta !== 'Falabella' && !!(envioVenta || direccionEntregaVenta || fechaEntregaVenta || horarioEntregaVenta);
+                        const repartidorAsignado = requiereEntrega ? this.normalizarRepartidorEntrega(this.ventaForm.repartidorAsignado || '') : '';
+                        const repartidorAsignadoEmail = this.emailRepartidorEntrega(repartidorAsignado);
+                        const entregaCreadaEn = requiereEntrega ? new Date().toISOString() : '';
+                        const historialInicialEntrega = requiereEntrega ? [{ estado: 'Pendiente', fecha: entregaCreadaEn, nota: 'Entrega inicial creada al registrar la venta.' }] : [];
+                        const historialInicialAsignacion = repartidorAsignado ? [{ repartidor: repartidorAsignado, email: repartidorAsignadoEmail, fecha: entregaCreadaEn, origen: 'Registro de venta' }] : [];
                         const tipoComprobante = this.ventaForm.tipoComprobante || 'Boleta';
                         const tipoDocumento = tipoComprobante === 'Boleta' ? this.ventaForm.tipoDocumento : '';
                         const numeroDocumento = tipoComprobante === 'Boleta' ? String(this.ventaForm.numeroDocumento || '').replace(/\D/g, '') : '';
@@ -5865,8 +5908,17 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                                 estado: 'vendido',
                                 fechaVenta,
                                 fechaEntrega: String(this.ventaForm.fechaEntrega || ''),
-                                horarioEntrega: String(this.ventaForm.horarioEntrega || '').trim(),
-                                envio: String(this.ventaForm.envio || '').trim(),
+                                horarioEntrega: horarioEntregaVenta,
+                                envio: envioVenta,
+                                repartidorAsignado,
+                                repartidorAsignadoEmail,
+                                entregaEstado: requiereEntrega ? 'Pendiente' : '',
+                                entregaCreadaEn,
+                                entregaActualizadoEn: entregaCreadaEn,
+                                entregaIncidencia: '',
+                                entregaHistorial: historialInicialEntrega,
+                                entregaAsignacionActualizadaEn: repartidorAsignado ? entregaCreadaEn : '',
+                                entregaAsignacionHistorial: historialInicialAsignacion,
                                 clienteNombre,
                                 clienteTelefono,
                                 clienteId,
@@ -5934,9 +5986,15 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                                     clubPuntosDni: index === 0 ? numeroDocumento : '',
                                     clubPuntosImporte: index === 0 ? montoElegibleClub : 0,
                                     cantidadProductos: seleccionados.length,
-                                    fechaEntrega: String(this.ventaForm.fechaEntrega || ''),
-                                    horarioEntrega: String(this.ventaForm.horarioEntrega || '').trim(),
-                                    envio: String(this.ventaForm.envio || '').trim(),
+                                    fechaEntrega: fechaEntregaVenta,
+                                    horarioEntrega: horarioEntregaVenta,
+                                    envio: envioVenta,
+                                    repartidorAsignado,
+                                    repartidorAsignadoEmail,
+                                    entregaEstado: requiereEntrega ? 'Pendiente' : '',
+                                    entregaCreadaEn,
+                                    entregaActualizadoEn: entregaCreadaEn,
+                                    entregaAsignacionActualizadaEn: repartidorAsignado ? entregaCreadaEn : '',
                                     tipoComprobante,
                                     tipoDocumento,
                                     numeroDocumento,
@@ -5995,7 +6053,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                             this.notificarToast('warning', `${seleccionados.length} producto(s) vendidos. Inventario actualizado, pero Firebase bloqueó: ${fallosSecundarios.join(', ')}`);
                             Swal.fire({ icon: 'warning', title: 'Venta registrada en inventario', html: `<div class="text-left text-sm">Los productos fueron marcados como <b>vendidos</b>, pero Firebase no permitió guardar algunos registros adicionales.<br><br><b>Rutas bloqueadas:</b><br>${fallosSecundarios.join('<br>')}<br><br>Esto confirma que las reglas de Firebase necesitan permisos para esas rutas.</div>` });
                         } else {
-                            this.notificarToast('success', `${seleccionados.length} producto(s) vendidos correctamente${avisoClubPuntos}`);
+                            this.notificarToast('success', `${seleccionados.length} producto(s) vendidos correctamente${avisoClubPuntos}${requiereEntrega ? (repartidorAsignado ? ' · Repartidor: ' + repartidorAsignado : ' · Entrega pendiente de asignación') : ''}`);
                             if (this.ventaForm.generarVale) {
                                 try {
                                     const vale = await this.generarValePromocionalParaVenta({clienteId, clienteNombre, clienteTelefono, distrito, direccionEntrega: this.ventaForm.direccionEntrega, numeroDocumento: this.ventaForm.numeroDocumento, ventaGrupoId});
@@ -6049,6 +6107,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     this.ventaEditando.fechaEntrega = this.ventaEditando.fechaEntrega || '';
                     this.ventaEditando.conBolsa = !!this.ventaEditando.conBolsa;
                     this.ventaEditando.envio = this.ventaEditando.envio || '';
+                    this.ventaEditando.repartidorAsignado = this.normalizarRepartidorEntrega(this.ventaEditando.repartidorAsignado || this.ventaEditando.repartidorAsignadoEmail || '');
                     this.ventaEditando.tipoComprobante = this.ventaEditando.tipoComprobante || 'Boleta';
                     this.ventaEditando.tipoDocumento = this.ventaEditando.tipoDocumento || 'DNI';
                     this.ventaEditando.numeroDocumento = this.ventaEditando.numeroDocumento || '';
@@ -6092,9 +6151,13 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         const confLogistico = venta.canalVenta === 'Falabella' ? Number(venta.confLogistico) || 0 : 0;
                         const perfilFacebook = venta.canalVenta === 'Facebook' ? String(venta.perfilFacebook || '') : '';
                         const sellerPagoEstado = venta.canalVenta === 'Falabella' ? (venta.sellerPagoEstado === 'pendiente' ? 'pendiente' : 'aplicado') : '';
-                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, conBolsa: !!venta.conBolsa, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', ventaGrupoId: String(venta.ventaGrupoId || ''), sellerPagoEstado };
+                        const requiereEntregaEditar = venta.canalVenta !== 'Falabella' && !!(String(venta.envio || '').trim() || String(venta.direccionEntrega || '').trim() || String(venta.fechaEntrega || '').trim() || String(venta.horarioEntrega || '').trim());
+                        const repartidorEditar = requiereEntregaEditar ? this.normalizarRepartidorEntrega(venta.repartidorAsignado || '') : '';
+                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), repartidorAsignado: repartidorEditar, repartidorAsignadoEmail: this.emailRepartidorEntrega(repartidorEditar), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, conBolsa: !!venta.conBolsa, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', ventaGrupoId: String(venta.ventaGrupoId || ''), sellerPagoEstado };
                         await window.fb.update(window.fb.ref(window.db, `productos/${venta.id}`), datos);
                         await this.guardarRegistroVentaAdicional(venta, datos);
+                        // La asignación pertenece al pedido completo: sincroniza todas sus líneas y registros históricos.
+                        await this.guardarAsignacionRepartidorGrupo(grupoEditar || String(venta.id), repartidorEditar, { notify: false });
                         // La bolsa corresponde al pedido completo: si una venta tiene varios productos,
                         // conserva el mismo estado en todos los renglones relacionados.
                         const idsBolsaRelacionados = grupoEditar
@@ -6715,6 +6778,198 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     );
                 },
                 // =================================================
+                // MINIAPP DE ENTREGAS · LEE VENTAS EXISTENTES SIN CAMBIAR SU MÓDULO
+                // =================================================
+                normalizarRepartidorEntrega(valor = '') {
+                    const v = String(valor || '').trim().toLowerCase();
+                    if (!v) return '';
+                    if (v.includes('chavalillo')) return 'Chavalillo';
+                    if (v.includes('chavalilla')) return 'Chavalilla';
+                    return '';
+                },
+                emailRepartidorEntrega(valor = '') {
+                    const nombre = this.normalizarRepartidorEntrega(valor);
+                    return nombre === 'Chavalillo' ? 'chavalillo@repartidores.petsmart.app' : (nombre === 'Chavalilla' ? 'chavalilla@repartidores.petsmart.app' : '');
+                },
+                esPedidoConEntrega(item) {
+                    if (!item || item.estado !== 'vendido') return false;
+                    const envio = String(item.envio || '').trim();
+                    const direccion = String(item.direccionEntrega || '').trim();
+                    const fecha = String(item.fechaEntrega || '').trim();
+                    const horario = String(item.horarioEntrega || '').trim();
+                    return !!(envio || direccion || fecha || horario);
+                },
+                entregasListado() {
+                    const grupos = new Map();
+                    (Array.isArray(this.productos) ? this.productos : []).forEach(item => {
+                        if (!this.esPedidoConEntrega(item)) return;
+                        const grupoId = String(item.ventaGrupoId || item.id || '').trim();
+                        if (!grupoId) return;
+                        if (!grupos.has(grupoId)) grupos.set(grupoId, { id: grupoId, items: [], primero: item });
+                        const grupo = grupos.get(grupoId);
+                        grupo.items.push(item);
+                        if (String(item.fechaVenta || '') < String(grupo.primero.fechaVenta || '')) grupo.primero = item;
+                    });
+                    let lista = Array.from(grupos.values()).map(grupo => {
+                        const p = grupo.primero || {};
+                        const estados = grupo.items.map(x => String(x.entregaEstado || 'Pendiente'));
+                        const estado = estados.includes('Incidencia') ? 'Incidencia' : (estados.every(x => x === 'Entregado') ? 'Entregado' : (estados.includes('En destino') ? 'En destino' : (estados.includes('En camino') ? 'En camino' : (estados.includes('Preparando') ? 'Preparando' : 'Pendiente'))));
+                        const pAsignacion = grupo.items.find(x => x.repartidorAsignado || x.repartidorAsignadoEmail) || p;
+                        const repartidorAsignado = this.normalizarRepartidorEntrega(pAsignacion.repartidorAsignado || pAsignacion.repartidorAsignadoEmail || '');
+                        return { ...grupo, estado, repartidorAsignado, repartidorAsignadoEmail: this.emailRepartidorEntrega(repartidorAsignado), clienteNombre: p.clienteNombre || 'Cliente sin nombre', clienteTelefono: p.clienteTelefono || '', direccionEntrega: p.direccionEntrega || '', distrito: p.distrito || '', envio: p.envio || '', fechaVenta: p.fechaVenta || '', fechaEntrega: p.fechaEntrega || '', horarioEntrega: p.horarioEntrega || '', pedidoNumero: p.comprobanteNumero || '', historial: Array.isArray(p.entregaHistorial) ? p.entregaHistorial : [], incidencia: p.entregaIncidencia || '', actualizadoEn: p.entregaActualizadoEn || '', productosTexto: grupo.items.map(x => `${x.nombre || 'Producto'}${Number(x.cantidad || 1) > 1 ? ' × ' + Number(x.cantidad) : ''}`).join(', ') };
+                    });
+                    const q = String(this.entregasBusqueda || '').trim().toLowerCase();
+                    if (q) lista = lista.filter(x => [x.clienteNombre, x.clienteTelefono, x.direccionEntrega, x.distrito, x.pedidoNumero, x.productosTexto, x.id, x.repartidorAsignado].join(' ').toLowerCase().includes(q));
+                    if (this.entregasFiltroEstado && this.entregasFiltroEstado !== 'Todas') lista = lista.filter(x => x.estado === this.entregasFiltroEstado);
+                    if (this.entregasFiltroRepartidor && this.entregasFiltroRepartidor !== 'Todas') {
+                        if (this.entregasFiltroRepartidor === 'Sin asignar') lista = lista.filter(x => !x.repartidorAsignado);
+                        else lista = lista.filter(x => x.repartidorAsignado === this.entregasFiltroRepartidor);
+                    }
+                    return lista.sort((a,b) => String(b.fechaEntrega || b.fechaVenta || '').localeCompare(String(a.fechaEntrega || a.fechaVenta || '')));
+                },
+                async guardarAsignacionRepartidorGrupo(grupoId, valor, opciones = {}) {
+                    const nombre = this.normalizarRepartidorEntrega(valor);
+                    const email = this.emailRepartidorEntrega(nombre);
+                    const gid = String(grupoId || '').trim();
+                    if (!gid || !window.fb || !window.db) throw new Error('No se encontró el identificador de la venta para asignar el repartidor.');
+                    const items = (this.productos || []).filter(p => p && p.estado === 'vendido' && String(p.ventaGrupoId || p.id || '') === gid);
+                    if (!items.length) throw new Error('No se encontraron las líneas de productos de esta venta. Actualiza el inventario e inténtalo de nuevo.');
+                    const prevItem = items.find(p => p.repartidorAsignado || p.repartidorAsignadoEmail) || items[0];
+                    const previo = this.normalizarRepartidorEntrega(prevItem.repartidorAsignado || prevItem.repartidorAsignadoEmail || '');
+                    const ahora = new Date().toISOString();
+                    let historial = Array.isArray(prevItem.entregaAsignacionHistorial) ? prevItem.entregaAsignacionHistorial.slice() : [];
+                    if (previo !== nombre) historial.push({ anterior: previo, repartidor: nombre, email, fecha: ahora, origen: opciones.origen || 'Inventario' });
+                    const updates = {};
+                    items.forEach(p => {
+                        updates[`productos/${p.id}/repartidorAsignado`] = nombre;
+                        updates[`productos/${p.id}/repartidorAsignadoEmail`] = email;
+                        updates[`productos/${p.id}/entregaAsignacionActualizadaEn`] = ahora;
+                        updates[`productos/${p.id}/entregaAsignacionHistorial`] = historial;
+                        updates[`ventas/${p.id}/repartidorAsignado`] = nombre;
+                        updates[`ventas/${p.id}/repartidorAsignadoEmail`] = email;
+                        updates[`ventas/${p.id}/entregaAsignacionActualizadaEn`] = ahora;
+                        updates[`ventas/${p.id}/entregaAsignacionHistorial`] = historial;
+                    });
+                    await window.fb.update(window.fb.ref(window.db), updates);
+                    if (opciones.notify !== false) this.notificarToast('success', nombre ? `Pedido asignado a ${nombre}. Se conservan estado e imágenes.` : 'Pedido desasignado. Sigue visible para administración.');
+                    return { nombre, email, items: items.length };
+                },
+                async reasignarRepartidorEntrega(grupoId, valor) {
+                    const nuevo = this.normalizarRepartidorEntrega(valor);
+                    const entrega = this.entregasListado().find(e => e.id === String(grupoId));
+                    if (!entrega) { this.notificarToast('warning', 'No se encontró esta entrega. Actualiza el listado.'); return; }
+                    if (nuevo === entrega.repartidorAsignado) return;
+                    const confirm = await Swal.fire({ title: nuevo ? `¿Asignar a ${nuevo}?` : '¿Quitar la asignación?', text: 'Se actualizarán todas las líneas de esta venta. El estado, el historial y las fotografías se conservarán.', icon: 'question', showCancelButton: true, confirmButtonText: 'Sí, actualizar', cancelButtonText: 'Cancelar', confirmButtonColor: '#f97316' });
+                    if (!confirm.isConfirmed) return;
+                    try { this.entregasGuardando = String(grupoId); await this.guardarAsignacionRepartidorGrupo(grupoId, nuevo, { origen: 'Pestaña Entregas' }); }
+                    catch (e) { console.error('No se pudo reasignar la entrega:', e); Swal.fire('No se pudo reasignar', e?.message || 'Firebase rechazó el cambio de repartidor.', 'error'); }
+                    finally { this.entregasGuardando = ''; }
+                },
+                async inicializarEntregas() {
+                    if (this.entregasInicializando || !window.fb || !window.db || !Array.isArray(this.productos) || !this.productos.length) return;
+                    this.entregasInicializando = true;
+                    try {
+                        const updates = {};
+                        const grupos = new Map();
+                        this.productos.forEach(item => {
+                            if (!this.esPedidoConEntrega(item) || !item.id) return;
+                            const grupoId = String(item.ventaGrupoId || item.id);
+                            if (!grupos.has(grupoId)) grupos.set(grupoId, []);
+                            grupos.get(grupoId).push(item);
+                        });
+                        const ahora = new Date().toISOString();
+                        grupos.forEach(items => items.forEach(item => {
+                            if (!item.entregaEstado) updates[`productos/${item.id}/entregaEstado`] = 'Pendiente';
+                            if (!item.entregaCreadaEn) updates[`productos/${item.id}/entregaCreadaEn`] = ahora;
+                            if (!item.entregaHistorial) updates[`productos/${item.id}/entregaHistorial`] = [{ estado: 'Pendiente', fecha: ahora, nota: 'Entrega creada automáticamente desde la venta existente.' }];
+                        }));
+                        if (Object.keys(updates).length) await window.fb.update(window.fb.ref(window.db), updates);
+                    } catch (e) {
+                        console.error('No se pudieron inicializar las entregas:', e);
+                        this.notificarToast('error', 'No se pudieron inicializar las entregas. Revisa los permisos de Firebase.');
+                    } finally {
+                        this.entregasInicializando = false;
+                    }
+                },
+                async actualizarEstadoEntrega(grupoId, nuevoEstado) {
+                    const permitidos = this.entregasEstados || [];
+                    if (!grupoId || !permitidos.includes(nuevoEstado) || this.entregasGuardando) return;
+                    let motivo = '';
+                    if (nuevoEstado === 'Incidencia') {
+                        const respuesta = await Swal.fire({ title: 'Registrar incidencia', input: 'textarea', inputLabel: 'Describe el problema de entrega', inputPlaceholder: 'Ej.: cliente no responde, dirección incorrecta…', inputAttributes: { 'aria-label': 'Descripción de la incidencia' }, showCancelButton: true, confirmButtonText: 'Guardar incidencia', cancelButtonText: 'Cancelar', confirmButtonColor: '#e11d48' });
+                        if (!respuesta.isConfirmed) return;
+                        motivo = String(respuesta.value || '').trim();
+                        if (!motivo) { Swal.fire('Falta información', 'Describe brevemente la incidencia antes de guardarla.', 'warning'); return; }
+                    }
+                    const items = (this.productos || []).filter(p => p.estado === 'vendido' && String(p.ventaGrupoId || p.id || '') === String(grupoId) && this.esPedidoConEntrega(p));
+                    if (!items.length) { this.notificarToast('warning', 'No se encontraron los productos vinculados a esta entrega.'); return; }
+                    this.entregasGuardando = String(grupoId);
+                    try {
+                        const ahora = new Date().toISOString();
+                        const base = Array.isArray(items[0].entregaHistorial) ? items[0].entregaHistorial.slice() : [];
+                        const previo = String(items[0].entregaEstado || 'Pendiente');
+                        if (previo !== nuevoEstado || motivo) base.push({ estado: nuevoEstado, fecha: ahora, nota: motivo });
+                        const updates = {};
+                        items.forEach(p => {
+                            updates[`productos/${p.id}/entregaEstado`] = nuevoEstado;
+                            updates[`productos/${p.id}/entregaActualizadoEn`] = ahora;
+                            updates[`productos/${p.id}/entregaHistorial`] = base;
+                            if (motivo) updates[`productos/${p.id}/entregaIncidencia`] = motivo;
+                            else if (nuevoEstado !== 'Incidencia') updates[`productos/${p.id}/entregaIncidencia`] = '';
+                        });
+                        await window.fb.update(window.fb.ref(window.db), updates);
+                        this.notificarToast('success', `Entrega actualizada: ${nuevoEstado}`);
+                    } catch (e) {
+                        console.error('Error actualizando entrega:', e);
+                        Swal.fire('No se pudo guardar', e?.message || 'Firebase rechazó la actualización del estado.', 'error');
+                    } finally {
+                        this.entregasGuardando = '';
+                    }
+                },
+                async iniciarSesionEvidencias() {
+                    if (!window.deliveryAuth || !window.deliveryEvidenceSdk) { this.notificarToast('error', 'No se pudo iniciar el módulo seguro de evidencias.'); return; }
+                    const email = String(this.entregasAdminEmail || '').trim();
+                    const password = String(this.entregasAdminPassword || '');
+                    if (!email || !password) { this.notificarToast('warning', 'Ingresa el usuario y contraseña autorizados para consultar evidencias.'); return; }
+                    try {
+                        const cred = await window.deliveryEvidenceSdk.signInWithEmailAndPassword(window.deliveryAuth, email, password);
+                        this.entregasAdminSesion = true;
+                        this.entregasAdminUsuario = cred.user.email || 'Usuario autorizado';
+                        this.entregasAdminPassword = '';
+                        await this.cargarEvidenciasEntregas();
+                        this.notificarToast('success', 'Acceso a evidencias habilitado.');
+                    } catch (e) {
+                        console.error('Error de acceso a evidencias:', e);
+                        this.notificarToast('error', 'Acceso denegado. Verifica la cuenta de Firebase Authentication.');
+                    }
+                },
+                async cerrarSesionEvidencias() {
+                    try { if (window.deliveryAuth) await window.deliveryEvidenceSdk.signOut(window.deliveryAuth); } catch (e) { console.warn(e); }
+                    this.entregasAdminSesion = false; this.entregasAdminUsuario = ''; this.entregasEvidencias = {};
+                },
+                async cargarEvidenciasEntregas() {
+                    if (!this.entregasAdminSesion || !window.fb || !window.db || !window.deliveryEvidenceSdk) return;
+                    this.entregasEvidenciasCargando = true;
+                    try {
+                        const snap = await window.fb.get(window.fb.ref(window.db, 'entregasEvidencias'));
+                        this.entregasEvidencias = snap.exists() ? snap.val() : {};
+                    } catch (e) {
+                        console.error('Error leyendo evidencias:', e);
+                        this.notificarToast('error', 'No se pudieron consultar las evidencias. Revisa las reglas de lectura de entregasEvidencias en Firebase.');
+                    } finally { this.entregasEvidenciasCargando = false; }
+                },
+                async abrirFotoEvidencia(url) {
+                    if (!this.entregasAdminSesion || !url || !/^https:\/\//i.test(url)) return;
+                    const w = window.open(url, '_blank', 'noopener');
+                    if (!w) this.notificarToast('warning', 'Permite ventanas emergentes para ver la fotografía.');
+                },
+                abrirWhatsAppEntrega(entrega) {
+                    const telefono = String(entrega?.clienteTelefono || '').replace(/\D/g, '');
+                    if (!telefono) { this.notificarToast('warning', 'Esta venta no tiene celular registrado.'); return; }
+                    const texto = `Hola ${entrega.clienteNombre || ''}, te contactamos de PetSmart por tu entrega${entrega.pedidoNumero ? ' del pedido ' + entrega.pedidoNumero : ''}.`;
+                    window.open(`https://wa.me/${telefono.startsWith('51') ? telefono : '51' + telefono}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+                },
+                // =================================================
                 // TOAST
                 // =================================================
                 notificarToast(
@@ -6747,6 +7002,9 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
             </button>
 <button :class="activeTab === 'ventas' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'ventas'" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
 <i class="fa-solid fa-cart-shopping"></i> Ventas
+            </button>
+<button :class="activeTab === 'entregas' ? 'bg-cyan-600 text-white shadow-lg' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'entregas'; setTimeout(() => inicializarEntregas(), 250)" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
+<i class="fa-solid fa-truck-fast"></i> Entregas
             </button>
 <button :class="activeTab === 'comprobantes' ? 'bg-sky-700 text-white shadow-lg' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'" @click="activeTab = 'comprobantes'" class="flex-1 min-w-[150px] px-5 py-3 rounded-xl font-black text-sm transition-all flex items-center justify-center gap-2">
 <i class="fa-solid fa-receipt"></i> Comprobante
@@ -7421,7 +7679,84 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
 </table>
 </div>
 </div>
-</div><!-- =====================================================
+</div>
+<!-- =====================================================
+     NUEVA PESTAÑA · MINIAPP DE ENTREGAS PETSMART
+     Lee productos vendidos y agrupa por ventaGrupoId.
+====================================================== -->
+<div style="display:none;" x-show="activeTab === 'entregas'" x-transition>
+  <div class="space-y-5">
+    <div class="rounded-3xl overflow-hidden border border-cyan-200 dark:border-cyan-900/60 bg-white dark:bg-slate-800 shadow-xl">
+      <div class="p-6 md:p-7 bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 text-white flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="text-[10px] uppercase tracking-[.24em] font-black text-cyan-100">PetSmart · Operaciones logísticas</div>
+          <h2 class="text-2xl md:text-3xl font-black mt-1 flex items-center gap-3"><span class="w-11 h-11 rounded-2xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-truck-fast"></i></span> Gestión de entregas</h2>
+          <p class="text-sm text-cyan-50 mt-2 max-w-2xl">Pedidos vinculados a tus ventas existentes. Asigna o reasigna al repartidor y supervisa los estados y las evidencias sin crear ventas nuevas.</p>
+        </div>
+        <button type="button" @click="inicializarEntregas()" class="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-cyan-800 px-4 py-3 text-sm font-black shadow-lg hover:bg-cyan-50"><i class="fa-solid fa-rotate"></i> Sincronizar pedidos</button>
+      </div>
+      <div class="p-4 md:p-6 grid grid-cols-2 xl:grid-cols-4 gap-3">
+        <div class="rounded-2xl p-4 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60"><div class="text-xs font-bold text-slate-500">Pedidos con entrega</div><div class="text-2xl font-black mt-1 text-slate-900 dark:text-white" x-text="entregasListado().length"></div></div>
+        <div class="rounded-2xl p-4 border border-amber-200 dark:border-amber-900/60 bg-amber-50 dark:bg-amber-950/20"><div class="text-xs font-bold text-amber-700 dark:text-amber-300">Pendientes</div><div class="text-2xl font-black mt-1 text-amber-800 dark:text-amber-200" x-text="entregasListado().filter(e => e.estado === 'Pendiente').length"></div></div>
+        <div class="rounded-2xl p-4 border border-sky-200 dark:border-sky-900/60 bg-sky-50 dark:bg-sky-950/20"><div class="text-xs font-bold text-sky-700 dark:text-sky-300">En proceso</div><div class="text-2xl font-black mt-1 text-sky-800 dark:text-sky-200" x-text="entregasListado().filter(e => ['Preparando','En camino','En destino'].includes(e.estado)).length"></div></div>
+        <div class="rounded-2xl p-4 border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50 dark:bg-emerald-950/20"><div class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Entregados</div><div class="text-2xl font-black mt-1 text-emerald-800 dark:text-emerald-200" x-text="entregasListado().filter(e => e.estado === 'Entregado').length"></div></div>
+      </div>
+      <div class="px-4 md:px-6 pb-5 grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="relative"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i><input x-model="entregasBusqueda" type="search" placeholder="Buscar pedido, cliente, celular, distrito o dirección…" class="w-full pl-9 pr-3 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm outline-none focus:ring-2 focus:ring-cyan-500"></div>
+        <select x-model="entregasFiltroEstado" class="w-full px-3 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm font-bold"><option value="Todas">Todos los estados</option><template x-for="estado in entregasEstados" :key="'filtro-entrega-'+estado"><option :value="estado" x-text="estado"></option></template></select>
+        <select x-model="entregasFiltroRepartidor" class="w-full px-3 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm font-bold"><option value="Todas">Todos los repartidores</option><option value="Sin asignar">Sin asignar</option><option value="Chavalillo">Chavalillo</option><option value="Chavalilla">Chavalilla</option></select>
+      </div>
+    </div>
+    <div x-show="entregasInicializando" class="rounded-2xl border border-cyan-200 dark:border-cyan-900 bg-cyan-50 dark:bg-cyan-950/20 p-4 text-sm font-bold text-cyan-800 dark:text-cyan-200"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Preparando los registros iniciales de entrega…</div>
+    <template x-for="entrega in entregasListado()" :key="'entrega-'+entrega.id">
+      <article class="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md">
+        <div class="p-5 md:p-6">
+          <div class="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-4">
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2 mb-2"><span class="text-[10px] uppercase tracking-wider font-black text-slate-500" x-text="entrega.pedidoNumero ? 'Pedido '+entrega.pedidoNumero : 'Pedido '+entrega.id.slice(0,8)"></span><span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-black" :class="entrega.estado === 'Entregado' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300' : entrega.estado === 'Incidencia' ? 'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300' : entrega.estado === 'Pendiente' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300' : 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-300'"><span class="w-1.5 h-1.5 rounded-full bg-current"></span><span x-text="entrega.estado"></span></span></div>
+              <h3 class="text-xl font-black text-slate-900 dark:text-white" x-text="entrega.clienteNombre"></h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" x-text="entrega.productosTexto"></p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div class="rounded-xl bg-slate-50 dark:bg-slate-900/70 p-3"><div class="text-[10px] uppercase tracking-wider font-black text-slate-400 mb-1">Destino</div><div class="text-sm font-bold text-slate-800 dark:text-slate-200" x-text="[entrega.direccionEntrega, entrega.distrito].filter(Boolean).join(', ') || 'Sin dirección registrada'"></div></div>
+                <div class="rounded-xl bg-slate-50 dark:bg-slate-900/70 p-3"><div class="text-[10px] uppercase tracking-wider font-black text-slate-400 mb-1">Programación / envío</div><div class="text-sm font-bold text-slate-800 dark:text-slate-200" x-text="[entrega.fechaEntrega, entrega.horarioEntrega, entrega.envio].filter(Boolean).join(' · ') || 'Por coordinar'"></div></div>
+              </div>
+              <div x-show="entrega.estado === 'Incidencia' && entrega.incidencia" class="mt-3 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/20 p-3 text-sm text-rose-800 dark:text-rose-200"><b>Incidencia:</b> <span x-text="entrega.incidencia"></span></div>
+              <div x-show="entrega.actualizadoEn" class="text-[10px] text-slate-400 mt-3">Última actualización: <span x-text="new Date(entrega.actualizadoEn).toLocaleString('es-PE')"></span></div>
+            </div>
+            <div class="xl:w-[270px] shrink-0 space-y-3">
+              <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500">Repartidor asignado</label>
+              <select :value="entrega.repartidorAsignado" @change="reasignarRepartidorEntrega(entrega.id, $event.target.value)" :disabled="entregasGuardando === entrega.id" class="w-full px-3 py-3 rounded-xl border border-orange-200 dark:border-orange-900 bg-white dark:bg-slate-900 text-sm font-black focus:ring-2 focus:ring-orange-500 disabled:opacity-50"><option value="">Sin asignar</option><option value="Chavalillo">Chavalillo</option><option value="Chavalilla">Chavalilla</option></select>
+              <label class="block text-[10px] uppercase tracking-wider font-black text-slate-500">Actualizar estado</label>
+              <select :value="entrega.estado" @change="actualizarEstadoEntrega(entrega.id, $event.target.value)" :disabled="entregasGuardando === entrega.id" class="w-full px-3 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm font-black focus:ring-2 focus:ring-cyan-500 disabled:opacity-50"><template x-for="estado in entregasEstados" :key="entrega.id+'-'+estado"><option :value="estado" x-text="estado"></option></template></select>
+              <button type="button" @click="abrirWhatsAppEntrega(entrega)" class="w-full flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 text-sm font-black transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i> Contactar cliente</button>
+              <div x-show="entregasGuardando === entrega.id" class="text-center text-xs font-bold text-cyan-600"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Guardando estado…</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </template>
+    <div x-show="!entregasInicializando && entregasListado().length === 0" class="rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-800/60 p-10 text-center"><div class="w-16 h-16 mx-auto rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-2xl"><i class="fa-solid fa-truck-ramp-box"></i></div><h3 class="text-lg font-black text-slate-800 dark:text-white mt-4">No hay entregas para mostrar</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-lg mx-auto">Aquí aparecen las ventas que tienen información de entrega. Puedes asignarlas a Chavalillo o Chavalilla desde esta pestaña; las que no tengan asignación no se mostrarán a ningún repartidor.</p></div>
+    <section class="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-xl">
+      <div class="p-5 md:p-6 bg-gradient-to-r from-slate-800 to-slate-700 text-white flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div><div class="text-[10px] uppercase tracking-[.22em] font-black text-slate-300">PetSmart · Evidencia de entrega</div><h3 class="text-xl font-black mt-1"><i class="fa-solid fa-camera mr-2"></i>Fotografías de entrega</h3><p class="text-xs text-slate-300 mt-1">El panel requiere iniciar sesión con Firebase para consultar el registro de evidencias.</p></div>
+        <button x-show="entregasAdminSesion" @click="cargarEvidenciasEntregas()" class="rounded-xl bg-white/10 hover:bg-white/20 px-4 py-2.5 text-sm font-black"><i class="fa-solid fa-rotate mr-1"></i>Actualizar fotos</button>
+      </div>
+      <div class="p-5 md:p-6 space-y-4">
+        <div x-show="!entregasAdminSesion" class="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-3 items-end">
+          <div><label class="block text-xs font-black text-slate-500 mb-1">Correo de la cuenta autorizada</label><input x-model="entregasAdminEmail" type="email" autocomplete="username" placeholder="usuario autorizado de Firebase" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-3 py-3 text-sm"></div>
+          <div><label class="block text-xs font-black text-slate-500 mb-1">Contraseña</label><input x-model="entregasAdminPassword" type="password" autocomplete="current-password" placeholder="Contraseña" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 px-3 py-3 text-sm"></div>
+          <button @click="iniciarSesionEvidencias()" class="rounded-xl bg-cyan-700 hover:bg-cyan-600 text-white px-5 py-3 text-sm font-black"><i class="fa-solid fa-lock-open mr-1"></i>Ver evidencias</button>
+        </div>
+        <div x-show="entregasAdminSesion" class="flex flex-wrap items-center justify-between gap-3"><p class="text-xs text-emerald-700 dark:text-emerald-300 font-bold"><i class="fa-solid fa-shield-check mr-1"></i>Sesión autorizada: <span x-text="entregasAdminUsuario"></span></p><button @click="cerrarSesionEvidencias()" class="rounded-xl border border-slate-300 dark:border-slate-600 px-3 py-2 text-xs font-black">Cerrar sesión</button></div>
+        <div x-show="entregasEvidenciasCargando" class="text-sm font-bold text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Cargando evidencias de entrega…</div>
+        <template x-if="entregasAdminSesion && !entregasEvidenciasCargando && Object.keys(entregasEvidencias || {}).length === 0"><div class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-6 text-center text-sm text-slate-500">Todavía no hay fotografías cargadas por los repartidores.</div></template>
+        <template x-for="(fotos, grupoId) in entregasEvidencias" :key="'evidencia-grupo-'+grupoId"><div class="rounded-2xl border border-slate-200 dark:border-slate-700 p-4"><div class="font-black text-sm text-slate-800 dark:text-white mb-3">Venta <span x-text="grupoId"></span></div><div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3"><template x-for="foto in (Array.isArray(fotos) ? fotos : Object.values(fotos || {}))" :key="foto.id || foto.storagePath"><div class="rounded-xl bg-slate-50 dark:bg-slate-900 p-3"><button type="button" @click="abrirFotoEvidencia(foto.secureUrl)" class="block w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" title="Abrir fotografía original"><img :src="foto.secureUrl" :alt="foto.fileName || 'Fotografía de entrega'" loading="lazy" class="w-full h-44 object-cover" referrerpolicy="no-referrer"/><span class="sr-only">Abrir fotografía completa</span></button><div class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-3 break-words" x-text="foto.fileName || 'Fotografía de entrega'"></div><div class="text-[10px] text-slate-500 mt-1" x-text="(foto.uploadedBy || 'Repartidor')+' · '+(foto.uploadedAt ? new Date(foto.uploadedAt).toLocaleString('es-PE') : '')"></div><button @click="abrirFotoEvidencia(foto.secureUrl)" class="mt-3 w-full rounded-lg bg-cyan-700 hover:bg-cyan-600 text-white px-3 py-2 text-xs font-black"><i class="fa-solid fa-eye mr-1"></i>Abrir foto original</button></div></template></div></div></template>
+      </div>
+    </section>
+    <div class="rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50 dark:bg-amber-950/20 p-4 text-xs leading-relaxed text-amber-900 dark:text-amber-200"><b><i class="fa-solid fa-shield-halved mr-1"></i>Importante:</b> este panel muestra los enlaces de Cloudinary guardados en Firebase. Si se usa un preset de subida sin firma, quien obtenga el enlace directo puede abrir la imagen. No subir fotos reales de clientes hasta configurar una subida y entrega firmadas mediante un servicio backend y revisar las reglas de Firebase.</div>
+  </div>
+</div>
+<!-- =====================================================
      COMPROBANTE PETSMART · REPRESENTACIÓN PERSONALIZADA
 ====================================================== -->
 <div style="display:none;" x-show="activeTab === 'comprobantes'" x-transition>
