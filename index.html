@@ -391,7 +391,7 @@ input:focus,select:focus{border-color:rgba(245,158,11,.75)!important;box-shadow:
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
                 const firebaseConfig = {
             apiKey:
-                "AiZaSyDBB2yeDGTYzbqX5p6sY411g6Qsw8JEgu0",
+                "AIzaSyDBB2yeDGTYzbqX5p6sY411g6Qsw8JEgu0",
             authDomain:
                 "petsmart-inventario.firebaseapp.com",
             databaseURL:
@@ -399,7 +399,7 @@ input:focus,select:focus{border-color:rgba(245,158,11,.75)!important;box-shadow:
             projectId:
                 "petsmart-inventario",
             storageBucket:
-                "petsmart-inventario.appspot.com",
+                "petsmart-inventario.firebasestorage.app",
             messagingSenderId:
                 "566190749664",
             appId:
@@ -1930,6 +1930,7 @@ body.dark{background:#070d19!important}
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-xs font-black mb-1.5">Cliente *</label><input class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" required="" type="text" x-model="ventaEditando.clienteNombre"/></div>
 <div><label class="block text-xs font-black mb-1.5">Teléfono</label><input @input="ventaEditando.clienteTelefono = limpiarCelular(ventaEditando.clienteTelefono)" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" inputmode="numeric" maxlength="9" pattern="[0-9]{9}" type="tel" x-model="ventaEditando.clienteTelefono"/></div>
+<div x-show="ventaEditando.canalVenta !== 'Falabella'"><label class="block text-xs font-black mb-1.5"><i class="fa-solid fa-paw text-orange-500 mr-1"></i>Tipo de mascota *</label><select :required="ventaEditando.canalVenta !== 'Falabella'" x-model="ventaEditando.tipoMascota" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold"><option value="">Seleccionar tipo de mascota</option><option value="Perro">Perro</option><option value="Gato">Gato</option><option value="Conejo">Conejo</option><option value="Otro">Otro</option></select></div>
 <div><label class="block text-xs font-black mb-1.5">Tipo de comprobante</label><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaEditando.tipoComprobante"><option value="Boleta">Boleta</option><option value="Factura">Factura</option></select></div>
 <div x-show="ventaEditando.tipoComprobante === 'Boleta'"><label class="block text-xs font-black mb-1.5">Tipo de documento</label><select class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-bold" x-model="ventaEditando.tipoDocumento"><option value="DNI">DNI</option><option value="Carnet de Extranjería">Carnet de Extranjería</option><option value="Pasaporte">Pasaporte</option></select></div>
 <div x-show="ventaEditando.tipoComprobante === 'Boleta'"><label class="block text-xs font-black mb-1.5">Número de documento</label><input @input="ventaEditando.numeroDocumento = sanitizarDocumento(ventaEditando.tipoDocumento, ventaEditando.numeroDocumento)" class="w-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-sm" inputmode="numeric" :maxlength="maxDigitosDocumento(ventaEditando.tipoDocumento)" type="text" x-model="ventaEditando.numeroDocumento"/></div>
@@ -6132,7 +6133,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     }
                     try {
                         let clubRegistroEditar = null;
-                        const grupoEditar = String(venta.ventaGrupoId || '').trim();
+                        const grupoEditar = this.claveGrupoEntrega(venta);
                         if (grupoEditar) {
                             try { const snapClub=await window.fb.get(window.fb.ref(window.db,`petSmartClub/ventas/${grupoEditar}`)); if(snapClub.exists()) clubRegistroEditar={group:grupoEditar,...(snapClub.val()||{})}; } catch(_) {}
                         }
@@ -6153,9 +6154,31 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         const sellerPagoEstado = venta.canalVenta === 'Falabella' ? (venta.sellerPagoEstado === 'pendiente' ? 'pendiente' : 'aplicado') : '';
                         const requiereEntregaEditar = venta.canalVenta !== 'Falabella' && !!(String(venta.envio || '').trim() || String(venta.direccionEntrega || '').trim() || String(venta.fechaEntrega || '').trim() || String(venta.horarioEntrega || '').trim());
                         const repartidorEditar = requiereEntregaEditar ? this.normalizarRepartidorEntrega(venta.repartidorAsignado || '') : '';
-                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), repartidorAsignado: repartidorEditar, repartidorAsignadoEmail: this.emailRepartidorEntrega(repartidorEditar), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, conBolsa: !!venta.conBolsa, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', ventaGrupoId: String(venta.ventaGrupoId || ''), sellerPagoEstado };
+                        const datos = { estado: 'vendido', fechaVenta: venta.fechaVenta, fechaEntrega: String(venta.fechaEntrega || ''), horarioEntrega: String(venta.horarioEntrega || '').trim(), envio: String(venta.envio || '').trim(), repartidorAsignado: repartidorEditar, repartidorAsignadoEmail: this.emailRepartidorEntrega(repartidorEditar), clienteNombre: String(venta.clienteNombre || '').trim(), clienteTelefono: this.limpiarCelular(venta.clienteTelefono || ''), distrito: String(venta.distrito || '').trim(), direccionEntrega: String(venta.direccionEntrega || '').trim(), latitud: String(venta.latitud || '').trim(), longitud: String(venta.longitud || '').trim(), canalVenta: venta.canalVenta, perfilFacebook, tipoMascota: venta.canalVenta === 'Falabella' ? '' : (venta.tipoMascota || ''), medioPago: venta.canalVenta === 'Falabella' ? 'Pago Seller' : 'Yape', precioVenta: precio, comision, confLogistico, conBolsa: !!venta.conBolsa, observacion: String(venta.observacion || '').trim(), tipoComprobante: venta.tipoComprobante || 'Boleta', tipoDocumento: venta.tipoComprobante === 'Boleta' ? (venta.tipoDocumento || 'DNI') : '', numeroDocumento: venta.tipoComprobante === 'Boleta' ? String(venta.numeroDocumento || '').replace(/\D/g, '') : '', ruc: venta.tipoComprobante === 'Factura' ? String(venta.ruc || '').replace(/\D/g, '') : '', razonSocial: venta.tipoComprobante === 'Factura' ? String(venta.razonSocial || '').trim() : '', comprobanteNumero: String(venta.comprobanteNumero || ''), ventaGrupoId: String(venta.ventaGrupoId || ''), sellerPagoEstado };
                         await window.fb.update(window.fb.ref(window.db, `productos/${venta.id}`), datos);
-                        await this.guardarRegistroVentaAdicional(venta, datos);
+                        const clienteIdEditado = await this.guardarRegistroVentaAdicional(venta, datos);
+                        datos.clienteId = clienteIdEditado || venta.clienteId || '';
+                        // Una venta con varios productos conserva sus renglones independientes,
+                        // pero comparte los datos del cliente y de la entrega en todas las líneas.
+                        const camposCompartidos = [
+                            'fechaVenta','fechaEntrega','horarioEntrega','envio','clienteNombre','clienteTelefono','clienteId',
+                            'distrito','direccionEntrega','latitud','longitud','canalVenta','perfilFacebook','tipoMascota','medioPago',
+                            'conBolsa','observacion','tipoComprobante','tipoDocumento','numeroDocumento','ruc','razonSocial',
+                            'comprobanteNumero','ventaGrupoId','sellerPagoEstado'
+                        ];
+                        const lineasVentaEditar = grupoEditar
+                            ? (this.productos || []).filter(p => p.estado === 'vendido' && this.claveGrupoEntrega(p) === grupoEditar)
+                            : [venta];
+                        const updatesCompartidos = {};
+                        lineasVentaEditar.forEach(linea => {
+                            camposCompartidos.forEach(campo => {
+                                if (Object.prototype.hasOwnProperty.call(datos, campo)) {
+                                    updatesCompartidos[`productos/${linea.id}/${campo}`] = datos[campo];
+                                    updatesCompartidos[`ventas/${linea.id}/${campo}`] = datos[campo];
+                                }
+                            });
+                        });
+                        if (Object.keys(updatesCompartidos).length) await window.fb.update(window.fb.ref(window.db), updatesCompartidos);
                         // La asignación pertenece al pedido completo: sincroniza todas sus líneas y registros históricos.
                         await this.guardarAsignacionRepartidorGrupo(grupoEditar || String(venta.id), repartidorEditar, { notify: false });
                         // La bolsa corresponde al pedido completo: si una venta tiene varios productos,
@@ -6799,18 +6822,28 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     const horario = String(item.horarioEntrega || '').trim();
                     return !!(envio || direccion || fecha || horario);
                 },
+                claveGrupoEntrega(item) {
+                    const grupo = String(item?.ventaGrupoId || '').trim();
+                    if (grupo) return grupo;
+                    const comprobante = String(item?.comprobanteNumero || '').trim();
+                    if (comprobante && !['—', '-', 'N/A', 'SIN NÚMERO', 'SIN NUMERO'].includes(comprobante.toUpperCase())) {
+                        return 'comprobante-' + comprobante.replace(/[^a-zA-Z0-9_-]/g, '_');
+                    }
+                    return String(item?.id || '').trim();
+                },
                 entregasListado() {
                     const grupos = new Map();
                     (Array.isArray(this.productos) ? this.productos : []).forEach(item => {
-                        if (!this.esPedidoConEntrega(item)) return;
-                        const grupoId = String(item.ventaGrupoId || item.id || '').trim();
+                        if (!item || item.estado !== 'vendido') return;
+                        const grupoId = this.claveGrupoEntrega(item);
                         if (!grupoId) return;
-                        if (!grupos.has(grupoId)) grupos.set(grupoId, { id: grupoId, items: [], primero: item });
+                        if (!grupos.has(grupoId)) grupos.set(grupoId, { id: grupoId, items: [], primero: item, tieneEntrega: false });
                         const grupo = grupos.get(grupoId);
                         grupo.items.push(item);
+                        if (this.esPedidoConEntrega(item)) grupo.tieneEntrega = true;
                         if (String(item.fechaVenta || '') < String(grupo.primero.fechaVenta || '')) grupo.primero = item;
                     });
-                    let lista = Array.from(grupos.values()).map(grupo => {
+                    let lista = Array.from(grupos.values()).filter(grupo => grupo.tieneEntrega).map(grupo => {
                         const p = grupo.primero || {};
                         const estados = grupo.items.map(x => String(x.entregaEstado || 'Pendiente'));
                         const estado = estados.includes('Incidencia') ? 'Incidencia' : (estados.every(x => x === 'Entregado') ? 'Entregado' : (estados.includes('En destino') ? 'En destino' : (estados.includes('En camino') ? 'En camino' : (estados.includes('Preparando') ? 'Preparando' : 'Pendiente'))));
@@ -6832,7 +6865,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                     const email = this.emailRepartidorEntrega(nombre);
                     const gid = String(grupoId || '').trim();
                     if (!gid || !window.fb || !window.db) throw new Error('No se encontró el identificador de la venta para asignar el repartidor.');
-                    const items = (this.productos || []).filter(p => p && p.estado === 'vendido' && String(p.ventaGrupoId || p.id || '') === gid);
+                    const items = (this.productos || []).filter(p => p && p.estado === 'vendido' && this.claveGrupoEntrega(p) === gid);
                     if (!items.length) throw new Error('No se encontraron las líneas de productos de esta venta. Actualiza el inventario e inténtalo de nuevo.');
                     const prevItem = items.find(p => p.repartidorAsignado || p.repartidorAsignadoEmail) || items[0];
                     const previo = this.normalizarRepartidorEntrega(prevItem.repartidorAsignado || prevItem.repartidorAsignadoEmail || '');
@@ -6872,17 +6905,23 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         const updates = {};
                         const grupos = new Map();
                         this.productos.forEach(item => {
-                            if (!this.esPedidoConEntrega(item) || !item.id) return;
-                            const grupoId = String(item.ventaGrupoId || item.id);
-                            if (!grupos.has(grupoId)) grupos.set(grupoId, []);
-                            grupos.get(grupoId).push(item);
+                            if (!item || item.estado !== 'vendido' || !item.id) return;
+                            const grupoId = this.claveGrupoEntrega(item);
+                            if (!grupoId) return;
+                            if (!grupos.has(grupoId)) grupos.set(grupoId, { items: [], tieneEntrega: false });
+                            const grupo = grupos.get(grupoId);
+                            grupo.items.push(item);
+                            if (this.esPedidoConEntrega(item)) grupo.tieneEntrega = true;
                         });
                         const ahora = new Date().toISOString();
-                        grupos.forEach(items => items.forEach(item => {
-                            if (!item.entregaEstado) updates[`productos/${item.id}/entregaEstado`] = 'Pendiente';
-                            if (!item.entregaCreadaEn) updates[`productos/${item.id}/entregaCreadaEn`] = ahora;
-                            if (!item.entregaHistorial) updates[`productos/${item.id}/entregaHistorial`] = [{ estado: 'Pendiente', fecha: ahora, nota: 'Entrega creada automáticamente desde la venta existente.' }];
-                        }));
+                        grupos.forEach(grupo => {
+                            if (!grupo.tieneEntrega) return;
+                            grupo.items.forEach(item => {
+                                if (!item.entregaEstado) updates[`productos/${item.id}/entregaEstado`] = 'Pendiente';
+                                if (!item.entregaCreadaEn) updates[`productos/${item.id}/entregaCreadaEn`] = ahora;
+                                if (!item.entregaHistorial) updates[`productos/${item.id}/entregaHistorial`] = [{ estado: 'Pendiente', fecha: ahora, nota: 'Entrega creada automáticamente desde la venta existente.' }];
+                            });
+                        });
                         if (Object.keys(updates).length) await window.fb.update(window.fb.ref(window.db), updates);
                     } catch (e) {
                         console.error('No se pudieron inicializar las entregas:', e);
@@ -6901,7 +6940,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
                         motivo = String(respuesta.value || '').trim();
                         if (!motivo) { Swal.fire('Falta información', 'Describe brevemente la incidencia antes de guardarla.', 'warning'); return; }
                     }
-                    const items = (this.productos || []).filter(p => p.estado === 'vendido' && String(p.ventaGrupoId || p.id || '') === String(grupoId) && this.esPedidoConEntrega(p));
+                    const items = (this.productos || []).filter(p => p.estado === 'vendido' && this.claveGrupoEntrega(p) === String(grupoId));
                     if (!items.length) { this.notificarToast('warning', 'No se encontraron los productos vinculados a esta entrega.'); return; }
                     this.entregasGuardando = String(grupoId);
                     try {
