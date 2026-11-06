@@ -3265,16 +3265,49 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     this.valeGeneradoUltimaVenta = JSON.parse(JSON.stringify(vale || {}));
                     this.modalValeGenerado = true;
                 },
+                async esperarImagenesCaptura(root, timeoutMs = 9000) {
+                    if (!root) return [];
+                    const imagenes = Array.from(root.querySelectorAll('img'));
+                    const fallidas = [];
+                    await Promise.all(imagenes.map(img => new Promise(resolve => {
+                        let terminado = false;
+                        let temporizador = null;
+                        const finalizar = (correcta) => {
+                            if (terminado) return;
+                            terminado = true;
+                            if (temporizador) clearTimeout(temporizador);
+                            img.removeEventListener('load', alCargar);
+                            img.removeEventListener('error', alFallar);
+                            if (!correcta) {
+                                img.dataset.captureFailed = 'true';
+                                fallidas.push(img);
+                            }
+                            resolve(correcta);
+                        };
+                        const alCargar = () => finalizar(img.naturalWidth > 0 && img.naturalHeight > 0);
+                        const alFallar = () => finalizar(false);
+                        if (img.complete) {
+                            finalizar(img.naturalWidth > 0 && img.naturalHeight > 0);
+                            return;
+                        }
+                        img.addEventListener('load', alCargar, { once: true });
+                        img.addEventListener('error', alFallar, { once: true });
+                        temporizador = setTimeout(() => finalizar(false), timeoutMs);
+                        // decode() resuelve más rápido cuando el recurso ya llegó, sin depender
+                        // exclusivamente de los eventos load/error del navegador.
+                        if (typeof img.decode === 'function') {
+                            img.decode().then(() => finalizar(img.naturalWidth > 0 && img.naturalHeight > 0)).catch(() => {});
+                        }
+                    })));
+                    if (fallidas.length) console.warn(`Captura PetSmart: ${fallidas.length} imagen(es) no estuvieron disponibles; se omitirán para evitar bloquear la exportación.`);
+                    return fallidas;
+                },
                 async generarSnapshotValeCanvas() {
                     const source = document.getElementById('valeDigitalExport');
                     if (!source) throw new Error('No se encontró el vale visible.');
                     if (!window.html2canvas) throw new Error('No se pudo cargar el generador de imágenes.');
 
-                    // CAPTURA DIRECTA: no clona, no reconstruye y no mueve el vale.
-                    // Se captura el elemento que el usuario está viendo, usando el
-                    // motor foreignObject del navegador para respetar mucho mejor
-                    // gradientes, tipografías, sombras, clip-path y composiciones CSS.
-                    await new Promise(resolve => this.$nextTick(() => setTimeout(resolve, 220)));
+                    await new Promise(resolve => this.$nextTick(() => setTimeout(resolve, 180)));
                     if (document.fonts && document.fonts.ready) {
                         try { await document.fonts.ready; } catch (_) {}
                     }
@@ -3283,53 +3316,30 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     const height = Math.round(rect.height);
                     if (!width || !height) throw new Error('El vale todavía no tiene un tamaño visible.');
 
-                    const imagenes = Array.from(source.querySelectorAll('img'));
-                    await Promise.all(imagenes.map(img => {
-                        if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-                        return new Promise(resolve => {
-                            const done = () => { img.removeEventListener('load', done); img.removeEventListener('error', done); resolve(); };
-                            img.addEventListener('load', done, {once:true});
-                            img.addEventListener('error', done, {once:true});
-                        });
-                    }));
+                    const imagenesFallidas = await this.esperarImagenesCaptura(source, 9000);
                     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-
-                    const dpr = Math.max(2, Math.min(4, Number(window.devicePixelRatio) || 1));
+                    const dpr = Math.max(2.5, Math.min(4, Number(window.devicePixelRatio) || 1));
                     try {
-                        return await window.html2canvas(source, {
-                            scale: dpr,
-                            useCORS: true,
-                            allowTaint: false,
-                            backgroundColor: '#ffffff',
-                            imageTimeout: 20000,
-                            logging: false,
-                            foreignObjectRendering: true,
-                            width,
-                            height,
-                            x: 0,
-                            y: 0,
-                            scrollX: 0,
-                            scrollY: 0,
-                            windowWidth: Math.max(document.documentElement.clientWidth, width),
-                            windowHeight: Math.max(document.documentElement.clientHeight, height)
-                        });
-                    } catch (foreignError) {
-                        console.warn('Captura foreignObject no disponible; usando captura directa normal.', foreignError);
-                        // Fallback: sigue capturando EL MISMO ELEMENTO visible; no hay clon.
-                        return await window.html2canvas(source, {
-                            scale: dpr,
-                            useCORS: true,
-                            allowTaint: false,
-                            backgroundColor: '#ffffff',
-                            imageTimeout: 20000,
-                            logging: false,
-                            width,
-                            height,
-                            x: 0,
-                            y: 0,
-                            scrollX: -window.scrollX,
-                            scrollY: -window.scrollY
-                        });
+                        try {
+                            return await window.html2canvas(source, {
+                                scale: dpr, useCORS: true, allowTaint: false, backgroundColor: '#ffffff',
+                                imageTimeout: 9000, logging: false, foreignObjectRendering: true,
+                                width, height, x: 0, y: 0, scrollX: 0, scrollY: 0,
+                                windowWidth: Math.max(document.documentElement.clientWidth, width),
+                                windowHeight: Math.max(document.documentElement.clientHeight, height),
+                                ignoreElements: el => el?.tagName === 'IMG' && el.dataset?.captureFailed === 'true'
+                            });
+                        } catch (foreignError) {
+                            console.warn('Captura foreignObject no disponible; usando captura directa normal.', foreignError);
+                            return await window.html2canvas(source, {
+                                scale: dpr, useCORS: true, allowTaint: false, backgroundColor: '#ffffff',
+                                imageTimeout: 9000, logging: false, width, height,
+                                x: 0, y: 0, scrollX: -window.scrollX, scrollY: -window.scrollY,
+                                ignoreElements: el => el?.tagName === 'IMG' && el.dataset?.captureFailed === 'true'
+                            });
+                        }
+                    } finally {
+                        imagenesFallidas.forEach(img => { delete img.dataset.captureFailed; });
                     }
                 },
                 async descargarValeImagen(formato = 'jpeg') {
@@ -4387,38 +4397,52 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                     }, 900);
                 },
                 async descargarReportePedidoJpeg() {
+                    return this.descargarReportePedidoImagen('jpeg');
+                },
+                async descargarReportePedidoPng() {
+                    return this.descargarReportePedidoImagen('png');
+                },
+                async descargarReportePedidoImagen(formato = 'jpeg') {
                     const source = document.getElementById('reportePedidoPreview');
                     if (!source || !window.html2canvas) {
                         Swal.fire('Atención', 'No se pudo preparar la imagen del pedido.', 'warning');
                         return;
                     }
+                    const esPng = formato === 'png';
+                    let imagenesFallidas = [];
                     try {
-                        Swal.fire({ title: 'Preparando imagen...', text: 'Generando JPEG del pedido', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-                        await new Promise(resolve => this.$nextTick(() => setTimeout(resolve, 120)));
-                        // Esperar a que las fotos reales del pedido estén listas antes de capturar.
-                        // No modifica datos ni lógica del pedido; solo evita que html2canvas calcule
-                        // una caja cuadrada/incorrecta cuando la imagen aún no terminó de cargar.
-                        const imagenesPedido = Array.from(source.querySelectorAll('img.pedido-product-img'));
-                        await Promise.all(imagenesPedido.map(img => {
-                            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-                            return new Promise(resolve => {
-                                const done = () => { img.removeEventListener('load', done); img.removeEventListener('error', done); resolve(); };
-                                img.addEventListener('load', done, { once: true });
-                                img.addEventListener('error', done, { once: true });
-                            });
-                        }));
+                        Swal.fire({ title: 'Preparando imagen...', text: esPng ? 'Generando PNG de alta definición' : 'Generando JPEG de alta definición', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                        await new Promise(resolve => this.$nextTick(() => setTimeout(resolve, 160)));
+                        if (document.fonts && document.fonts.ready) {
+                            try { await document.fonts.ready; } catch (_) {}
+                        }
+                        // Se espera cada imagen con un límite. Un error de imagen ya no puede
+                        // dejar la exportación suspendida indefinidamente.
+                        imagenesFallidas = await this.esperarImagenesCaptura(source, 9000);
+                        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+                        // La captura siempre se prepara a un ancho fijo, independientemente
+                        // del ancho del modal, móvil o escritorio, para conservar nitidez.
+                        const anchoExportacion = 1000;
                         const canvas = await window.html2canvas(source, {
-                            scale: 3.5,
+                            scale: 2.7,
+                            width: anchoExportacion,
+                            windowWidth: 1120,
+                            windowHeight: Math.max(1400, source.scrollHeight + 200),
                             useCORS: true,
                             allowTaint: false,
                             backgroundColor: '#ffffff',
-                            imageTimeout: 15000,
+                            imageTimeout: 9000,
                             logging: false,
+                            ignoreElements: el => el?.tagName === 'IMG' && el.dataset?.captureFailed === 'true',
                             onclone: (doc) => {
                                 const root = doc.getElementById('reportePedidoPreview');
                                 if (!root) return;
-                                root.style.width = getComputedStyle(source).width;
-                                root.style.maxWidth = 'none';
+                                root.style.setProperty('width', `${anchoExportacion}px`, 'important');
+                                root.style.setProperty('min-width', `${anchoExportacion}px`, 'important');
+                                root.style.setProperty('max-width', `${anchoExportacion}px`, 'important');
+                                root.style.setProperty('box-sizing', 'border-box', 'important');
+                                root.querySelectorAll('img[data-capture-failed="true"]').forEach(img => img.remove());
                                 root.querySelectorAll('.pedido-product-img').forEach(img => {
                                     img.style.width = 'auto';
                                     img.style.height = 'auto';
@@ -4433,17 +4457,21 @@ Protege todos los datos almacenados en Firebase antes de actualizar el sistema. 
                         });
                         const enlace = document.createElement('a');
                         const pedido = String(this.reportePedido.pedidoNumero || 'pedido').replace(/[^a-zA-Z0-9_-]/g, '_');
-                        enlace.download = `PetSmart_Pedido_${pedido}.jpeg`;
-                        enlace.href = canvas.toDataURL('image/jpeg', 0.94);
+                        const mime = esPng ? 'image/png' : 'image/jpeg';
+                        const extension = esPng ? 'png' : 'jpeg';
+                        enlace.download = `PetSmart_Pedido_${pedido}.${extension}`;
+                        enlace.href = esPng ? canvas.toDataURL(mime) : canvas.toDataURL(mime, 0.98);
                         document.body.appendChild(enlace);
                         enlace.click();
                         enlace.remove();
                         Swal.close();
-                        this.notificarToast('success', 'Imagen JPEG generada correctamente');
+                        this.notificarToast('success', `Imagen ${extension.toUpperCase()} de alta definición generada correctamente`);
                     } catch (error) {
-                        console.error('ERROR GENERANDO JPEG:', error);
+                        console.error('ERROR GENERANDO IMAGEN DEL PEDIDO:', error);
                         Swal.close();
-                        Swal.fire('No se pudo generar el JPEG', 'Si alguna foto del producto proviene de otro dominio, verifica que la imagen permita carga CORS.', 'warning');
+                        Swal.fire('No se pudo generar la imagen', 'No se pudo convertir el resumen del pedido. Comprueba que las imágenes del producto permitan carga CORS e inténtalo nuevamente.', 'warning');
+                    } finally {
+                        imagenesFallidas.forEach(img => { delete img.dataset.captureFailed; });
                     }
                 },
                 copiarResumenPedido() {
@@ -8135,6 +8163,7 @@ const coincideMes = this.periodoFinancieroCoincide(item.fechaVenta);
       <div class="flex flex-wrap gap-2">
         <button @click="copiarResumenPedido()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-black text-sm flex items-center gap-2"><i class="fa-solid fa-copy"></i> Copiar resumen</button>
         <button @click="descargarReportePedidoJpeg()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm flex items-center gap-2 shadow-lg"><i class="fa-solid fa-image"></i> Descargar JPEG</button>
+        <button @click="descargarReportePedidoPng()" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-black text-sm flex items-center gap-2 shadow-lg"><i class="fa-solid fa-file-image"></i> Descargar PNG nítido</button>
         <button @click="imprimirReportePedido()" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-black text-sm flex items-center gap-2 shadow-lg"><i class="fa-solid fa-print"></i> Imprimir / PDF</button>
         <button @click="cerrarReportePedido()" class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-200 hover:bg-rose-500 hover:text-white flex items-center justify-center" title="Cerrar"><i class="fa-solid fa-xmark"></i></button>
       </div>
